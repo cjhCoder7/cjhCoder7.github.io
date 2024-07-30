@@ -1,0 +1,794 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/WechatIMG63.jpg">
+  <link rel="icon" href="/img/WechatIMG63.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Coder7">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="背景对于许多人而言，求解平方根倒数是一个十分简单的事情，我们只需要调用C语言中头文件便可以实现 12345678#include&lt;stdio.h&gt;#include&lt;math.h&gt;int main(void)&#123;	float x &#x3D; 1 &#x2F; sqrt(2);	printf(&quot;%lf&quot;,x);	return 0;&#125;  但是，有没有一种方法可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="卡马克快速平方根倒数算法">
+<meta property="og:url" content="http://example.com/2024/07/24/kamake/index.html">
+<meta property="og:site_name" content="Coder7的个人博客">
+<meta property="og:description" content="背景对于许多人而言，求解平方根倒数是一个十分简单的事情，我们只需要调用C语言中头文件便可以实现 12345678#include&lt;stdio.h&gt;#include&lt;math.h&gt;int main(void)&#123;	float x &#x3D; 1 &#x2F; sqrt(2);	printf(&quot;%lf&quot;,x);	return 0;&#125;  但是，有没有一种方法可">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/%E7%AE%97%E6%B3%95/Q3_cover.webp">
+<meta property="og:image" content="http://example.com/img/%E7%AE%97%E6%B3%95/th.jpg">
+<meta property="article:published_time" content="2024-07-24T12:16:28.000Z">
+<meta property="article:modified_time" content="2024-07-24T14:00:00.000Z">
+<meta property="article:author" content="Coder7">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/%E7%AE%97%E6%B3%95/Q3_cover.webp">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>卡马克快速平方根倒数算法 - Coder7的个人博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":60,"cursorChar":"","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Coder7&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="卡马克快速平方根倒数算法"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Coder7
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-24 20:16" pubdate>
+          2024年7月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          26 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">卡马克快速平方根倒数算法</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2024年7月24日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>对于许多人而言，求解平方根倒数是一个十分简单的事情，我们只需要调用C语言中头文件便可以实现</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;stdio.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;math.h&gt;</span></span><br><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>&#123;<br>	<span class="hljs-type">float</span> x = <span class="hljs-number">1</span> / <span class="hljs-built_in">sqrt</span>(<span class="hljs-number">2</span>);<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%lf&quot;</span>,x);<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>但是，有没有一种方法可以更加快速地运算出结果呢</p>
+<h1 id="雷神之锤"><a href="#雷神之锤" class="headerlink" title="雷神之锤"></a>雷神之锤</h1><p>在2005年，id Software 发布了 Quake-III Arena（雷神之锤3）游戏的源代码，在那份源代码中，游戏粉丝们发现了一个算法十分巧妙，这个算法的唯一用途就是<strong>计算平方根的倒数</strong><br>$$<br>f(x)&#x3D;\frac1{\sqrt{x}}<br>$$<br><img src="/img/%E7%AE%97%E6%B3%95/Q3_cover.webp" srcset="/img/loading.gif" lazyload alt="雷神之锤3"></p>
+<p>这款游戏在上世纪九十年代风靡全球，即使当时的计算机配置低，但也能流畅地运行这款画面和内容都不错的游戏。这其中最重要的原因就是它的 3D 引擎的开发者 John Carmack（约翰-卡马克）</p>
+<p>在游戏里，要想实现物理效果、光影效果，反射效果的话，要对使用的向量进行单位化，因而计算平方根倒数是一项重要且关键的步骤。<br>$$<br>z\frac1{\sqrt{x^2+y^2+z^2}}<br>$$<br>可以看见，在实现单位化的过程中，倒数平方根是一个重要的计算量。</p>
+<blockquote>
+<p>事实上早在90年代初DOS时代，只要能在PC上搞个小动画都能让人惊叹一番的时候，John Carmack就推出了石破天惊的Castle Wolfstein, 然后再接再励，doom, doom-II, Quake…每次都把3D技术推到极致。他的3D引擎代码极度高效，几乎是在压榨PC机的每条运算指令。当初微软的Direct3D也得听取他的意见，修改了不少API。</p>
+</blockquote>
+<p>而在源代码中，越是底层的函数调用的就越频繁，就越是一个游戏引擎优秀的关键，在 Quake-III Arena 的源代码文件 <code>game/code/q_math.c</code> 里就有这样一段神奇的平方根倒数的算法</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">float</span> <span class="hljs-title function_">Q_rsqrt</span><span class="hljs-params">(<span class="hljs-type">float</span> number)</span><br>&#123;<br>    <span class="hljs-type">long</span> i;<br>    <span class="hljs-type">float</span> x2, y;<br>    <span class="hljs-type">const</span> <span class="hljs-type">float</span> threehalfs = <span class="hljs-number">1.5F</span>;<br>    x2 = number * <span class="hljs-number">0.5F</span>;<br>    y = number;<br>    i = * ( <span class="hljs-type">long</span> * ) &amp;y;   <span class="hljs-comment">// evil floating point bit level hacking</span><br>    i = <span class="hljs-number">0x5f3759df</span> - ( i &gt;&gt; <span class="hljs-number">1</span> ); <span class="hljs-comment">// what the fuck?</span><br>    y = * ( <span class="hljs-type">float</span> * ) &amp;i;<br>    y = y * ( threehalfs - ( x2 * y * y ) ); <span class="hljs-comment">// 1st iteration</span><br>    <span class="hljs-comment">// y   = y * ( threehalfs - ( x2 * y * y ) ); // 2nd iteration, this can be removed</span><br>    <span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> Q3_VM</span><br>    <span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> __linux__</span><br>         assert( !isnan(y) ); <span class="hljs-comment">// bk010122 - FPE?</span><br>    <span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>    <span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>    <span class="hljs-keyword">return</span> y;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>经过测试比较，一般而言卡马克快速平方根算法速度是普通算法 sqrt 的三到四倍</p>
+<h1 id="原理分析"><a href="#原理分析" class="headerlink" title="原理分析"></a>原理分析</h1><p>首先你会注意到一个奇怪的数字 <code>0x5f3759df</code> ，这个数字是怎么样得出来的呢，这一步又有什么用途呢？</p>
+<p>而且，作者在注释中还写了很有趣的一句话 <code>what the fuck?</code></p>
+<h2 id="二进制数的分析"><a href="#二进制数的分析" class="headerlink" title="二进制数的分析"></a>二进制数的分析</h2><p>观察代码的头三行可以发现：</p>
+<p>1、作者首先定义了一个 <code>long</code> 类型的数 <code>i</code> ，也就是说，我们现在有32个二进制位来表示数字</p>
+<p>2、在下一行作者声明了两个小数 <code>float</code> ，也就是说，我们现在有32个二进制位来表示小数。</p>
+<h3 id="小数的二进制表示"><a href="#小数的二进制表示" class="headerlink" title="小数的二进制表示"></a>小数的二进制表示</h3><p>一般来说，类似于整数的二进制表示方法，我们会采用将32位二进制数分割的办法来表示小数，例如：<code>00000000 00000001.10000000 00000000</code> 表示 1.5。 </p>
+<p>但这样会有一个问题，原本可以表示 $2^{31}$ 大小的数，现在只能表示 $2^{15}$ 大小的数了，这造成了严重的资源浪费。所以为了更好的表示小数，计算机科学家们借鉴了科学计数法的表示方法，制定了 <strong>IEEE-754 标准</strong></p>
+<h3 id="IEEE-754-标准"><a href="#IEEE-754-标准" class="headerlink" title="IEEE-754 标准"></a>IEEE-754 标准</h3><p>对于32位的单精度浮点数（float）存储，按照IEEE-754的标准总共分为三个部分：</p>
+<p><img src="/img/%E7%AE%97%E6%B3%95/th.jpg" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>符号位 S ：1 位，0 表示正数，1表示负数</li>
+<li>指数位 E ：8 位，127 偏移量</li>
+<li>尾数位 M ：23 位</li>
+</ul>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>下面我们来看一个简答的例子，了解一下计算机是如何存储浮点数的</p>
+<p>对于二进制数 <code>0.101</code> 相当于十进制数 <code>0.625</code></p>
+<p>我们可以类比科学计数法的思想来表示 <code>0.625</code><br>$$<br>(-1)^{0}\times2^{-1}\times1.01<br>$$<br>其中 $(-1)^{0}$ 是符号位；$2^{-1}$ 是指数位，底数都是 $2$；$1.01$ 是尾数位</p>
+<p>对于真正的二进制表示 <code>0.625</code> 可得 <code>0 01111110 01000000000000000000000</code></p>
+<h4 id="指数位分析"><a href="#指数位分析" class="headerlink" title="指数位分析"></a>指数位分析</h4><p>首先我们分析指数位，他用二进制 <code>01111110</code> 来表示 2 的指数 -1，那这其中的原因是什么呢？</p>
+<p><code>01111110</code> 表示 <code>126</code> ，而 8 位的二进制总共可以表示的大小范围为 255 (11111111)</p>
+<p>查询进制转化表可知</p>
+<p>-2 对应 125</p>
+<p>-1 对应 126</p>
+<p>1 对应 127（0 用其他方式表示）</p>
+<p>2 对应 128</p>
+<p>也就是这样一种对应方式<br>$$<br>2^x &#x3D; 2^{127 + x}<br>$$</p>
+<h4 id="尾数位分析"><a href="#尾数位分析" class="headerlink" title="尾数位分析"></a>尾数位分析</h4><p>如果对科学计数法熟悉的话，可以发现最后的数值大小范围始终在 <code>1 ~ 2</code> 之间，所以我们可以将32位全部用来表示小数部分，最后在计算机的底层处理中再加入1就可以了。</p>
+<p>例如，1.01 中只需要表示0.01就可以了，所以就直接用二进制表示 <code>01000000000000000000000</code></p>
+<h4 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h4><p>大家可以思考一下，对于100.25这个数，该如何用IEEE754标准来表示呢？</p>
+<ol>
+<li>首先我们要讲他转化成二进制数来表达 <code>1100100.01</code></li>
+<li>然后可以将二进制数写成 $(-1)^{0}\times2^{6}\times1.10010001$</li>
+<li>接着确定指数位：$127+6&#x3D;133$ ，133 又可以用二进制写成 <code>10000101</code></li>
+<li>最后来确定尾数，直接应用2中最后的小数部分，<code>10010001 00000 00000 00000</code></li>
+</ol>
+<p>综上，100.25 这个数用IEEE标准的二进制表示为 <code>0 10000101 10010001 00000 00000 00000</code></p>
+<h2 id="十六进制数的分析"><a href="#十六进制数的分析" class="headerlink" title="十六进制数的分析"></a>十六进制数的分析</h2><p>如果你已经按照上诉步骤学会了IEEE754标准里的单精度浮点数的二进制表示方法，相信你可以类推到双精度浮点数（double）上，也可以将二进制的表示方法推广到十六进制的表示方法上——<strong>四位为一组进行转换</strong></p>
+<h2 id="求初始近似值"><a href="#求初始近似值" class="headerlink" title="求初始近似值"></a>求初始近似值</h2><blockquote>
+<p>卡马克快速平方根算法的核心在于牛顿迭代法的使用，但是牛顿迭代法如果初始的精度值不够，就必须使用多次的牛顿迭代法来达到更大的精度。但是，如果我们能先求出来一个精度还不错的初始值，再对它使用一次牛顿迭代法，就可以一次性得到更大的精度。所以，我们这里的关键是求出一个近似的平方根倒数初始值。</p>
+</blockquote>
+<h3 id="公式推导"><a href="#公式推导" class="headerlink" title="公式推导"></a>公式推导</h3><p>根据前面的IEEE754标准的浮点数表示方法，我们可以将浮点数 y 写成下列公式来表示<br>$$<br>y&#x3D;(1+\frac M{2^{23}})\cdot2^{E-127}<br>$$<br>M ：尾数位；E ：指数位</p>
+<p>那么，在计算机中怎么样可以快速地求出 $y^{-\frac{1}{2}}$ 呢？我们可以采用取对数的方式来进行一些神奇的变换！<br>$$<br>\begin{aligned}&amp;\log_2\left[\left(1+\frac{M}{2^{23}}\right)\cdot2^{E-127}\right]\&amp;&#x3D;\log_2\left(1+\frac M{2^{23}}\right)+\log_22^{E-127}\&amp;&#x3D;\log_2\left(1+\frac M{2^{23}}\right)+E-127\&amp;\approx\frac M{2^{23}}+E-127\end{aligned}<br>$$<br>通过这样的一系列变化，我们便可以很轻松的得到 $\log_2{y}$ 的近似值，从而得到 $-\frac{1}{2}\log_2{y}$ 的值，进而得到 $y^{-\frac{1}{2}}$ 的初始近似值</p>
+<p><strong>进一步，我们还可以化简公式使得更接近于计算机底层的浮点数表示方法</strong><br>$$<br>\frac1{2^{23}}(2^{23}\cdot E+M)-127<br>$$<br>其中， $2^{23}\cdot E+M$ 就是电脑里存储的浮点数 y 的二进制格式</p>
+<p><strong>最后，我们使用 A 来代替初始近似值的二进制表示，Y 来代替原始值的二进制表示，可以得到这样一个等式</strong><br>$$<br>\frac{1}{2^{23}}\cdot A-127&#x3D;-\frac{1}{2}\left(\frac{1}{2^{23}}\cdot Y-127\right)\A&#x3D;381\cdot2^{22}-\frac{1}{2}Y<br>$$</p>
+<h3 id="代码解释"><a href="#代码解释" class="headerlink" title="代码解释"></a>代码解释</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">long</span> i;<br><span class="hljs-type">float</span> x2, y;<br><span class="hljs-type">const</span> <span class="hljs-type">float</span> threehalfs = <span class="hljs-number">1.5F</span>;<br>x2 = number * <span class="hljs-number">0.5F</span>;<br>y = number;<br>i = * ( <span class="hljs-type">long</span> * ) &amp;y;   <span class="hljs-comment">// evil floating point bit level hacking</span><br>i = <span class="hljs-number">0x5f3759df</span> - ( i &gt;&gt; <span class="hljs-number">1</span> ); <span class="hljs-comment">// what the fuck?</span><br>y = * ( <span class="hljs-type">float</span> * ) &amp;i;<br></code></pre></td></tr></table></figure>
+
+<h4 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h4><p>我们定义了一个长整数类型的变量 <code>i</code> ，接着让它来表示单精度浮点数 <code>number</code> 的二进制格式（因为在底层它们的大小都是32位）。</p>
+<p>在这里使用的是这样一个小技巧 <code>i = * ( long * ) &amp;y;</code> 如果直接使用 <code>i = ( long ) y</code> 这将会改变底层的二进制格式。</p>
+<h4 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h4><p>套用公式 $A&#x3D;381\cdot2^{22}-\frac{1}{2}Y$ 来计算初步近似值，但是如果你自己仔细观察可以发现：$381\cdot2^{22}$ 这个数的十六进制表达式为 <code>5F40 0000</code> ，并非公式里的值。</p>
+<p>这是因为我们在进行 log 运算的进行了粗糙的近似，如果使用 <code>0x5f3759df</code> 可以弥补这样的精度损失</p>
+<h4 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h4><p>最后再将 <code>i</code> 的底层二进制格式转换为 <code>y</code> 的单精度浮点数的表示</p>
+<h2 id="牛顿法迭代"><a href="#牛顿法迭代" class="headerlink" title="牛顿法迭代"></a>牛顿法迭代</h2><h4 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h4><p>$$<br>x_{n+1}&#x3D;x_n-\frac{f(x_n)}{f^{\prime}(x_n)}<br>$$</p>
+<p>$$<br>x_{n+1}&#x3D;x_n-\frac{x_n^{-2}-x}{-2x_n^{-3}}<br>$$</p>
+<p>$$<br>x_{n+1}&#x3D;\frac{3}{2}x_n-\frac{1}{2}xx_n^3<br>$$</p>
+<p>其中，$x$ 代表输入的变量 <code>number</code> ，$x_n$ 代表初始的近似值 $y$ ，$x_{n+1}$ 代表一次牛顿迭代之后的近似值</p>
+<p>通过牛顿迭代法，我们可以初步逼近最后的高精度近似值</p>
+<h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c">   <span class="hljs-type">const</span> <span class="hljs-type">float</span> threehalfs = <span class="hljs-number">1.5F</span>;<br>x2 = number * <span class="hljs-number">0.5F</span>;<br>y = y * ( threehalfs - ( x2 * y * y ) ); <span class="hljs-comment">// 1st iteration</span><br>   <span class="hljs-comment">// y   = y * ( threehalfs - ( x2 * y * y ) ); // 2nd iteration, this can be removed</span><br></code></pre></td></tr></table></figure>
+
+<p>可以看到，原来的代码中还有第二次牛顿迭代的计算，但是通过实验验证了一次牛顿迭代得到的近似值已经十分精确，所以可以舍去！</p>
+<h1 id="背后的故事"><a href="#背后的故事" class="headerlink" title="背后的故事"></a>背后的故事</h1><p>到这里，你已经基本上了解了卡马克快速平方根的算法原理，但其实，这个算法<strong>并不是卡马克所发明的</strong>！</p>
+<p>卡马克当时担任的只是雷神之锤的 3D 引擎的开发者的一个角色，他只是代码的使用者，不过你在这个原始代码中看到的这段经典注释则确确实实出自于他手 —— <strong>what the fuck!</strong></p>
+<h2 id="历史"><a href="#历史" class="headerlink" title="历史"></a>历史</h2><p>1986年，一个名叫<strong>威廉卡汉</strong>（William Kahan）的人（后来也是IEEE754标准的制作者）用调整二进制数的方法写出来了<strong>求解平方根的算法</strong>，几年后，另一个程序员<strong>克莱佛莫勒</strong>（Cleve Moler）（MATLAB 背后的 MathWorks 公司创始人）发现了这段代码并介绍给了自己的同时<strong>格雷格沃什</strong>（Greg Walsh），而沃什在这段代码的基础上就写出了平方根倒数快速算法。</p>
+<p>而沃什所在公司的另一位程序员<strong>加里塔罗里</strong>（Gary Tarol）看到了这段代码并创立了图形芯片公司 3dfx（90年代是可以碾压英伟达的存在）。塔罗里在 3dfx有一个同事<strong>布莱恩胡克</strong>（Brian Hook）跳槽了后来的雷神之锤（卡马克担任总负责人）的公司 id Software，便有了如今的卡马克平方根倒数快速算法。</p>
+<h2 id="一场比赛"><a href="#一场比赛" class="headerlink" title="一场比赛"></a>一场比赛</h2><p>在这段代码中不是有一个奇怪的值 <code>0x5f3759df</code> 嘛，普渡大学的数学家 Chris Lomont 看了以后觉得有趣，决定要研究一下卡马克的这个猜测值有什么奥秘。Lomont 也是个牛人，在精心研究之后从理论上也推导出一个最佳猜测值，和卡马克的数字非常接近, 0x5f37642f。Lomont 计算出结果以后非常满意，于是拿自己计算出的最佳猜测值和卡马克的神秘数字做比赛，看看谁的数字能够更快更精确的求得平方根。结果是卡马克还是赢。</p>
+<p>最后 Lomont 怒了，采用暴力方法一个数字一个数字试过来，终于找到一个比卡马克数字要好上那么一丁点的数字，<strong>虽然实际上这两个数字所产生的结果非常近似</strong>，这个暴力得出的数字是 <code>0x5f375a86</code>。</p>
+<h2 id="如今"><a href="#如今" class="headerlink" title="如今"></a>如今</h2><p>事实上，如果你现在使用 windows 等现代化操作系统以及现代化硬件来比较 sqrt 与快速平方根倒数的算法快慢，会发现两者相差甚微。</p>
+<p>其中的原因是如今的底层硬件已经对 math.h 中的各种实现进行了<strong>底层优化</strong>，导致使用 sqrt 的算法速度也是非常快的。但这并不妨碍我们去了解历史上影响力最大的一段小代码片段的故事！这不就是计算机的乐趣嘛！: )</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AE%97%E6%B3%95/" class="category-chain-item">算法</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%AE%97%E6%B3%95/" class="print-no-link">#算法</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>卡马克快速平方根倒数算法</div>
+      <div>http://example.com/2024/07/24/kamake/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Coder7</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年7月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/24/jieshiqi/" title="Python解释器">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Python解释器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/18/pachong-5/" title="POST 请求">
+                        <span class="hidden-mobile">POST 请求</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>博客框架:</span> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <span>主题框架:</span> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

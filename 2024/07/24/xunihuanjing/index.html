@@ -1,0 +1,777 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/WechatIMG63.jpg">
+  <link rel="icon" href="/img/WechatIMG63.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Coder7">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在使用 Python 的时候，你会经常听到环境和虚拟环境这两个词，他们究竟是什么呢，该如何使用？ 虚拟环境的概念环境在了解虚拟环境的概念之前，我们有必要了解一下普通的 Python 环境是什么，一般来说，在安装 Python 的时候，会安装一系列文件，这便是普通的 Python 环境。  以上只列出了安装 Python 时的主要文件。 虚拟环境那么虚拟环境就可以理解为将普通的环境拷贝一个副本，或者">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python虚拟环境">
+<meta property="og:url" content="http://example.com/2024/07/24/xunihuanjing/index.html">
+<meta property="og:site_name" content="Coder7的个人博客">
+<meta property="og:description" content="在使用 Python 的时候，你会经常听到环境和虚拟环境这两个词，他们究竟是什么呢，该如何使用？ 虚拟环境的概念环境在了解虚拟环境的概念之前，我们有必要了解一下普通的 Python 环境是什么，一般来说，在安装 Python 的时候，会安装一系列文件，这便是普通的 Python 环境。  以上只列出了安装 Python 时的主要文件。 虚拟环境那么虚拟环境就可以理解为将普通的环境拷贝一个副本，或者">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/Python%E5%B0%8F%E7%9F%A5%E8%AF%86/3.png">
+<meta property="og:image" content="http://example.com/img/Python%E5%B0%8F%E7%9F%A5%E8%AF%86/4.png">
+<meta property="og:image" content="http://example.com/img/Python%E5%B0%8F%E7%9F%A5%E8%AF%86/5.png">
+<meta property="article:published_time" content="2024-07-24T12:21:40.000Z">
+<meta property="article:modified_time" content="2024-07-24T14:00:00.000Z">
+<meta property="article:author" content="Coder7">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/Python%E5%B0%8F%E7%9F%A5%E8%AF%86/3.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Python虚拟环境 - Coder7的个人博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":60,"cursorChar":"","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Coder7&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Python虚拟环境"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Coder7
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-24 20:21" pubdate>
+          2024年7月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          9 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Python虚拟环境</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2024年7月24日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在使用 Python 的时候，你会经常听到环境和虚拟环境这两个词，他们究竟是什么呢，该如何使用？</p>
+<h1 id="虚拟环境的概念"><a href="#虚拟环境的概念" class="headerlink" title="虚拟环境的概念"></a>虚拟环境的概念</h1><h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>在了解虚拟环境的概念之前，我们有必要了解一下普通的 Python 环境是什么，一般来说，在安装 Python 的时候，会安装一系列文件，这便是普通的 Python 环境。</p>
+<p><img src="/img/Python%E5%B0%8F%E7%9F%A5%E8%AF%86/3.png" srcset="/img/loading.gif" lazyload></p>
+<p>以上只列出了安装 Python 时的<u>主要文件</u>。</p>
+<h2 id="虚拟环境"><a href="#虚拟环境" class="headerlink" title="虚拟环境"></a>虚拟环境</h2><p>那么虚拟环境就可以理解为将普通的环境拷贝一个<strong>副本</strong>，或者拷贝出多个<strong>副本</strong>。</p>
+<p>那么，这样做的<strong>目的</strong>是什么呢？</p>
+<ol>
+<li>避免 Python 版本的冲突问题</li>
+<li>避免 lib 库中的版本冲突问题</li>
+</ol>
+<p><img src="/img/Python%E5%B0%8F%E7%9F%A5%E8%AF%86/4.png" srcset="/img/loading.gif" lazyload></p>
+<p>然后可以看到，虚拟环境与环境的主要区别在于：</p>
+<ol>
+<li>文件夹名称的改变，一般称作 venv</li>
+<li>Lib 中只放置需要安装的第三方库的文件夹，而没有原来的标准库文件夹，虚拟环境中引用的标准库就是<strong>原来的标准库</strong></li>
+<li>Python 解释器放置在了 Scripts 文件夹中</li>
+</ol>
+<p>总的来说，<strong>就是为你的 Python 项目创建一个隔离的环境，避免受到不同版本的冲突影响</strong>。</p>
+<h1 id="venv-的基本使用"><a href="#venv-的基本使用" class="headerlink" title="venv 的基本使用"></a>venv 的基本使用</h1><p>一般来说，在 Python3 之后都是使用<strong>自带的库</strong> venv 来创建虚拟环境，如果你是 Python2 的版本，那么就需要其他的第三方工具来实现。</p>
+<p>首先打开终端，在你的 Python 项目中输入以下命令</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">PS</span> D:\Code\Python\demo&gt; <span class="hljs-built_in">pwd</span><br><br>Path<br><span class="hljs-literal">----</span><br>D:\Code\Python\demo<br></code></pre></td></tr></table></figure>
+
+<p>上面的命令展示了我将要在哪个地方创建我需要的虚拟环境</p>
+<h2 id="创建虚拟环境"><a href="#创建虚拟环境" class="headerlink" title="创建虚拟环境"></a>创建虚拟环境</h2><p>如果你是 <strong>windows</strong> 系统，那么可以输入以下命令（<strong>Mac</strong> 或者 <strong>Linux</strong> 用户只需要将 Python 换成 Python3 即可）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">PS</span> D:\Code\Python\demo&gt; python <span class="hljs-literal">-m</span> venv name<br></code></pre></td></tr></table></figure>
+
+<p>这将会在你的项目中创建一个名为 <code>name</code> 的文件夹，里面放置的就是你的虚拟环境。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">PS</span> D:\Code\Python\demo&gt; <span class="hljs-built_in">ls</span><br><br><br>    目录: D:\Code\Python\demo<br><br><br>Mode                 LastWriteTime         Length Name<br><span class="hljs-literal">----</span>                 <span class="hljs-literal">-------------</span>         <span class="hljs-literal">------</span> <span class="hljs-literal">----</span><br>d<span class="hljs-literal">-----</span>         <span class="hljs-number">2024</span>/<span class="hljs-number">7</span>/<span class="hljs-number">24</span>     <span class="hljs-number">17</span>:<span class="hljs-number">12</span>                name<br><span class="hljs-literal">-a----</span>         <span class="hljs-number">2024</span>/<span class="hljs-number">7</span>/<span class="hljs-number">23</span>     <span class="hljs-number">21</span>:<span class="hljs-number">59</span>             <span class="hljs-number">24</span> hello.py<br></code></pre></td></tr></table></figure>
+
+<h2 id="激活虚拟环境"><a href="#激活虚拟环境" class="headerlink" title="激活虚拟环境"></a>激活虚拟环境</h2><p>如果你是 <strong>windows</strong> 系统，输入以下命令来激活你的虚拟环境</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">PS</span> D:\Code\Python\demo&gt; name\Scripts\activate.bat<br></code></pre></td></tr></table></figure>
+
+<p>如果你是 <strong>Mac</strong> 或者 <strong>Linux</strong> 系统，可以这样输入</p>
+<figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs zsh"><span class="hljs-variable">$source</span> name/bin/activate<br></code></pre></td></tr></table></figure>
+
+<p>一旦激活环境，你可以看到这样的前缀表示激活成功</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmd">(name) D:\Code\Python\demo&gt;<br></code></pre></td></tr></table></figure>
+
+<h2 id="停止使用虚拟环境"><a href="#停止使用虚拟环境" class="headerlink" title="停止使用虚拟环境"></a>停止使用虚拟环境</h2><p>停用虚拟环境的命令在 windows 和 mac 或者 linux 上<strong>是相同的</strong></p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmd">(name) D:\Code\Python\demo&gt;deactivate<br></code></pre></td></tr></table></figure>
+
+<p>停用之后你可以发现前缀消失了</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmd"><span class="hljs-function">D:\<span class="hljs-title">Code</span>\<span class="hljs-title">Python</span>\<span class="hljs-title">demo</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="安装-packages"><a href="#安装-packages" class="headerlink" title="安装 packages"></a>安装 packages</h2><p>和普通的环境一样，当你激活虚拟环境后，仍然可以使用虚拟环境中的 pip 来安装 packages。</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs cmd">(name) D:\Code\Python\demo&gt;pip list<br>Package Version<br>------- -------<br>pip     <span class="hljs-number">24</span>.<span class="hljs-number">0</span><br><br>[notice] A new release of pip is available: <span class="hljs-number">24</span>.<span class="hljs-number">0</span> -&gt; <span class="hljs-number">24</span>.<span class="hljs-number">1</span>.<span class="hljs-number">2</span><br>[notice] To update, run: python.exe -m pip install --upgrade pip<br></code></pre></td></tr></table></figure>
+
+<p>这里看到的各种 package 是虚拟环境中的，而不是全局环境中的</p>
+<h1 id="迁移虚拟环境"><a href="#迁移虚拟环境" class="headerlink" title="迁移虚拟环境"></a>迁移虚拟环境</h1><p>当我们想要分享自己的项目到 GitHub 时，我们需要告诉其他人这个项目需要安装哪一些 packages。这个时候就需要一个<strong>依赖项列表</strong>来<strong>保存所用到的所有 packages。</strong></p>
+<h2 id="创建依赖项列表"><a href="#创建依赖项列表" class="headerlink" title="创建依赖项列表"></a>创建依赖项列表</h2><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmd">(name) D:\Code\Python\demo&gt;pip freeze &gt; requirements.txt<br></code></pre></td></tr></table></figure>
+
+<p>这个时候在你的项目根目录下将会产生一个新的名为 <code>requirements.txt</code> 的文件，里面包含了所有需要使用的 packages</p>
+<h2 id="下载依赖项列表"><a href="#下载依赖项列表" class="headerlink" title="下载依赖项列表"></a>下载依赖项列表</h2><p>如果我们<strong>使用其他人的项目</strong>，需要配置好所有的 <code>requirements.txt</code> 中的 packages，就需要执行以下命令</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cmd"><span class="hljs-function">D:\<span class="hljs-title">Code</span>\<span class="hljs-title">Python</span>\<span class="hljs-title">demo</span>&gt;<span class="hljs-title">pip</span> <span class="hljs-title">install</span> -<span class="hljs-title">r</span> <span class="hljs-title">requirements.txt</span></span><br></code></pre></td></tr></table></figure>
+
+<h1 id="IDE-中使用虚拟环境"><a href="#IDE-中使用虚拟环境" class="headerlink" title="IDE 中使用虚拟环境"></a>IDE 中使用虚拟环境</h1><p>在 IDE 中使用虚拟环境时，就不需要是先激活虚拟环境了，你所做的只需要找到你创建的虚拟环境文件夹中的 Scripts，它便可以自动匹配到这样的一个虚拟环境。</p>
+<p>以 vscode 为例，你可以看到我只要<strong>选择的 Python 解释器是在虚拟环境中</strong>的，就会自动在项目里使用虚拟环境。</p>
+<p><img src="/img/Python%E5%B0%8F%E7%9F%A5%E8%AF%86/5.png" srcset="/img/loading.gif" lazyload></p>
+<blockquote>
+<p>视频资料参考：</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1V7411n7CM?p=1&vd_source=987c2c1a4bc5c527b137eb89827eeec0">1-什么是虚拟环境_哔哩哔哩_bilibili</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=Y21OR1OPC9A">Python Virtual Environments - Full Tutorial for Beginners (youtube.com)</a></p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Python%E5%B0%8F%E7%9F%A5%E8%AF%86/" class="category-chain-item">Python小知识</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Python/" class="print-no-link">#Python</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Python虚拟环境</div>
+      <div>http://example.com/2024/07/24/xunihuanjing/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Coder7</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年7月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/24/tqdm/" title="Python进度条">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Python进度条</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/24/jieshiqi/" title="Python解释器">
+                        <span class="hidden-mobile">Python解释器</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>博客框架:</span> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <span>主题框架:</span> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,863 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/WechatIMG63.jpg">
+  <link rel="icon" href="/img/WechatIMG63.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Coder7">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="爬虫的基础知识 定义：爬虫（Web Crawler）是一种自动获取网页信息的程序或脚本，也称为网络蜘蛛（Spider）或网络机器人（Bot） 示例：想象一只蜘蛛在网上不断地爬行，查找并收集各种信息。搜索引擎（Google、Baidu）使用爬虫来自动抓取网页内容，以建立搜索引擎索引。 爬虫可以帮助我们快速、自动地获取互联网上的各种数据，包括新闻、价格、天气、股票数据等等，这些数据对于研究、分析和决策">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫的入门">
+<meta property="og:url" content="http://example.com/2024/07/18/pachong_1/index.html">
+<meta property="og:site_name" content="Coder7的个人博客">
+<meta property="og:description" content="爬虫的基础知识 定义：爬虫（Web Crawler）是一种自动获取网页信息的程序或脚本，也称为网络蜘蛛（Spider）或网络机器人（Bot） 示例：想象一只蜘蛛在网上不断地爬行，查找并收集各种信息。搜索引擎（Google、Baidu）使用爬虫来自动抓取网页内容，以建立搜索引擎索引。 爬虫可以帮助我们快速、自动地获取互联网上的各种数据，包括新闻、价格、天气、股票数据等等，这些数据对于研究、分析和决策">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/%E7%88%AC%E8%99%AB/1.jpg">
+<meta property="og:image" content="http://example.com/img/%E7%88%AC%E8%99%AB/2.png">
+<meta property="og:image" content="http://example.com/img/%E7%88%AC%E8%99%AB/3.png">
+<meta property="article:published_time" content="2024-07-17T16:30:14.000Z">
+<meta property="article:modified_time" content="2024-07-17T17:00:00.000Z">
+<meta property="article:author" content="Coder7">
+<meta property="article:tag" content="爬虫">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/%E7%88%AC%E8%99%AB/1.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>爬虫的入门 - Coder7的个人博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":60,"cursorChar":"","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Coder7&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="爬虫的入门"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Coder7
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-18 00:30" pubdate>
+          2024年7月18日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">爬虫的入门</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2024年7月18日 凌晨
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="爬虫的基础知识"><a href="#爬虫的基础知识" class="headerlink" title="爬虫的基础知识"></a>爬虫的基础知识</h1><blockquote>
+<p><strong>定义</strong>：爬虫（Web Crawler）是一种自动获取网页信息的程序或脚本，也称为网络蜘蛛（Spider）或网络机器人（Bot）</p>
+<p><strong>示例</strong>：想象一只蜘蛛在网上不断地爬行，查找并收集各种信息。<strong>搜索引擎</strong>（Google、Baidu）使用爬虫来自动抓取网页内容，以建立搜索引擎索引。</p>
+<p>爬虫可以帮助我们快速、自动地获取互联网上的各种数据，包括新闻、价格、天气、股票数据等等，这些数据对于研究、分析和决策都非常有用</p>
+</blockquote>
+<h2 id="爬虫的用途"><a href="#爬虫的用途" class="headerlink" title="爬虫的用途"></a>爬虫的用途</h2><p><strong>搜索引擎</strong></p>
+<p><strong>数据分析</strong></p>
+<p><strong>舆情分析</strong></p>
+<p><strong>信息监控</strong></p>
+<p><strong>信息聚合</strong></p>
+<p><strong>应用开发</strong></p>
+<h2 id="爬虫的分类"><a href="#爬虫的分类" class="headerlink" title="爬虫的分类"></a>爬虫的分类</h2><h3 id="通用爬虫"><a href="#通用爬虫" class="headerlink" title="通用爬虫"></a>通用爬虫</h3><p>通用爬虫是一种能够自动抓取互联网上各种网站信息的爬虫，它们不针对特定的网站，而是通过智能化的方式发现和抓取网页，比如百度、谷歌、必应等搜索引擎的数据都是通过通用爬虫实现的。通用爬虫一般用于<strong>搜索引擎</strong>等需要广泛收集网页信息的应用中，具有以下特点：</p>
+<ul>
+<li>广泛性：通用爬虫可以访问和抓取互联网上的绝大数网站，具有很强的覆盖能力。</li>
+<li>自动化：通用爬虫可以自动发现和抓取网页，无需人工干预，提高了效率</li>
+<li>智能化：通用爬虫通常会根据网页链接关系进行智能化的抓取，以尽可能全面地收集网页信息</li>
+<li>持续性：通用爬虫可以<strong>持续地</strong>抓取网页信息，保持数据的更新和完整性</li>
+<li>去重处理：通用爬虫会对抓取到的网页进行去重处理，避免重复抓取相同内容</li>
+<li>性能优化：通用爬虫会针对不同类型的网站和网络环境进行性能优化，提高抓取效率</li>
+</ul>
+<h3 id="聚焦爬虫"><a href="#聚焦爬虫" class="headerlink" title="聚焦爬虫"></a>聚焦爬虫</h3><p>聚焦爬虫是一种针对特定网站或特定类型网站进行定制化开发的爬虫程序。与通用爬虫不同，聚焦爬虫的抓取范围更为有限，主要用于针对特定需求或特定网站的数据抓取，具有以下特点：</p>
+<ul>
+<li>定制性强：聚焦爬虫根据特定需求定制开发，可以针对性地抓取目标网站的特定信息</li>
+<li>精准度高：由于定位明确，聚焦爬虫可以精确地抓取目标网站的所需信息，减小无效数据的抓取</li>
+<li>效率高：消耗的资源更小</li>
+<li>隐蔽性强：聚焦爬虫一般不会频繁访问大量网站，降低了被目标网站封禁的风险</li>
+<li>数据处理：聚焦爬虫通常会对抓取到的数据进行分析处理，以便更好地满足特定需求</li>
+<li>定时更新：聚焦爬虫可以定时更新目标网站的数据，保持数据的新鲜性和有效性</li>
+</ul>
+<h3 id="增量式爬虫"><a href="#增量式爬虫" class="headerlink" title="增量式爬虫"></a>增量式爬虫</h3><p>增量式爬虫会在上一次抓取的基础上，只抓取新增加或有更新的数据，从而减少了重复抓取和提高了效率，增量式爬虫适用于<strong>需要频繁更新数据的场景</strong>，比如新闻网站、论坛等内容更新较快的网站。通过增量式爬虫，可以及时获取到最新的数据，保持数据的及时性和准确性</p>
+<h3 id="深层网络爬虫"><a href="#深层网络爬虫" class="headerlink" title="深层网络爬虫"></a>深层网络爬虫</h3><p>深层网络爬虫专门用来抓取存在于互联网深层的页面，这些页面通常是非结构化的，需要通过特定的查询参数或请求才能访问，并且深层网络爬虫可能需要更多的技术和资源来实现高效的网页抓取</p>
+<h2 id="爬虫的工作流程"><a href="#爬虫的工作流程" class="headerlink" title="爬虫的工作流程"></a>爬虫的工作流程</h2><p><img src="/img/%E7%88%AC%E8%99%AB/1.jpg" srcset="/img/loading.gif" lazyload></p>
+<h2 id="robots-协议"><a href="#robots-协议" class="headerlink" title="robots 协议"></a>robots 协议</h2><p>robots 协议（robots.txt）是一个位于网站根目录下的文本文件，用于指示搜索引擎爬虫哪些网站可以访问，哪些页面不可以访问，该文件包含一系列规则，定义了爬虫对网站的访问权限。</p>
+<p>robots 协议的基本语法包括两个关键字：User-agent 和 Disallow</p>
+<ul>
+<li>User-agent：指定了爬虫的名称和标识符</li>
+<li>Disallow：指定了不允许被访问的 URL 路径</li>
+</ul>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><ul>
+<li>百度：<a target="_blank" rel="noopener" href="https://www.baidu.com/robots.txt">baidu.com&#x2F;robots.txt</a></li>
+<li>网易云音乐：<a target="_blank" rel="noopener" href="https://music.163.com/robots.txt">music.163.com&#x2F;robots.txt</a></li>
+<li>B 站：<a target="_blank" rel="noopener" href="https://www.bilibili.com/robots.txt">bilibili.com&#x2F;robots.txt</a></li>
+</ul>
+<p><strong>注意</strong>：默认不要采集涉及到用户隐私的数据（名字、电话、地址、身份证号）</p>
+<h1 id="HTTP-和-HTTPS-协议"><a href="#HTTP-和-HTTPS-协议" class="headerlink" title="HTTP 和 HTTPS 协议"></a>HTTP 和 HTTPS 协议</h1><p><code>HTTP</code> 协议（HyperText Transfer Protocol，超文本传输协议）：是一种发布和接收 HTML 页面的方法。</p>
+<p><code>HTTPS</code> （HyperText Transfer Protocol over Secure Socket Layer）简单讲是 HTTP 的安全版，在 HTTP 下加入 SSL 层，确保数据在传输过程中的保密性和完整性。</p>
+<p><code>SSL</code> （Secure Sockets Layer 安全套接层）主要用于 Web 的安全传输协议，在<strong>传输层</strong>对网络连接进行加密，保障在 Internet 上数据传输的安全。</p>
+<p>通俗的来讲，当你打开任何一个网站，查看它的地址是，你会发现前面都有这样一串符号 <code>https://</code> 代表使用 HTTPS 协议去访问这个地址，当这个地址接受到我们的请求之后，它会按照 HTTPS 的一个规范给我们返回响应的数据，最后浏览器会把相应的数据解析成网页内容呈现在我们面前</p>
+<ul>
+<li><code>HTTP</code> 的端口号为80</li>
+<li><code>HTTPS</code> 的端口号为443</li>
+</ul>
+<h2 id="HTTP-的请求过程"><a href="#HTTP-的请求过程" class="headerlink" title="HTTP 的请求过程"></a>HTTP 的请求过程</h2><p>HTTP 的通信过程分为两部分：<strong>客户端请求消息</strong> 与 <strong>服务端响应消息</strong> —— 请求-响应模型</p>
+<ol>
+<li>浏览器先向地址栏中的 URL 发起请求，并获取响应</li>
+<li>在返回的响应内容（HTML）中，会带有CSS、JS、图片等 URL 地址，以及 Ajax 代码，浏览器按照响应内容中的顺序依次发送其他的请求，并获取相应的响应</li>
+<li>浏览器每获取一个响应就对展示出的结果进行添加（加载），JS、CSS等内容会修改页面中的内容，JS也可以重新发送请求，获取响应</li>
+<li>从获取第一个响应并在浏览器中展示，直到最终获取全部响应，并在展示的结果中添加内容或修改——这个过程叫做浏览器的渲染</li>
+</ol>
+<p><strong>URL 介绍</strong></p>
+<p>URL（Uniform Resource Locator，统一资源定位符），是用于完整描述 Internet 上网页和其他资源的地址的一种标识方法（通俗的叫法就是<strong>网址</strong>）</p>
+<h2 id="HTTP-的请求信息"><a href="#HTTP-的请求信息" class="headerlink" title="HTTP 的请求信息"></a>HTTP 的请求信息</h2><h3 id="HTTP-请求报文"><a href="#HTTP-请求报文" class="headerlink" title="HTTP 请求报文"></a>HTTP 请求报文</h3><p>HTTP 和 HTTPS 的请求报文是一致的，所以我们只需要关注 HTTP 的请求报文。</p>
+<p>URL 只是标识资源的位置，而 HTTP 是用来提交和获取资源。客户端发送一个 HTTP 请求到服务器的请求信息，包括以下格式</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs">请求首行<br>请求头部<br>空行<br>请求数据<br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/%E7%88%AC%E8%99%AB/2.png" srcset="/img/loading.gif" lazyload></p>
+<p>进入 Baidu 的请求示例</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">GET</span> / HTTP/<span class="hljs-number">1</span>.<span class="hljs-number">1</span><br><span class="hljs-attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=<span class="hljs-number">0</span>.<span class="hljs-number">9</span>,image/avif,image/webp,image/apng,*/*;q=<span class="hljs-number">0</span>.<span class="hljs-number">8</span>,application/signed-exchange;v=b3;q=<span class="hljs-number">0</span>.<span class="hljs-number">7</span><br><span class="hljs-attribute">Accept</span>-Encoding: gzip, deflate, br, zstd<br><span class="hljs-attribute">Accept</span>-Language: zh-CN,zh;q=<span class="hljs-number">0</span>.<span class="hljs-number">9</span><br><span class="hljs-attribute">Cache</span>-Control: max-age=<span class="hljs-number">0</span><br><span class="hljs-attribute">Connection</span>: keep-alive<br><span class="hljs-attribute">Cookie</span>: BIDUPSID=<span class="hljs-number">7</span>A02C10EA3B82BDE3F82D16D08DA007E; PSTM=<span class="hljs-number">1721033437</span>; H_PS_PSSID=<span class="hljs-number">60271</span>_60364_60360; BD_HOME=<span class="hljs-number">1</span>; BAIDUID=<span class="hljs-number">7</span>A02C10EA3B82BDE3F82D16D08DA007E:FG=<span class="hljs-number">1</span>; BAIDUID_BFESS=<span class="hljs-number">7</span>A02C10EA3B82BDE3F82D16D08DA007E:FG=<span class="hljs-number">1</span>; BD_UPN=<span class="hljs-number">12314753</span>; BA_HECTOR=<span class="hljs-number">0101</span>ag25048l808ka1a1040gbfmuq51j99omu1u; ZFY=u:AlQilDoFFw0OKY2nO16ol5xT2OzLVITdTQbcv5K0zE:C<br><span class="hljs-attribute">Host</span>: www.baidu.com<br><span class="hljs-attribute">Sec</span>-Fetch-Dest: document<br><span class="hljs-attribute">Sec</span>-Fetch-Mode: navigate<br><span class="hljs-attribute">Sec</span>-Fetch-Site: none<br><span class="hljs-attribute">Sec</span>-Fetch-User: ?<span class="hljs-number">1</span><br><span class="hljs-attribute">Upgrade</span>-Insecure-Requests: <span class="hljs-number">1</span><br><span class="hljs-attribute">User</span>-Agent: Mozilla/<span class="hljs-number">5</span>.<span class="hljs-number">0</span> (Windows NT <span class="hljs-number">10</span>.<span class="hljs-number">0</span>; Win64; x64) AppleWebKit/<span class="hljs-number">537</span>.<span class="hljs-number">36</span> (KHTML, like Gecko) Chrome/<span class="hljs-number">126.0.0.0</span> Safari/<span class="hljs-number">537</span>.<span class="hljs-number">36</span><br><span class="hljs-attribute">sec</span>-ch-ua: <span class="hljs-string">&quot;Not/A)Brand&quot;</span>;v=<span class="hljs-string">&quot;8&quot;</span>, <span class="hljs-string">&quot;Chromium&quot;</span>;v=<span class="hljs-string">&quot;126&quot;</span>, <span class="hljs-string">&quot;Google Chrome&quot;</span>;v=<span class="hljs-string">&quot;126&quot;</span><br><span class="hljs-attribute">sec</span>-ch-ua-mobile: ?<span class="hljs-number">0</span><br><span class="hljs-attribute">sec</span>-ch-ua-platform: <span class="hljs-string">&quot;Windows&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="HTTP-请求方法"><a href="#HTTP-请求方法" class="headerlink" title="HTTP 请求方法"></a>HTTP 请求方法</h3><p>根据 HTTP 标准， HTTP 请求可以使用多种请求方法</p>
+<p>HTTP 0.9：只有基本的文本 GET 功能</p>
+<p>HTTP 1.0：完善的请求&#x2F;响应模型，并将协议补充完整，定义了三种请求方法：GET、POST 和 HEAD 方法</p>
+<p>HTTP 1.1：在 1.0 的基础上进行更新，新增了五种请求方法：OPTIONS，PUT，DELETE，TRACE 和 CONNECT 方法</p>
+<p>现在主流的版本是 1.1 版本</p>
+<table>
+<thead>
+<tr>
+<th>请求方法</th>
+<th>对应的描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>GET</strong></td>
+<td>请求指定的页面信息，并返回实体主体。</td>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td>向指定资源提交数据进行处理请求（例如<strong>提交表单或者上传文件</strong>），数据被包含在请求体中。POST请求可能会导致新的资源的建立或已有资源的修改。</td>
+</tr>
+<tr>
+<td>HEAD</td>
+<td>类似于GET请求，只不过返回的响应中没有具体的内容，用于获取报头。</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>从客户端向服务器传送的数据取代指定的文档的内容。PUT 用于更新服务器上的资源</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>请求服务器删除指定的页面。</td>
+</tr>
+<tr>
+<td>CONNECT</td>
+<td>HTTP&#x2F;1.1协议中预留给能够将连接改为管道方式的代理服务器。</td>
+</tr>
+<tr>
+<td>OPTIONS</td>
+<td>允许客户端查看服务器的性能。</td>
+</tr>
+<tr>
+<td>TRACE</td>
+<td>回显服务器收到的请求，主要用于测试或诊断。</td>
+</tr>
+</tbody></table>
+<p><strong>爬虫主要用到的请求是 GET 和 POST</strong></p>
+<h3 id="常用的请求头（了解）"><a href="#常用的请求头（了解）" class="headerlink" title="常用的请求头（了解）"></a>常用的请求头（了解）</h3><ul>
+<li>Host：主机和端口号</li>
+<li>Connection：链接类型</li>
+<li>Upgrade-Insecure-Requests：升级为 HTTPS 请求</li>
+<li>User-Agent：浏览器名称</li>
+<li>Accept：传输文件类型</li>
+<li>Referer：页面跳转处</li>
+<li>Accept-Encoding：文件编码器格式</li>
+<li>Accept-Language：语言种类</li>
+<li>Content-Type：POST 数据类型</li>
+<li>Cookie</li>
+<li>x-requested-with：XMLHttpRequest —— 表示该请求是 Ajax 异步请求</li>
+</ul>
+<h2 id="HTTP-响应信息"><a href="#HTTP-响应信息" class="headerlink" title="HTTP 响应信息"></a>HTTP 响应信息</h2><h3 id="HTTP-响应报文"><a href="#HTTP-响应报文" class="headerlink" title="HTTP 响应报文"></a>HTTP 响应报文</h3><p>HTTP 响应报文包括四个部分</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs">状态行<br>消息报头<br>空行<br>响应正文<br></code></pre></td></tr></table></figure>
+
+<p><img src="/img/%E7%88%AC%E8%99%AB/3.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="Cookie-信息"><a href="#Cookie-信息" class="headerlink" title="Cookie 信息"></a>Cookie 信息</h3><p><u><strong>Set-Cookie</strong> （对方服务器设置 Cookie 到用户浏览器的<strong>缓存</strong>）</u></p>
+<p>服务器和客户端的交互仅限于请求&#x2F;响应过程，结束之后便断开，在下一次请求时，服务器会认为新的客户端。</p>
+<p>为了<strong>维护他们之间的链接</strong>，让服务器知道这是<strong>前一个用户发送的请求，必须在一个地方保存客户端的信息</strong></p>
+<ul>
+<li>Cookie：通过在客户端记录的信息确定用户的身份</li>
+<li>Session：通过在服务器段记录的信息确定用户的身份</li>
+</ul>
+<h3 id="状态码范围"><a href="#状态码范围" class="headerlink" title="状态码范围"></a>状态码范围</h3><ul>
+<li><code>100~199</code>：表示服务器成功接受了部分请求，要求客户端继续提交其余请求才能完成整个处理过程</li>
+<li><code>200~299</code>：表示服务器成功接受请求并已完成整个处理过程。常用 200（OK 请求成功）</li>
+<li><code>300~399</code>：为完成请求，客户需进一步细化请求。例如：请求的资源已经移动一个新地址、常用302（所请求的页面已经临时转移至新的URL）、307和304（使用缓存资源）</li>
+<li><code>400~499</code>：客户端的请求有错误，常用404（服务器无法找到被请求的页面）、403（服务器拒绝访问、权限不够）</li>
+<li><code>500~599</code>：服务器端出现问题，常用500（请求未完成，服务器遇到不可预知的情况）</li>
+</ul>
+<h3 id="HTTP-响应状态吗参考"><a href="#HTTP-响应状态吗参考" class="headerlink" title="HTTP 响应状态吗参考"></a>HTTP 响应状态吗参考</h3><blockquote>
+<p>200：成功<br>302：临时转移至新的URL。客户端应继续使用原有的URL进行未来的请求。<br>307：临时转移至新的URL。与302不同，客户端在重定向请求时必须使用原始的请求方法。<br>404：找不到该页面<br>500：服务器内部错误<br>503：服务不可用，一般是反爬虫</p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%88%AC%E8%99%AB/" class="category-chain-item">爬虫</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%88%AC%E8%99%AB/" class="print-no-link">#爬虫</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>爬虫的入门</div>
+      <div>http://example.com/2024/07/18/pachong_1/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Coder7</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年7月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/18/pachong-2/" title="request的基本使用">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">request的基本使用</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/11/ruihua/" title="卷积入门——图像卷积的其他操作">
+                        <span class="hidden-mobile">卷积入门——图像卷积的其他操作</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>博客框架:</span> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <span>主题框架:</span> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>

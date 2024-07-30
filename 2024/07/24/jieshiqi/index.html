@@ -1,0 +1,770 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=dark>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/WechatIMG63.jpg">
+  <link rel="icon" href="/img/WechatIMG63.jpg">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Coder7">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这篇文章主要讨论的是 Python 解释器是如何运作的，可能你认为这是一个到了高阶才应该去了解的知识，但是当你去安装 Python 或者是使用 Python IDE 的时候会发现：知道 Python 解释器的工作原理会帮助你解决许多基本问题，虽然可能这些知识你在使用 Python 的时候根本不会用到，哈哈！ 程序的运行原理首先我们需要讨论的是任何一个程序是如何在电脑上运行的，因为如果你不了解这个，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python解释器">
+<meta property="og:url" content="http://example.com/2024/07/24/jieshiqi/index.html">
+<meta property="og:site_name" content="Coder7的个人博客">
+<meta property="og:description" content="这篇文章主要讨论的是 Python 解释器是如何运作的，可能你认为这是一个到了高阶才应该去了解的知识，但是当你去安装 Python 或者是使用 Python IDE 的时候会发现：知道 Python 解释器的工作原理会帮助你解决许多基本问题，虽然可能这些知识你在使用 Python 的时候根本不会用到，哈哈！ 程序的运行原理首先我们需要讨论的是任何一个程序是如何在电脑上运行的，因为如果你不了解这个，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/Python%E5%B0%8F%E7%9F%A5%E8%AF%86/1.png">
+<meta property="og:image" content="http://example.com/img/Python%E5%B0%8F%E7%9F%A5%E8%AF%86/2.png">
+<meta property="article:published_time" content="2024-07-24T12:18:57.000Z">
+<meta property="article:modified_time" content="2024-07-24T14:00:00.000Z">
+<meta property="article:author" content="Coder7">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/Python%E5%B0%8F%E7%9F%A5%E8%AF%86/1.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Python解释器 - Coder7的个人博客</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":60,"cursorChar":"","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null},"woyaola":null,"cnzz":null},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Coder7&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Python解释器"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Coder7
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-07-24 20:18" pubdate>
+          2024年7月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Python解释器</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2024年7月24日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这篇文章主要讨论的是 Python 解释器是如何运作的，可能你认为这是一个到了高阶才应该去了解的知识，但是当你去安装 Python 或者是使用 Python IDE 的时候会发现：知道 Python 解释器的工作原理会帮助你解决许多基本问题，虽然可能这些知识你在使用 Python 的时候根本不会用到，哈哈！</p>
+<h1 id="程序的运行原理"><a href="#程序的运行原理" class="headerlink" title="程序的运行原理"></a>程序的运行原理</h1><p>首先我们需要讨论的是任何一个程序是如何在电脑上运行的，因为如果你不了解这个，你讲无法真正了解 Python 解释器。</p>
+<h2 id="处理器和内存"><a href="#处理器和内存" class="headerlink" title="处理器和内存"></a>处理器和内存</h2><p>在程序运行在你的电脑里时，有两个器件十分重要：<strong>处理器和内存</strong></p>
+<h3 id="处理器（Processor）"><a href="#处理器（Processor）" class="headerlink" title="处理器（Processor）"></a>处理器（Processor）</h3><p>现在的处理器分为很多种类：Intel，ARM，AMD 等等，每种处理器的架构都是不同的，这意味着他们执行程序的方式也有所区别。</p>
+<p>每种处理器接受来自 memory 中 instructions 的时候，都是会有一套自己<u>独特的指令</u>的，我们一般称作为：Instruction Set Architecture（ISA）。换句话说，intel 处理器可以理解的 instruction lists 与 arm 处理器可以理解的 instruction lists 是不同的，每种处理器都有自己能够理解的一套指令。</p>
+<h3 id="内存（Memory）"><a href="#内存（Memory）" class="headerlink" title="内存（Memory）"></a>内存（Memory）</h3><p>程序运行时在内存中会存储一系列的指令集（Instructions），这些 instruction 都是一堆 0 和 1 组成的机器代码（Machine Code），只有 Processor 能够看懂，我们自己是看不懂的；除此以外，内存中还有数据（data）。</p>
+<p><strong>所以内存中存储的就是 instructions 和 data</strong></p>
+<h3 id="处理器工作"><a href="#处理器工作" class="headerlink" title="处理器工作"></a>处理器工作</h3><p>事实上，Processor 的工作是十分简单的：<strong>Fetch instruction and execute it</strong></p>
+<p><img src="/img/Python%E5%B0%8F%E7%9F%A5%E8%AF%86/1.png" srcset="/img/loading.gif" lazyload></p>
+<p>如图，假设有两条指令，那么 processor 的处理过程就是：</p>
+<ol>
+<li>fetch instruction 1，假设 instruction 1 的内容是：ADD 12 and 2，那么 Processor 将会执行这条命令得到结果14</li>
+<li>fetch instruction 2，假设 instruction 2 的内容是：Store result in memory，那么 Processor 就会把结果保存在 Memory 的某一个位置</li>
+</ol>
+<h2 id="编译器（Compiler）"><a href="#编译器（Compiler）" class="headerlink" title="编译器（Compiler）"></a>编译器（Compiler）</h2><p>当你编写源代码（Source Code）的时候，无论是 Python，Java，C 或者其他语言，这些不过是储存在硬盘中的一些文本，Processor 是无法理解这些文本的，但是我们人类可以。所以我们就需要一个翻译器能够将这些文本翻译成 Processor 可以理解的 Machine Code，这个东西就叫做<strong>编译器——Compiler。</strong></p>
+<p>需要注意的是，由于不同种类的 Processor 能够理解的 instruction 不同，所以 compiler 是针对特定的 Processor 和特定的操作系统平台来进行翻译的，翻译的结果就是<strong>二进制文件——binary</strong>。</p>
+<p>当你在你的电脑里双击 binary 时，首先会将 binary 中的数据存储在 memory 中，然后 processor 开始处理 memory 中的指令。</p>
+<p><strong>但是这样的处理过程只适用于 C 、C++ 、Go 语言</strong></p>
+<h1 id="Python-的运行原理"><a href="#Python-的运行原理" class="headerlink" title="Python 的运行原理"></a>Python 的运行原理</h1><p>首先让我们考虑一个简单的情况，当我们有一个 Python 文件：hello.py 时，里面的内容是这样</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Hello, world!&quot;</span>)<br></code></pre></td></tr></table></figure>
+
+<p>当我们想要去运行这个文件，我们需要在终端 terminal 执行以下命令</p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gams"><span class="hljs-meta"><span class="hljs-keyword">$python</span> hello.py</span><br></code></pre></td></tr></table></figure>
+
+<p>事实上，在你的命令中，Python 代表的就是 Python 解释器，它是一个 binary，要去处理 hello.py 这个文件。所以说，<strong>此时在 memory 中的 instruction 可不是 hello.py 里的 machine code，而是 Python 解释器本身的 machine code</strong>。</p>
+<h2 id="Python-解释器"><a href="#Python-解释器" class="headerlink" title="Python 解释器"></a>Python 解释器</h2><p>所以说我们现在要了解的就是 Python 解释器的在 memory 中是如何形式展现的。</p>
+<p><img src="/img/Python%E5%B0%8F%E7%9F%A5%E8%AF%86/2.png" srcset="/img/loading.gif" lazyload>)</p>
+<p>可以看到，在 Memory 中，Python 解释器由两部分组成：Python Virtual Machine（PVM）和 Compiler。</p>
+<h3 id="Compiler"><a href="#Compiler" class="headerlink" title="Compiler"></a>Compiler</h3><p>Python 解释器中的编译器与前面所提到的 compiler 类似，都是源代码文件的翻译器，但是又有所不同。Python 编译器是将 Source Code 翻译成 Byte Code 存储在内存当中，而不是 Processor 能够直接理解的 machine code。</p>
+<p>byte code 也是一个 binary 文件，只不过这样的 binary 文件 Processor 是不能够直接理解的。</p>
+<h3 id="PVM"><a href="#PVM" class="headerlink" title="PVM"></a>PVM</h3><p>byte code 这样中间代码格式的 instruction 是由 Python 虚拟机（Python Virtual Machine）来执行的。和 Processor 一样，PVM 差不多也是做着相同的工作，不过一个针对的对象是 machine code，一个针对的对象是 byte code。</p>
+<p><strong>事实上，Java 等编程语言也是以相同的方式去运行的。</strong></p>
+<h1 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h1><p>假设我们已经有 hello.py 这个文件，通过 python 解释器运行这个文件得到的结果是</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs autohotkey"><span class="hljs-built_in">Hello,</span> world!<br><br></code></pre></td></tr></table></figure>
+
+<h2 id="得到-byte-code"><a href="#得到-byte-code" class="headerlink" title="得到 byte code"></a>得到 byte code</h2><p>如果不想运行 Python compiler 翻译得到的 byte code，而只是编译该如何操作呢？</p>
+<p>运行这条命令</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell">python <span class="hljs-literal">-m</span> py_compile hello.py<br></code></pre></td></tr></table></figure>
+
+<p>便可以生成这样一个文件夹：<strong>pycache</strong></p>
+<p>文件夹里面有一个文件：<strong>hello.cpython-312.pyc</strong></p>
+<p>pyc 文件后缀就代表着这是一个 byte code 类型的二进制文件</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">PS</span> D:\Code\Python\demo&gt; <span class="hljs-built_in">cd</span> __pycache__<br><span class="hljs-built_in">PS</span> D:\Code\Python\demo\__pycache__&gt; <span class="hljs-built_in">cat</span> hello.cpython<span class="hljs-literal">-312</span>.pyc<br></code></pre></td></tr></table></figure>
+
+<p>查看这个文件的结果便是一堆乱码</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs ruby">?<br><span class="hljs-number">6</span>窡f?<span class="hljs-string">??</span>ed?y)z<br><span class="hljs-title class_">Hello</span>, world!N)<span class="hljs-string">?p</span>rint?<span class="hljs-string">??</span>hello.py?&lt;<span class="hljs-keyword">module</span>&gt;rs<br><span class="hljs-string">??</span>€o?r<br></code></pre></td></tr></table></figure>
+
+<h2 id="可读版本-byte-code"><a href="#可读版本-byte-code" class="headerlink" title="可读版本 byte code"></a>可读版本 byte code</h2><p>如果你想要阅读一下我们可以理解的 byte code 文件，你可以执行以下命令</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs powershell"><span class="hljs-built_in">PS</span> D:\Code\Python\demo&gt; python <span class="hljs-literal">-m</span> dis hello.py<br></code></pre></td></tr></table></figure>
+
+<p>然后你会得到以下结果</p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs tap">0          <span class="hljs-number"> 0 </span>RESUME                   0<br><br>1          <span class="hljs-number"> 2 </span>PUSH_NULL<br>           <span class="hljs-number"> 4 </span>LOAD_NAME               <span class="hljs-number"> 0 </span>(print)<br>           <span class="hljs-number"> 6 </span>LOAD_CONST              <span class="hljs-number"> 0 </span>(&#x27;Hello, world!&#x27;)<br>           <span class="hljs-number"> 8 </span>CALL                     1<br>          <span class="hljs-number"> 16 </span>POP_TOP<br>          <span class="hljs-number"> 18 </span>RETURN_CONST            <span class="hljs-number"> 1 </span>(None)<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p>视频资料参考：</p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=BkHdmAhapws">What is the Python Interpreter? (How does Python Work?) (youtube.com)</a></p>
+</blockquote>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Python%E5%B0%8F%E7%9F%A5%E8%AF%86/" class="category-chain-item">Python小知识</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Python/" class="print-no-link">#Python</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Python解释器</div>
+      <div>http://example.com/2024/07/24/jieshiqi/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Coder7</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年7月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/07/24/xunihuanjing/" title="Python虚拟环境">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Python虚拟环境</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/24/kamake/" title="卡马克快速平方根倒数算法">
+                        <span class="hidden-mobile">卡马克快速平方根倒数算法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span>博客框架:</span> <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <span>主题框架:</span> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
