@@ -10,7 +10,7 @@
                             <img 
                                 src="{{ site.data.profile.portrait_url | relative_url }}" 
                                 class="figure-img img-fluid img-thumbnail" 
-                                style="height: 200px;"
+                                style="height: 320px;"
                                 data-toggle="tooltip" 
                                 data-placement="top" 
                                 title="{{ site.data.profile.portrait_caption }}">
@@ -52,6 +52,13 @@
                         <a class="pr-3 no-break" href="mailto:{{ site.data.profile.email | encode_email }}">
                             <i class="fas fa-at"></i> <span class="email-text">{{ site.data.profile.email | replace: "@", "(at)" }}</span>
                         </a>
+                        
+                        <!-- 添加第二个邮箱 -->
+                        {% if site.data.profile.secondary_email %}
+                        <a class="pr-3 no-break" href="mailto:{{ site.data.profile.secondary_email | encode_email }}">
+                            <i class="fas fa-at"></i> <span class="email-text">{{ site.data.profile.secondary_email | replace: "@", "(at)" }}</span>
+                        </a>
+                        {% endif %}
 
                         {% if site.data.profile.gscholar %}
                         {%- if site.data.profile.gscholar contains 'scholar.google' -%}

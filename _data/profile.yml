@@ -1,61 +1,94 @@
-primary_name: "Your Name"
+primary_name: "Junhang Cheng (程浚航)"
 secondary_name: ""
-navbar_name: "Your Name"
+navbar_name: "Junhang Cheng"
 
 positions:
-- logo: /assets/images/badges/MIT_Social_circle.png  # Logo is optional
-  name: Position 1 with logo
-- name: Position 2 without logo
+- logo: /assets/images/badges/BUAA.svg
+  name: B.E. in Computer Science & Technology, Beihang University
+- logo: /assets/images/badges/XDFZ.jpeg
+  name: Junior & Senior High School Education, High School Affiliated to Southwest University
 
 
-email: "your@email.com"
+email: "chengjunhang7@gmail.com"
+secondary_email: "23230617@buaa.edu.cn"
 # cv_link: link-to-your-cv-file
-gscholar: xFmQpf4AAAAJ  # This is an example, replace it with your own Google Scholar ID
-github: your_github_id
-twitter: your_twitter_id  # Do not include the '@' symbol
+gscholar: DOqGLmEAAAAJ&hl  # This is an example, replace it with your own Google Scholar ID
+github: cjhCoder7
+# twitter: your_twitter_id  # Do not include the '@' symbol
 # wechat_qrcode: /assets/images/etc/wechat.jpg
 # wechat_prompt: >-
 #   Please tell me your <strong>name</strong> and <strong>affiliation</strong> (current or past) when adding my wechat. Thanks!
 # linkedin: your-linked-in-id
-# orcid: 0000-0000-0000-0000
+orcid: 0009-0001-2254-9198
 
 short_bio_text_justify: false
 short_bio: >-
   <p>
-    A <a href="https://en.wikipedia.org/wiki/Bicolor_cat" target="_blank">bicolor cat</a> is a cat with white fur combined with fur of some other colour, for example solid black, tabby, or colourpointed.
+    I am currently pursuing a Bachelor's degree in Computer Science and Technology at Beihang University, studying at the Top-Notch Computer Talent Program, School of Advanced Technology and Engineering.
   </p>
   <p>
-    There are various patterns of a bicolour cat. These range from the Van-patterned (colour on the crown of the head 
-    and the tail only) to a solid colour with a throat locket or medallion. Bicolour coats are found in many cat breeds, 
-    as well as being common in domestic longhair and domestic shorthair cats.
+    My research direction is at the intersection of <strong>Artificial Intelligence (AI)</strong> and <strong>Software Engineering (SE)</strong>, including:
+    <ul>
+      <li>AI for Code Generation, enhancing code generation using large language models (LLMs), including function-level code generation and project-level code generation.</li> 
+      <li>LLM Acceleration, improving LLM inference speed by using methods such as speculative decoding, retrieval and copy.</li> 
+    </ul>
   </p>
 
-portrait_url: /assets/images/photos/portrait.jpg
-portrait_caption: >-
-  Photo by Manja Vitolic on Unsplash (this caption is optional, comment it out to disable).
+portrait_url: /assets/images/photos/Chengjunhang.jpg
+# portrait_caption: >-
+#   # Photo by Manja Vitolic on Unsplash (this caption is optional, comment it out to disable).
 
 education:
-- name: Massachusetts Institute of Technology
-  logo: /assets/images/badges/MIT_Social_circle.png
+- name: Beihang University
+  logo: /assets/images/badges/BUAA.svg
   position: >- 
-    Department of Electrical Engineering and Computer Science <br/>
-    Ph.D. Student
-  date: Sep. 2024 - present
-- name: Peking University
-  logo: /assets/images/badges/PKU_red.png
-  position: B.S. in Computer Science
-  date: Sep. 2019 - Jul. 2021
+    School of Computer Science <br/>
+    B.E. Student
+  date: Sep. 2023 - present
+- name: High School Affiliated to Southwest University
+  logo: /assets/images/badges/XDFZ.jpeg
+  position: Physics, Chemistry, Biology
+  date: Sep. 2017 - Jun. 2023
 
-# experience:
-# - name: Peking University
-#   logo: /assets/images/badges/PKU_red.png
-#   position: Research Intern
-#   date: Sep. 2019 - Jul. 2021
+experience:
+- name: Beihang University
+  logo: /assets/images/badges/BUAA.svg
+  position: State Key Laboratory of Complex & Critical Software Environment, Research Intern
+  date: Apr. 2024 - present
+- name: Beihang University
+  logo: /assets/images/badges/BUAA.svg
+  position: Advanced Programming Language Design, Teaching Assistant 
+  date: Sep. 2024 - Jan. 2025
+- name: Tutor
+  logo: /assets/images/photos/Tutor.svg
+  position: Python Teaching
+  date: Nov. 2024 - Jan. 2025
 
 awards:
-- name: Award Name 2
+- name: School-level Project Approval, China International College Students' Innovation Competition
+  position: 2025年中国国际大学生创新大赛校级立项
+  date: 2025
+- name: First Prize, the Special Competition in the 35th Beihang University "Feng Ru Cup" Competition
+  position: 第三十五届北航“冯如杯”竞赛专项赛一等奖🥇
+  date: 2025
+- name: Second Prize, the Main Track Production Group in the 35th Beihang University "Feng Ru Cup" Competition
+  position: 第三十五届北航“冯如杯”竞赛主赛道制作组二等奖🥈
+  date: 2025
+- name: Grand Prize, the Main Track of 2025 "Challenge Cup" Capital College Students' Extracurricular Academic and Scientific Works Competition
+  position: 2025年“挑战杯”首都大学生课外学术科技作品竞赛主赛道特等奖
+  date: 2025
+- name: Grand Prize, the Innovation Track in the 2nd "Wanxin Cup" Science and Technology Innovation Challenge of Shenyuan College, Beihang University
+  position: 北航沈元学院第二届“万新杯”科技创新挑战赛创新赛道特等奖
+  date: 2025
+- name: “Meritorious Winners”, The Mathematical Contest in Modeling (MCM)
+  position: 2025年美国大学生数学建模竞赛M奖
+  date: 2025
+- name: Beihang University Academic Excellence Scholarship
+  position: 北航学习优秀奖学金
   date: 2024
-- name: Award Name 1 
+- name: Provincial Second Prize, 38th National Middle School Students Physics Competition
+  position: 2021年第38届全国中学生物理奥林匹克竞赛省级二等奖🥈
   date: 2021
-- name: A quick brown fox jumps over the lazy dog and runs away award
+- name: Provincial Third Prize, 37th National Middle School Students Mathematics Competition
+  position: 2021年第37届全国中学生数学奥林匹克竞赛省级三等奖🥉
   date: 2021
