@@ -14,6 +14,7 @@ authors:
   - Chengru Wu
   - Li Zhang
 links:
-  Paper: https://arxiv.org/pdf/2506.10525
+  Preprint: https://arxiv.org/abs/2506.10525
+  Paper: https://dl.acm.org/doi/full/10.1145/3755881.3755925
   Code: https://github.com/cjhCoder7/AdaptiveLLM
 ---
