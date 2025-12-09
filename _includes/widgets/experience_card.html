@@ -31,7 +31,8 @@
                         <div class="mx-2 my-1">
                             <h6>🏆 Honors & Awards</h6>
                             <ul class="list small pl-3 mb-1">
-                                {% for item in site.data.profile.awards %}
+                                {% assign awards = site.data.profile.awards %}
+                                {% for item in awards limit:7 %}
                                 <li>
                                     <div class="d-flex">
                                         <div>{{ item.name }}</div>
@@ -43,6 +44,67 @@
                                 </li>
                                 {% endfor %}
                             </ul>
+                            
+                            {% if awards.size > 7 %}
+                            <div class="collapse" id="awards-collapse">
+                                <ul class="list small pl-3 mb-1">
+                                    {% for item in awards offset:7 %}
+                                    <li>
+                                        <div class="d-flex">
+                                            <div>{{ item.name }}</div>
+                                            <div class="ml-auto mt-auto no-break"><em>{{ item.date }}</em></div>
+                                        </div>
+                                        {% if item.position %}
+                                        <div>{{ item.position }}</div>
+                                        {% endif %}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            
+                            <style>
+                                .award-toggle[aria-expanded="true"] .show-more { display: none; }
+                                .award-toggle[aria-expanded="false"] .show-less { display: none; }
+                            </style>
+                            <a class="award-toggle small text-muted ml-3" 
+                               style="cursor: pointer;" 
+                               data-toggle="collapse" 
+                               href="#awards-collapse" 
+                               role="button" 
+                               aria-expanded="false" 
+                               aria-controls="awards-collapse">
+                                <span class="show-more">Show more <i class="fas fa-angle-down"></i></span>
+                                <span class="show-less">Show less <i class="fas fa-angle-up"></i></span>
+                            </a>
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function() {
+                                    var $collapse = $('#awards-collapse');
+                                    var $masonryRow = $collapse.closest('.row');
+                                    var animationInterval;
+
+                                    // 清除定时器的安全函数
+                                    function clearMasonryInterval() {
+                                        if (animationInterval) {
+                                            clearInterval(animationInterval);
+                                            animationInterval = null;
+                                        }
+                                    }
+
+                                    $collapse.on('show.bs.collapse hide.bs.collapse', function () {
+                                        clearMasonryInterval();
+                                        animationInterval = setInterval(function() {
+                                            $masonryRow.masonry('layout');
+                                        }, 20);
+                                    });
+
+                                    $collapse.on('shown.bs.collapse hidden.bs.collapse', function () {
+                                        clearMasonryInterval();
+                                        $masonryRow.masonry('layout');
+                                    });
+                                });
+                            </script>
+                            {% endif %}
                         </div>
                     </div>
                     {% endif %}

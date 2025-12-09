@@ -27,10 +27,12 @@ short_bio: >-
     I am currently pursuing a Bachelor's degree in Computer Science and Technology at Beihang University, studying at the Top-Notch Computer Talent Program, School of Advanced Technology and Engineering.
   </p>
   <p>
+    Now, I am under the guidance of Assistant Professor <a href="https://liufang816.github.io/">Fang Liu</a>.
+  </p>
+  <p>
     My research direction is at the intersection of <strong>Artificial Intelligence (AI)</strong> and <strong>Software Engineering (SE)</strong>, including:
     <ul>
       <li>AI for Code Generation, enhancing code generation using large language models (LLMs), including function-level code generation and project-level code generation.</li> 
-      <li>LLM Acceleration, improving LLM inference speed by using methods such as speculative decoding, retrieval and copy.</li> 
     </ul>
   </p>
 
@@ -65,6 +67,9 @@ experience:
   date: Nov. 2024 - Jan. 2025
 
 awards:
+- name: Grand Prize, Beihang University Academic Competition Scholarship
+  position: 学科竞赛奖学金特等奖
+  date: 2025
 - name: National Encouragement Scholarship
   position: 国家励志奖学金
   date: 2025
