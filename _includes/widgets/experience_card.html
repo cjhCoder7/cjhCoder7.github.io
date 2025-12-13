@@ -32,7 +32,7 @@
                             <h6>🏆 Honors & Awards</h6>
                             <ul class="list small pl-3 mb-1">
                                 {% assign awards = site.data.profile.awards %}
-                                {% for item in awards limit:7 %}
+                                {% for item in awards limit:10 %}
                                 <li>
                                     <div class="d-flex">
                                         <div>{{ item.name }}</div>
@@ -45,10 +45,10 @@
                                 {% endfor %}
                             </ul>
                             
-                            {% if awards.size > 7 %}
+                            {% if awards.size > 10 %}
                             <div class="collapse" id="awards-collapse">
                                 <ul class="list small pl-3 mb-1">
-                                    {% for item in awards offset:7 %}
+                                    {% for item in awards offset:10 %}
                                     <li>
                                         <div class="d-flex">
                                             <div>{{ item.name }}</div>
@@ -83,7 +83,6 @@
                                     var $masonryRow = $collapse.closest('.row');
                                     var animationInterval;
 
-                                    // 清除定时器的安全函数
                                     function clearMasonryInterval() {
                                         if (animationInterval) {
                                             clearInterval(animationInterval);
