@@ -11,7 +11,6 @@ positions:
 
 email: "chengjunhang7@gmail.com"
 secondary_email: "23230617@buaa.edu.cn"
-# cv_link: link-to-your-cv-file
 gscholar: DOqGLmEAAAAJ&hl  # This is an example, replace it with your own Google Scholar ID
 github: cjhCoder7
 # twitter: your_twitter_id  # Do not include the '@' symbol
@@ -20,20 +19,19 @@ github: cjhCoder7
 #   Please tell me your <strong>name</strong> and <strong>affiliation</strong> (current or past) when adding my wechat. Thanks!
 # linkedin: your-linked-in-id
 orcid: 0009-0001-2254-9198
+cv_link: https://github.com/cjhCoder7/cv_resume/blob/master/template_cn_blue.pdf
 
 short_bio_text_justify: false
 short_bio: >-
   <p>
-    I am currently pursuing a Bachelor's degree in Computer Science and Technology at Beihang University, studying at the Top-Notch Computer Talent Program, School of Advanced Technology and Engineering.
+    I am currently pursuing a Bachelor's degree in Computer Science and Technology, at <a href="https://hc.buaa.edu.cn/xygk/gdlgxy.htm">School of Advanced Engineering</a>, <a href="https://ev.buaa.edu.cn/Schools___Colleges/Shen_Yuan_Honors_College.htm">Shen Yuan Honors College</a>, <a href="https://ev.buaa.edu.cn/">Beihang University</a>.
   </p>
   <p>
-    Now, I am under the guidance of Assistant Professor <a href="https://liufang816.github.io/">Fang Liu</a>.
+    During my junior year and prior, I conducted research on <strong>AI for Software Engineering (SE)</strong> under the supervision of Asst. Prof. <a href="https://liufang816.github.io/">Fang Liu</a> and Prof. <a href="https://scse.buaa.edu.cn/info/1078/2647.htm">Li Zhang</a>.
   </p>
   <p>
-    My research direction is at the intersection of <strong>Artificial Intelligence (AI)</strong> and <strong>Software Engineering (SE)</strong>, including:
-    <ul>
-      <li>AI for Code Generation, enhancing code generation using large language models (LLMs), including function-level code generation and project-level code generation.</li> 
-    </ul>
+    Currently, I am conducting my research under the guidance of Assoc. Prof. <a href="https://csjianyang.github.io/">Jian Yang</a> and Prof. <a href="https://xlliu-beihang.github.io/">Xianglong Liu</a>, focusing on <strong>Natural Language Processing (NLP)</strong> for my upcoming Ph.D. studies. My research centers on <strong>LLM Foundation Models</strong>, including
+    <u> <i> AI Infra </i>, <i> Data Engineering </i>, <i> Pre-training </i>, and <i> Post-training </i> techniques for Large Language Models </u>.
   </p>
 
 portrait_url: /assets/images/photos/Chengjunhang.jpg
@@ -53,10 +51,14 @@ education:
   date: Sep. 2017 - Jun. 2023
 
 experience:
+- name: Ubiquant
+  logo: /assets/images/photos/Ubiquant.png
+  position: IQuest AI Lab, Research Intern
+  date: Feb. 2026 - present
 - name: Huawei Cloud
   logo: /assets/images/photos/Huawei.svg
-  position: PaaS Laboratory, Intern
-  date: Jan. 2026 - present
+  position: PaaS Lab, Research Intern
+  date: Jan. 2026
 - name: Huawei
   logo: /assets/images/photos/Huawei.svg
   position: Huawei Developer Advocate
