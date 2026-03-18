@@ -39,4 +39,5 @@ links:
   Preprint: https://arxiv.org/abs/2603.16790
   Code: https://github.com/CSJianYang/Industrial-Coder
   Model: https://huggingface.co/collections/Multilingual-Multimodal-NLP/industrialcoder
+  Website: https://huggingface.co/papers/2603.16790
 ---
