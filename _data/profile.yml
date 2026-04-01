@@ -51,10 +51,10 @@ education:
   date: Sep. 2017 - Jun. 2023
 
 experience:
-- name: Ubiquant
-  logo: /assets/images/photos/Ubiquant.png
-  position: IQuest AI Lab, Research Intern
-  date: Feb. 2026 - present
+# - name: Ubiquant
+#   logo: /assets/images/photos/Ubiquant.png
+#   position: IQuest AI Lab, Research Intern
+#   date: Feb. 2026 - present
 - name: Huawei Cloud
   logo: /assets/images/photos/Huawei.svg
   position: PaaS Lab, Research Intern
