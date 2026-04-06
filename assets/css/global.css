@@ -1,8 +1,77 @@
 @charset "utf-8";
+
+/* ============================================
+   Theme Variables (Light - default)
+   ============================================ */
+:root {
+    --bg-primary: #f8f9fa;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f0f0f0;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --text-muted: #6c757d;
+    --border-color: #dee2e6;
+    --shadow-color: rgba(0, 0, 0, 0.075);
+    --shadow-sm: 0 .125rem .25rem rgba(0, 0, 0, 0.075);
+    --link-color: #007bff;
+    --link-hover-color: #0056b3;
+    --navbar-bg: #f8f9fa;
+    --navbar-border: rgba(0, 0, 0, 0.1);
+    --card-overlay-bg: rgba(255, 255, 255, 0.9);
+    --hr-color: rgba(0, 0, 0, 0.1);
+    --badge-bg: #e9ecef;
+    --badge-text: #212529;
+    --modal-bg: #ffffff;
+    --code-bg: #f8f9fa;
+    --img-thumbnail-bg: #fff;
+    --img-thumbnail-border: #dee2e6;
+    --scrollbar-track: #f1f1f1;
+    --scrollbar-thumb: #c1c1c1;
+    --tooltip-bg: #000;
+    --tooltip-text: #fff;
+}
+
+/* ============================================
+   Dark Theme Variables
+   ============================================ */
+[data-theme="dark"] {
+    --bg-primary: #0d1117;
+    --bg-card: #161b22;
+    --bg-card-hover: #1c2330;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #8b949e;
+    --border-color: #30363d;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --shadow-sm: 0 .125rem .25rem rgba(0, 0, 0, 0.3);
+    --link-color: #58a6ff;
+    --link-hover-color: #79b8ff;
+    --navbar-bg: #161b22;
+    --navbar-border: rgba(255, 255, 255, 0.08);
+    --card-overlay-bg: rgba(22, 27, 34, 0.92);
+    --hr-color: #30363d;
+    --badge-bg: #21262d;
+    --badge-text: #e6edf3;
+    --modal-bg: #161b22;
+    --code-bg: #0d1117;
+    --img-thumbnail-bg: #161b22;
+    --img-thumbnail-border: #30363d;
+    --scrollbar-track: #161b22;
+    --scrollbar-thumb: #30363d;
+    --tooltip-bg: #e6edf3;
+    --tooltip-text: #0d1117;
+}
+
+/* ============================================
+   Base Styles with Theme Support
+   ============================================ */
 body {
     font-family: "Lato", sans-serif;
     font-weight: 400;
     padding-top: 5.0rem;
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -88,5 +157,225 @@ div.lazy {
 
 .email-text {
     font-family: Courier, monospace;
+}
+
+/* ============================================
+   Dark Mode Component Overrides
+   ============================================ */
+
+/* --- Headings --- */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    color: var(--text-primary);
+}
+
+/* --- Links --- */
+a {
+    color: var(--link-color);
+    transition: color 0.2s ease;
+}
+a:hover {
+    color: var(--link-hover-color);
+}
+
+/* --- Navbar --- */
+.navbar {
+    background-color: var(--navbar-bg) !important;
+    border-bottom: 1px solid var(--navbar-border);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.navbar-brand,
+.navbar-brand strong {
+    color: var(--text-primary) !important;
+}
+.navbar .nav-link {
+    color: var(--text-secondary) !important;
+    transition: color 0.2s ease;
+}
+.navbar .nav-link:hover,
+.navbar .nav-item.active .nav-link {
+    color: var(--text-primary) !important;
+}
+.navbar-toggler {
+    color: var(--text-secondary) !important;
+    border-color: var(--border-color) !important;
+}
+
+/* --- Bootstrap bg-light / bg-white overrides --- */
+.bg-light {
+    background-color: var(--bg-primary) !important;
+}
+.bg-white {
+    background-color: var(--bg-card) !important;
+}
+
+/* --- Cards --- */
+.card {
+    background-color: var(--bg-card) !important;
+    border-color: var(--border-color) !important;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.card-body {
+    color: var(--text-primary);
+}
+
+/* --- Shadow override --- */
+.shadow-sm {
+    box-shadow: var(--shadow-sm) !important;
+}
+
+/* --- Text utilities --- */
+.text-muted {
+    color: var(--text-muted) !important;
+}
+.text-dark {
+    color: var(--text-primary) !important;
+}
+.text-body {
+    color: var(--text-primary) !important;
+}
+[data-theme="dark"] mark {
+    background-color: #1f6feb33;
+    color: var(--text-primary);
+}
+
+/* --- Border utilities --- */
+.border-bottom,
+.border-top,
+.border-gray,
+.border {
+    border-color: var(--border-color) !important;
+}
+hr {
+    border-top-color: var(--hr-color);
+}
+
+/* --- Image thumbnail --- */
+.img-thumbnail {
+    background-color: var(--img-thumbnail-bg);
+    border-color: var(--img-thumbnail-border);
+}
+
+/* --- Badges --- */
+.badge {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+[data-theme="dark"] .badge-secondary {
+    background-color: var(--badge-bg);
+    color: var(--badge-text);
+}
+[data-theme="dark"] .badge-primary {
+    background-color: #1f6feb;
+}
+[data-theme="dark"] .badge-success {
+    background-color: #238636;
+}
+[data-theme="dark"] .badge-warning {
+    background-color: #9e6a03;
+    color: #e6edf3;
+}
+[data-theme="dark"] .badge-info {
+    background-color: #1b6ec2;
+}
+
+/* --- Modals --- */
+.modal-content {
+    background-color: var(--modal-bg);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+.modal-footer {
+    border-top-color: var(--border-color);
+}
+
+/* --- Publication item mobile overlay --- */
+[data-theme="dark"] .d-md-none > .w-100 {
+    background-color: var(--card-overlay-bg) !important;
+}
+
+/* --- Publication page bg-white containers --- */
+[data-theme="dark"] .my-0.p-0.bg-white {
+    background-color: var(--bg-card) !important;
+}
+
+/* --- Year navigation pills (publications page) --- */
+[data-theme="dark"] .nav-pills .nav-link {
+    color: var(--text-secondary);
+}
+[data-theme="dark"] .nav-pills .nav-link.active {
+    color: #fff;
+    background-color: #1f6feb;
+}
+
+/* --- Publication item mobile overlay (replaces inline style) --- */
+.pub-item-mobile-overlay {
+    background-color: var(--card-overlay-bg);
+}
+
+/* --- Footer --- */
+.footer {
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
+    transition: background-color 0.3s ease;
+}
+
+/* --- Scrollbar (WebKit browsers) --- */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* ============================================
+   Theme Toggle Button
+   ============================================ */
+#theme-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1.5px solid var(--border-color);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    margin-left: 8px;
+    margin-right: auto;
+    flex-shrink: 0;
+}
+#theme-toggle-btn:hover {
+    color: var(--text-primary);
+    border-color: var(--text-primary);
+    background-color: var(--bg-card-hover);
+    transform: rotate(15deg);
+}
+#theme-toggle-btn:active {
+    transform: scale(0.9);
+}
+#theme-toggle-btn .icon-sun,
+#theme-toggle-btn .icon-moon {
+    font-size: 16px;
+    line-height: 1;
+}
+
+
+/* --- Smooth transitions for all themed elements --- */
+.card, .card-body, .navbar, .footer, .modal-content,
+.bg-white, .bg-light, .btn, .badge, hr, .border-bottom,
+.border-top, a, .text-muted, .img-thumbnail {
+    transition: background-color 0.3s ease, color 0.3s ease,
+                border-color 0.3s ease, box-shadow 0.3s ease;
 }
 

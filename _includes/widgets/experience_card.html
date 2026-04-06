@@ -10,7 +10,8 @@
                             <ul class="list-unstyled mb-1">
                                 {% for item in site.data.profile.education %}
                                 <li class="media mb-1">
-                                    <img src="{{ item.logo | relative_url }}" alt="{{ item.name }}" style="width: 18px;" class="mr-1 mt-1">
+                                    <img src="{{ item.logo | relative_url }}" alt="{{ item.name }}" style="width: 18px;"
+                                        class="mr-1 mt-1">
                                     <div class="media-body">
                                         <div>{{ item.name }}</div>
                                         <div class="small">{{ item.dept }}</div>
@@ -44,7 +45,7 @@
                                 </li>
                                 {% endfor %}
                             </ul>
-                            
+
                             {% if awards.size > 10 %}
                             <div class="collapse" id="awards-collapse">
                                 <ul class="list small pl-3 mb-1">
@@ -61,24 +62,25 @@
                                     {% endfor %}
                                 </ul>
                             </div>
-                            
+
                             <style>
-                                .award-toggle[aria-expanded="true"] .show-more { display: none; }
-                                .award-toggle[aria-expanded="false"] .show-less { display: none; }
+                                .award-toggle[aria-expanded="true"] .show-more {
+                                    display: none;
+                                }
+
+                                .award-toggle[aria-expanded="false"] .show-less {
+                                    display: none;
+                                }
                             </style>
-                            <a class="award-toggle small text-muted ml-3" 
-                               style="cursor: pointer;" 
-                               data-toggle="collapse" 
-                               href="#awards-collapse" 
-                               role="button" 
-                               aria-expanded="false" 
-                               aria-controls="awards-collapse">
+                            <a class="award-toggle small text-muted ml-3" style="cursor: pointer;"
+                                data-toggle="collapse" href="#awards-collapse" role="button" aria-expanded="false"
+                                aria-controls="awards-collapse">
                                 <span class="show-more">Show more <i class="fas fa-angle-down"></i></span>
                                 <span class="show-less">Show less <i class="fas fa-angle-up"></i></span>
                             </a>
 
                             <script>
-                                document.addEventListener("DOMContentLoaded", function() {
+                                document.addEventListener("DOMContentLoaded", function () {
                                     var $collapse = $('#awards-collapse');
                                     var $masonryRow = $collapse.closest('.row');
                                     var animationInterval;
@@ -92,7 +94,7 @@
 
                                     $collapse.on('show.bs.collapse hide.bs.collapse', function () {
                                         clearMasonryInterval();
-                                        animationInterval = setInterval(function() {
+                                        animationInterval = setInterval(function () {
                                             $masonryRow.masonry('layout');
                                         }, 20);
                                     });
@@ -115,7 +117,8 @@
                             <ul class="list-unstyled mb-1">
                                 {% for item in site.data.profile.experience %}
                                 <li class="media mb-1">
-                                    <img src="{{ item.logo | relative_url }}" alt="{{ item.name }}" style="width: 18px;" class="mr-1 mt-1">
+                                    <img src="{{ item.logo | relative_url }}" alt="{{ item.name }}" style="width: 18px;"
+                                        class="mr-1 mt-1">
                                     <div class="media-body">
                                         <div>{{ item.name }}</div>
                                         <div class="small">{{ item.dept }}</div>

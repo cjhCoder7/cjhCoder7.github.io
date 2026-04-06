@@ -1,6 +1,13 @@
 <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top mb-5 shadow-sm">
     <div class="{% if page.container_class %}{{ page.container_class }}{% else %}container-lg{% endif %}">
         <a class="navbar-brand"><strong>{{site.data.profile.navbar_name}}</strong></a>
+
+        <!-- Theme Toggle Button (always visible) -->
+        <button id="theme-toggle-btn" type="button" aria-label="Toggle dark mode" title="Toggle dark/light theme">
+            <i class="fas fa-sun icon-sun" style="display:none;"></i>
+            <i class="fas fa-moon icon-moon"></i>
+        </button>
+
         <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-map"></i> Menu
         </button>
@@ -16,3 +23,4 @@
         </div>
     </div>
 </nav>
+
