@@ -66,16 +66,14 @@ createBubbleInfo = function (hashGroup, n, w, h) {
     var radius = function (v) { var min = 10; var max = wh / 2; return min + ((v / 16) * (max - min)); };
     var color = function (i) {
         var c = [
-            "#1f77b4", "#aec7e8",  // blue
-            "#ff7f0e", "#ffbb78",  // orange
-            "#2ca02c", "#98df8a",  // green
-            "#d62728", "#ff9896",  // red
-            "#9467bd", "#c5b0d5",  // purple
-            "#8c564b", "#c49c94",  // brown
-            // "#e377c2", "#f7b6d2",  // pink
-            // "#7f7f7f", "#c7c7c7",  // gray
-            "#bcbd22", "#dbdb8d",  // yellow
-            "#17becf", "#9edae5",  // cyan
+            "#DE7356", "#E8947C",  // terracotta (Claude brand)
+            "#C89040", "#DDB06A",  // amber
+            "#5C8A4D", "#8AB87A",  // sage green
+            "#B07050", "#C8977C",  // warm brown
+            "#9A7B9E", "#BCA4BF",  // mauve/plum
+            "#8C7A6B", "#B0A090",  // taupe
+            "#C4956A", "#DDB896",  // warm gold
+            "#7A9E9A", "#A0C0BC",  // teal sage
         ];
         return c[i % c.length];
     };

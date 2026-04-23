@@ -256,16 +256,19 @@ hr {
     border-color: var(--img-thumbnail-border);
 }
 
-/* --- Badges --- */
+/* --- Badges (both themes) --- */
 .badge {
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+.badge-primary {
+    background-color: #DE7356 !important;
+}
+.badge-info {
+    background-color: #B07050 !important;
 }
 [data-theme="dark"] .badge-secondary {
     background-color: var(--badge-bg);
     color: var(--badge-text);
-}
-[data-theme="dark"] .badge-primary {
-    background-color: #DE7356;
 }
 [data-theme="dark"] .badge-success {
     background-color: #5C8A4D;
@@ -274,8 +277,64 @@ hr {
     background-color: #C89040;
     color: #DEDEDE;
 }
-[data-theme="dark"] .badge-info {
-    background-color: #B07050;
+
+/* --- Bootstrap .btn-primary override (both themes) --- */
+.btn-primary {
+    background-color: #DE7356 !important;
+    border-color: #DE7356 !important;
+    color: #fff !important;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #C85A3A !important;
+    border-color: #C85A3A !important;
+}
+.btn-primary:active,
+.btn-primary.active {
+    background-color: #B34E30 !important;
+    border-color: #B34E30 !important;
+}
+.btn-outline-primary {
+    color: #DE7356 !important;
+    border-color: #DE7356 !important;
+}
+.btn-outline-primary:hover {
+    background-color: #DE7356 !important;
+    border-color: #DE7356 !important;
+    color: #fff !important;
+}
+
+/* --- Year navigation pills (publications page, both themes) --- */
+.nav-pills .nav-link {
+    color: var(--text-secondary);
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+.nav-pills .nav-link:hover {
+    color: var(--text-primary);
+}
+.nav-pills .nav-link.active {
+    color: #fff !important;
+    background-color: #DE7356 !important;
+}
+
+/* --- Focus ring override (remove Bootstrap blue glow) --- */
+.btn-primary:focus,
+.btn-primary.focus,
+.form-control:focus,
+.nav-link:focus {
+    box-shadow: 0 0 0 0.2rem rgba(222, 115, 86, 0.25) !important;
+}
+
+/* --- Selection color --- */
+::selection {
+    background-color: rgba(222, 115, 86, 0.2);
+    color: inherit;
+}
+
+/* --- Bootstrap link-primary / text-primary color override --- */
+a.text-primary,
+a.text-primary:hover {
+    color: var(--link-color) !important;
 }
 
 /* --- Modals --- */
@@ -296,15 +355,6 @@ hr {
 /* --- Publication page bg-white containers --- */
 [data-theme="dark"] .my-0.p-0.bg-white {
     background-color: var(--bg-card) !important;
-}
-
-/* --- Year navigation pills (publications page) --- */
-[data-theme="dark"] .nav-pills .nav-link {
-    color: var(--text-secondary);
-}
-[data-theme="dark"] .nav-pills .nav-link.active {
-    color: #fff;
-    background-color: #DE7356;
 }
 
 /* --- Publication item mobile overlay (replaces inline style) --- */
