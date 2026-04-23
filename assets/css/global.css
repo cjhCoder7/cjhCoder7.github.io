@@ -4,62 +4,62 @@
    Theme Variables (Light - default)
    ============================================ */
 :root {
-    --bg-primary: #f8f9fa;
+    --bg-primary: #FDFDF7;
     --bg-card: #ffffff;
-    --bg-card-hover: #f0f0f0;
-    --text-primary: #212529;
-    --text-secondary: #6c757d;
-    --text-muted: #6c757d;
-    --border-color: #dee2e6;
-    --shadow-color: rgba(0, 0, 0, 0.075);
-    --shadow-sm: 0 .125rem .25rem rgba(0, 0, 0, 0.075);
-    --link-color: #007bff;
-    --link-hover-color: #0056b3;
-    --navbar-bg: #f8f9fa;
-    --navbar-border: rgba(0, 0, 0, 0.1);
-    --card-overlay-bg: rgba(255, 255, 255, 0.9);
-    --hr-color: rgba(0, 0, 0, 0.1);
-    --badge-bg: #e9ecef;
-    --badge-text: #212529;
+    --bg-card-hover: #F5F5F0;
+    --text-primary: #171717;
+    --text-secondary: #3E3E3E;
+    --text-muted: #707070;
+    --border-color: #DEDEDE;
+    --shadow-color: rgba(0, 0, 0, 0.06);
+    --shadow-sm: 0 .125rem .25rem rgba(0, 0, 0, 0.06);
+    --link-color: #C85A3A;
+    --link-hover-color: #DE7356;
+    --navbar-bg: #FDFDF7;
+    --navbar-border: rgba(0, 0, 0, 0.08);
+    --card-overlay-bg: rgba(253, 253, 247, 0.92);
+    --hr-color: #F0F0F0;
+    --badge-bg: #F0F0F0;
+    --badge-text: #171717;
     --modal-bg: #ffffff;
-    --code-bg: #f8f9fa;
+    --code-bg: #FDFDF7;
     --img-thumbnail-bg: #fff;
-    --img-thumbnail-border: #dee2e6;
-    --scrollbar-track: #f1f1f1;
-    --scrollbar-thumb: #c1c1c1;
-    --tooltip-bg: #000;
-    --tooltip-text: #fff;
+    --img-thumbnail-border: #DEDEDE;
+    --scrollbar-track: #F0F0F0;
+    --scrollbar-thumb: #C8C8C8;
+    --tooltip-bg: #171717;
+    --tooltip-text: #FDFDF7;
 }
 
 /* ============================================
    Dark Theme Variables
    ============================================ */
 [data-theme="dark"] {
-    --bg-primary: #0d1117;
-    --bg-card: #161b22;
-    --bg-card-hover: #1c2330;
-    --text-primary: #e6edf3;
-    --text-secondary: #8b949e;
-    --text-muted: #8b949e;
-    --border-color: #30363d;
-    --shadow-color: rgba(0, 0, 0, 0.3);
-    --shadow-sm: 0 .125rem .25rem rgba(0, 0, 0, 0.3);
-    --link-color: #58a6ff;
-    --link-hover-color: #79b8ff;
-    --navbar-bg: #161b22;
-    --navbar-border: rgba(255, 255, 255, 0.08);
-    --card-overlay-bg: rgba(22, 27, 34, 0.92);
-    --hr-color: #30363d;
-    --badge-bg: #21262d;
-    --badge-text: #e6edf3;
-    --modal-bg: #161b22;
-    --code-bg: #0d1117;
-    --img-thumbnail-bg: #161b22;
-    --img-thumbnail-border: #30363d;
-    --scrollbar-track: #161b22;
-    --scrollbar-thumb: #30363d;
-    --tooltip-bg: #e6edf3;
-    --tooltip-text: #0d1117;
+    --bg-primary: #09090B;
+    --bg-card: #171717;
+    --bg-card-hover: #1E1E1E;
+    --text-primary: #DEDEDE;
+    --text-secondary: #9E9E9E;
+    --text-muted: #707070;
+    --border-color: #262626;
+    --shadow-color: rgba(0, 0, 0, 0.4);
+    --shadow-sm: 0 .125rem .25rem rgba(0, 0, 0, 0.4);
+    --link-color: #DE7356;
+    --link-hover-color: #E8947C;
+    --navbar-bg: #171717;
+    --navbar-border: rgba(255, 255, 255, 0.06);
+    --card-overlay-bg: rgba(23, 23, 23, 0.94);
+    --hr-color: #262626;
+    --badge-bg: #262626;
+    --badge-text: #DEDEDE;
+    --modal-bg: #171717;
+    --code-bg: #09090B;
+    --img-thumbnail-bg: #171717;
+    --img-thumbnail-border: #262626;
+    --scrollbar-track: #171717;
+    --scrollbar-thumb: #333333;
+    --tooltip-bg: #DEDEDE;
+    --tooltip-text: #09090B;
 }
 
 /* ============================================
@@ -235,7 +235,7 @@ a:hover {
     color: var(--text-primary) !important;
 }
 [data-theme="dark"] mark {
-    background-color: #1f6feb33;
+    background-color: rgba(222, 115, 86, 0.2);
     color: var(--text-primary);
 }
 
@@ -265,17 +265,17 @@ hr {
     color: var(--badge-text);
 }
 [data-theme="dark"] .badge-primary {
-    background-color: #1f6feb;
+    background-color: #DE7356;
 }
 [data-theme="dark"] .badge-success {
-    background-color: #238636;
+    background-color: #5C8A4D;
 }
 [data-theme="dark"] .badge-warning {
-    background-color: #9e6a03;
-    color: #e6edf3;
+    background-color: #C89040;
+    color: #DEDEDE;
 }
 [data-theme="dark"] .badge-info {
-    background-color: #1b6ec2;
+    background-color: #B07050;
 }
 
 /* --- Modals --- */
@@ -304,7 +304,7 @@ hr {
 }
 [data-theme="dark"] .nav-pills .nav-link.active {
     color: #fff;
-    background-color: #1f6feb;
+    background-color: #DE7356;
 }
 
 /* --- Publication item mobile overlay (replaces inline style) --- */
