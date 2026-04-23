@@ -135,19 +135,12 @@ h1, h2, h3, h4, h5, h6,
     min-height: 100px;
 }
 
-img.lazy {
-    background-image: url('images/loading.gif');
-    background-repeat: no-repeat;
-    background-position: 50% 50%;
-    background-size: 50px 50px;
-    min-height: 80px;
-}
-
+img.lazy,
 div.lazy {
-    background-image: url('images/loading.gif');
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='16' fill='none' stroke='%23DEDEDE' stroke-width='3'/%3E%3Cpath d='M20 4a16 16 0 0 1 16 16' fill='none' stroke='%23DE7356' stroke-width='3' stroke-linecap='round'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 20 20' to='360 20 20' dur='0.7s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: 50% 50%;
-    background-size: 50px 50px;
+    background-size: 40px 40px;
     min-height: 80px;
 }
 
