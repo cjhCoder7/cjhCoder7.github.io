@@ -5,7 +5,7 @@
    ============================================ */
 :root {
     --bg-primary: #FDFDF7;
-    --bg-card: #ffffff;
+    --bg-card: #FDFDF7;
     --bg-card-hover: #F5F5F0;
     --text-primary: #171717;
     --text-secondary: #3E3E3E;
@@ -21,9 +21,9 @@
     --hr-color: #F0F0F0;
     --badge-bg: #F0F0F0;
     --badge-text: #171717;
-    --modal-bg: #ffffff;
+    --modal-bg: #FDFDF7;
     --code-bg: #FDFDF7;
-    --img-thumbnail-bg: #fff;
+    --img-thumbnail-bg: #FDFDF7;
     --img-thumbnail-border: #DEDEDE;
     --scrollbar-track: #F0F0F0;
     --scrollbar-thumb: #C8C8C8;
