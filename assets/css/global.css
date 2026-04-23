@@ -68,7 +68,7 @@
 body {
     font-family: "Lato", sans-serif;
     font-weight: 400;
-    padding-top: 5.0rem;
+    padding-top: 5rem;
     background-color: var(--bg-primary) !important;
     color: var(--text-primary);
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -111,13 +111,11 @@ h6,
     border-top-right-radius: 0.8rem !important;
 }
 
-
 .text-profile-position {
     font-weight: 400;
 }
 
 .text-profile-bio {
-    /* font-family: "Raleway"; */
     font-weight: 400;
 }
 
@@ -152,6 +150,11 @@ div.lazy {
     background-position: 50% 50%;
     background-size: 40px 40px;
     min-height: 80px;
+}
+
+[data-theme="dark"] img.lazy,
+[data-theme="dark"] div.lazy {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='16' fill='none' stroke='%23333333' stroke-width='3'/%3E%3Cpath d='M20 4a16 16 0 0 1 16 16' fill='none' stroke='%23DE7356' stroke-width='3' stroke-linecap='round'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 20 20' to='360 20 20' dur='1.4s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E");
 }
 
 .badge-publication {
@@ -305,6 +308,10 @@ hr {
 [data-theme="dark"] .badge-warning {
     background-color: #C89040;
     color: #DEDEDE;
+}
+
+[data-theme="dark"] .badge-info {
+    background-color: #C0886A;
 }
 
 /* --- Bootstrap .btn-primary override (both themes) --- */

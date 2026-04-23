@@ -24,12 +24,19 @@
     }
 
     /**
-     * Apply theme to the document
+     * Apply theme visually without persisting to localStorage
+     */
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        updateToggleIcon(theme);
+    }
+
+    /**
+     * Apply theme and persist user choice to localStorage
      */
     function applyTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
+        setTheme(theme);
         localStorage.setItem(STORAGE_KEY, theme);
-        updateToggleIcon(theme);
     }
 
     /**
@@ -52,7 +59,7 @@
     }
 
     /**
-     * Toggle between light and dark themes
+     * Toggle between light and dark themes (user-initiated, persists)
      */
     function toggleTheme() {
         var current = document.documentElement.getAttribute('data-theme') || LIGHT;
@@ -61,13 +68,19 @@
     }
 
     // Apply theme immediately to prevent flash
-    applyTheme(getPreferredTheme());
+    // Only persist if already stored; system preference should not be persisted
+    var stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+        setTheme(stored);
+    } else {
+        setTheme(getPreferredTheme());
+    }
 
-    // Listen for system preference changes
+    // Listen for system preference changes (only when user hasn't manually chosen)
     if (window.matchMedia) {
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
             if (!localStorage.getItem(STORAGE_KEY)) {
-                applyTheme(e.matches ? DARK : LIGHT);
+                setTheme(e.matches ? DARK : LIGHT);
             }
         });
     }

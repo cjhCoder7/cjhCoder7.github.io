@@ -1,8 +1,15 @@
-//  Formatted version of a popular md5 implementation
-//  Original copyright (c) Paul Johnston & Greg Holt.
+/**
+ * Bubble Visual Hash - generates decorative bubble identicons from strings.
+ * Inspired by https://github.com/dakridge/identicon
+ */
+
+/**
+ * MD5 hash implementation.
+ * Original copyright (c) Paul Johnston & Greg Holt.
+ */
 function md5(inputString) {
-    var hc = "0123456789abcdef";
-    function rh(n) { var j, s = ""; for (j = 0; j <= 3; j++) s += hc.charAt((n >> (j * 8 + 4)) & 0x0F) + hc.charAt((n >> (j * 8)) & 0x0F); return s; }
+    var hc = '0123456789abcdef';
+    function rh(n) { var j, s = ''; for (j = 0; j <= 3; j++) s += hc.charAt((n >> (j * 8 + 4)) & 0x0F) + hc.charAt((n >> (j * 8)) & 0x0F); return s; }
     function ad(x, y) { var l = (x & 0xFFFF) + (y & 0xFFFF); var m = (x >> 16) + (y >> 16) + (l >> 16); return (m << 16) | (l & 0xFFFF); }
     function rl(n, c) { return (n << c) | (n >>> (32 - c)); }
     function cm(q, a, b, x, s, t) { return ad(rl(ad(ad(a, q), ad(x, t)), s), b); }
@@ -11,11 +18,16 @@ function md5(inputString) {
     function hh(a, b, c, d, x, s, t) { return cm(b ^ c ^ d, a, b, x, s, t); }
     function ii(a, b, c, d, x, s, t) { return cm(c ^ (b | (~d)), a, b, x, s, t); }
     function sb(x) {
-        var i; var nblk = ((x.length + 8) >> 6) + 1; var blks = new Array(nblk * 16); for (i = 0; i < nblk * 16; i++) blks[i] = 0;
+        var i;
+        var nblk = ((x.length + 8) >> 6) + 1;
+        var blks = new Array(nblk * 16);
+        for (i = 0; i < nblk * 16; i++) blks[i] = 0;
         for (i = 0; i < x.length; i++) blks[i >> 2] |= x.charCodeAt(i) << ((i % 4) * 8);
-        blks[i >> 2] |= 0x80 << ((i % 4) * 8); blks[nblk * 16 - 2] = x.length * 8; return blks;
+        blks[i >> 2] |= 0x80 << ((i % 4) * 8);
+        blks[nblk * 16 - 2] = x.length * 8;
+        return blks;
     }
-    var i, x = sb("" + inputString), a = 1732584193, b = -271733879, c = -1732584194, d = 271733878, olda, oldb, oldc, oldd;
+    var i, x = sb('' + inputString), a = 1732584193, b = -271733879, c = -1732584194, d = 271733878, olda, oldb, oldc, oldd;
     for (i = 0; i < x.length; i += 16) {
         olda = a; oldb = b; oldc = c; oldd = d;
         a = ff(a, b, c, d, x[i + 0], 7, -680876936); d = ff(d, a, b, c, x[i + 1], 12, -389564586); c = ff(c, d, a, b, x[i + 2], 17, 606105819);
@@ -44,10 +56,12 @@ function md5(inputString) {
     return rh(a) + rh(b) + rh(c) + rh(d);
 }
 
-
-// This script is inspired by https://github.com/dakridge/identicon
-
-createHashGroupForString = function (str) {
+/**
+ * Create a hash group array from a string using MD5.
+ * @param {string} str - The input string to hash.
+ * @returns {number[]} Array of 4-bit values derived from the MD5 hash.
+ */
+function createHashGroupForString(str) {
     var hashGroup = [];
     var hash = md5(str);
     for (var i = 0; i < hash.length; i += 1) {
@@ -57,25 +71,38 @@ createHashGroupForString = function (str) {
     return hashGroup;
 }
 
-createBubbleInfo = function (hashGroup, n, w, h) {
+/**
+ * Generate bubble position, size, and color data from a hash group.
+ * @param {number[]} hashGroup - Array of hash values.
+ * @param {number} n - Number of bubbles to generate.
+ * @param {number} w - Canvas width.
+ * @param {number} h - Canvas height.
+ * @returns {Object[]} Array of bubble info objects.
+ */
+function createBubbleInfo(hashGroup, n, w, h) {
     var maxN = hashGroup.length / 2;
     n = n < maxN ? n : maxN;
     var wh = w < h ? w : h;
+
     var scaleX = function (v) { return (w / 16) * v; };
     var scaleY = function (v) { return (h / 16) * v; };
-    var radius = function (v) { var min = 10; var max = wh / 2; return min + ((v / 16) * (max - min)); };
+    var radius = function (v) {
+        var min = 10;
+        var max = wh / 2;
+        return min + ((v / 16) * (max - min));
+    };
     var color = function (i) {
-        var c = [
-            "#DE7356", "#E8947C",  // terracotta (Claude brand)
-            "#C89040", "#DDB06A",  // amber
-            "#5C8A4D", "#8AB87A",  // sage green
-            "#B07050", "#C8977C",  // warm brown
-            "#9A7B9E", "#BCA4BF",  // mauve/plum
-            "#8C7A6B", "#B0A090",  // taupe
-            "#C4956A", "#DDB896",  // warm gold
-            "#7A9E9A", "#A0C0BC",  // teal sage
+        var palette = [
+            '#DE7356', '#E8947C',  // terracotta (Claude brand)
+            '#C89040', '#DDB06A',  // amber
+            '#5C8A4D', '#8AB87A',  // sage green
+            '#B07050', '#C8977C',  // warm brown
+            '#9A7B9E', '#BCA4BF',  // mauve/plum
+            '#8C7A6B', '#B0A090',  // taupe
+            '#C4956A', '#DDB896',  // warm gold
+            '#7A9E9A', '#A0C0BC',  // teal sage
         ];
-        return c[i % c.length];
+        return palette[i % palette.length];
     };
 
     var bubbleInfo = [];
@@ -92,27 +119,32 @@ createBubbleInfo = function (hashGroup, n, w, h) {
     return bubbleInfo;
 }
 
-
-drawBubble = function (svg, bubbleInfo) {
-    //  Sort bubbles by radius in descending order
+/**
+ * Render bubbles into an SVG element.
+ * @param {SVGElement} svg - The target SVG element.
+ * @param {Object[]} bubbleInfo - Array of bubble data to render.
+ */
+function drawBubble(svg, bubbleInfo) {
+    // Sort bubbles by radius in descending order (larger ones drawn first)
     bubbleInfo.sort(function (a, b) {
         return b.radius - a.radius;
     });
     for (var i = 0; i < bubbleInfo.length; i++) {
         var bubble = bubbleInfo[i];
-        var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circle.setAttribute("cx", bubble.x);
-        circle.setAttribute("cy", bubble.y);
-        circle.setAttribute("r", bubble.radius);
-        circle.setAttribute("fill", bubble.color);
-        circle.setAttribute("fill-opacity", 0.75);
+        var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', bubble.x);
+        circle.setAttribute('cy', bubble.y);
+        circle.setAttribute('r', bubble.radius);
+        circle.setAttribute('fill', bubble.color);
+        circle.setAttribute('fill-opacity', 0.75);
         svg.appendChild(circle);
     }
 }
 
-var canvases = document.querySelectorAll(".bubble-visual-hash");
+// Initialize all bubble visual hashes on the page
+var canvases = document.querySelectorAll('.bubble-visual-hash');
 canvases.forEach(function (canvas) {
-    var hash = canvas.getAttribute("data-bubble-visual-hash");
+    var hash = canvas.getAttribute('data-bubble-visual-hash');
     var width = canvas.viewBox.baseVal.width;
     var height = canvas.viewBox.baseVal.height;
     var bubbleInfo = createBubbleInfo(createHashGroupForString(hash), 8, width, height);
