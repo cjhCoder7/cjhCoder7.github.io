@@ -2,8 +2,8 @@
 title:          "Towards Realistic Project-Level Code Generation via Multi-Agent Collaboration and Semantic Architecture Modeling"
 date:           2025-11-05 00:01:00 +0800
 selected:       true
-pub:            "Arxiv"
-pub_date:       "2025"
+pub:            "ACM Transactions on Software Engineering and Methodology, TOSEM"
+pub_date:       "2026"
 
 cover:          /assets/images/covers/ProjectGen.png
 authors:
