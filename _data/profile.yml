@@ -30,8 +30,7 @@ short_bio: >-
     During my junior year and prior, I conducted research on <strong>AI for Software Engineering (SE)</strong> under the supervision of Asst. Prof. <a href="https://liufang816.github.io/">Fang Liu</a> and Prof. <a href="https://scse.buaa.edu.cn/info/1078/2647.htm">Li Zhang</a>.
   </p>
   <p>
-    Currently, I am conducting my research under the guidance of Assoc. Prof. <a href="https://csjianyang.github.io/">Jian Yang</a> and Prof. <a href="https://xlliu-beihang.github.io/">Xianglong Liu</a>, focusing on <strong>Natural Language Processing (NLP)</strong> for my upcoming Ph.D. studies. My research centers on <strong>LLM Foundation Models</strong>, including
-    <u> <i> AI Infra </i>, <i> Data Engineering </i>, <i> Pre-training </i>, and <i> Post-training </i> techniques for Large Language Models </u>.
+    I also collaborated with Assoc. Prof. <a href="https://csjianyang.github.io/">Jian Yang</a>, focusing on <strong>Natural Language Processing (NLP)</strong>. Now, my research centers on <strong>LLM Foundation Models</strong>, including <u> <i> AI Infra </i>, <i> Data Engineering </i>, <i> Pre-training </i>, <i> Mid-training </i>, and <i> Post-training </i> techniques for Large Language Models </u>.
   </p>
 
 portrait_url: /assets/images/photos/Chengjunhang.jpg
@@ -41,7 +40,7 @@ portrait_url: /assets/images/photos/Chengjunhang.jpg
 education:
 - name: Beihang University
   logo: /assets/images/badges/BUAA.svg
-  position: >- 
+  position: >-
     School of Computer Science <br/>
     B.E. Student
   date: Sep. 2023 - present
@@ -51,10 +50,14 @@ education:
   date: Sep. 2017 - Jun. 2023
 
 experience:
+- name: Human Intelligence
+  logo: /assets/images/photos/Human-Intelligence.png
+  position: Research Intern
+  date: Jun. 2026 - Jul. 2026
 - name: Ubiquant
   logo: /assets/images/photos/Ubiquant.svg
   position: IQuest AI Lab, Research Intern
-  date: Feb. 2026 - present
+  date: Jan. 2026 - Jul. 2026
 - name: Huawei Cloud
   logo: /assets/images/photos/Huawei.svg
   position: PaaS Lab, Research Intern
@@ -66,10 +69,10 @@ experience:
 - name: Beihang University
   logo: /assets/images/badges/BUAA.svg
   position: State Key Laboratory of Complex & Critical Software Environment, Research Intern
-  date: Apr. 2024 - present
+  date: Apr. 2024 - Jun. 2026
 - name: Beihang University
   logo: /assets/images/badges/BUAA.svg
-  position: Advanced Programming Language Design, Teaching Assistant 
+  position: Advanced Programming Language Design, Teaching Assistant
   date: Sep. 2024 - Jan. 2025
 - name: Tutor
   logo: /assets/images/photos/Tutor.svg
@@ -92,9 +95,6 @@ awards:
 - name: First Prize, the Main Track of 2025 National "Challenge Cup" Competition
   position: 全国“挑战杯”主赛道一等奖🥇
   date: 2025
-# - name: School-level Project Approval, China International College Students' Innovation Competition
-#   position: 大创校级立项
-#   date: 2025
 - name: Second Prize, the Main Track Production Group in the 35th Beihang University "Feng Ru Cup" Competition
   position: 第三十五届北航“冯如杯”主赛道制作组二等奖🥈
   date: 2025

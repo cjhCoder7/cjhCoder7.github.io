@@ -6,7 +6,7 @@ pub:            "Arxiv"
 pub_date:       "2026"
 
 cover:          /assets/images/covers/InCoder-32B-Thinking.png
-authors: 
+authors:
     - Jian Yang
     - Wei Zhang
     - Jiajun Wu

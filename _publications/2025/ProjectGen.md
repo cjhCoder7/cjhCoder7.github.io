@@ -20,5 +20,6 @@ authors:
   - Yuanping Guo
 links:
   Preprint: https://arxiv.org/abs/2511.03404
+  Paper: https://dl.acm.org/doi/10.1145/3817056
   Code: https://github.com/whisperzqh/ProjectGen
 ---

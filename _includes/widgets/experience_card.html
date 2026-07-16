@@ -114,8 +114,9 @@
                     <div class="col-md-6">
                         <div class="mx-2 my-1">
                             <h6>💻 Experience</h6>
+                            {% assign experience = site.data.profile.experience %}
                             <ul class="list-unstyled mb-1">
-                                {% for item in site.data.profile.experience %}
+                                {% for item in experience limit:6 %}
                                 <li class="media mb-1">
                                     <img src="{{ item.logo | relative_url }}" alt="{{ item.name }}" style="width: 18px;"
                                         class="mr-1 mt-1">
@@ -130,6 +131,70 @@
                                 </li>
                                 {% endfor %}
                             </ul>
+
+                            {% if experience.size > 6 %}
+                            <div class="collapse" id="experience-collapse">
+                                <ul class="list-unstyled mb-1">
+                                    {% for item in experience offset:6 %}
+                                    <li class="media mb-1">
+                                        <img src="{{ item.logo | relative_url }}" alt="{{ item.name }}" style="width: 18px;"
+                                            class="mr-1 mt-1">
+                                        <div class="media-body">
+                                            <div>{{ item.name }}</div>
+                                            <div class="small">{{ item.dept }}</div>
+                                            <div class="small d-flex">
+                                                <div>{{ item.position }}</div>
+                                                <div class="mt-auto ml-auto no-break"><em>{{ item.date }}</em></div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                            <style>
+                                .experience-toggle[aria-expanded="true"] .show-more {
+                                    display: none;
+                                }
+
+                                .experience-toggle[aria-expanded="false"] .show-less {
+                                    display: none;
+                                }
+                            </style>
+                            <a class="experience-toggle small text-muted ml-3" style="cursor: pointer;"
+                                data-toggle="collapse" href="#experience-collapse" role="button" aria-expanded="false"
+                                aria-controls="experience-collapse">
+                                <span class="show-more">Show more <i class="fas fa-angle-down"></i></span>
+                                <span class="show-less">Show less <i class="fas fa-angle-up"></i></span>
+                            </a>
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function () {
+                                    var $collapse = $('#experience-collapse');
+                                    var $masonryRow = $collapse.closest('.row');
+                                    var animationInterval;
+
+                                    function clearMasonryInterval() {
+                                        if (animationInterval) {
+                                            clearInterval(animationInterval);
+                                            animationInterval = null;
+                                        }
+                                    }
+
+                                    $collapse.on('show.bs.collapse hide.bs.collapse', function () {
+                                        clearMasonryInterval();
+                                        animationInterval = setInterval(function () {
+                                            $masonryRow.masonry('layout');
+                                        }, 20);
+                                    });
+
+                                    $collapse.on('shown.bs.collapse hidden.bs.collapse', function () {
+                                        clearMasonryInterval();
+                                        $masonryRow.masonry('layout');
+                                    });
+                                });
+                            </script>
+                            {% endif %}
                         </div>
                     </div>
                     {% endif %}
