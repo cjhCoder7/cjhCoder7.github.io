@@ -15,7 +15,18 @@
             </div>
             <div class="col-sm-4 d-none d-sm-block">
                 <div class="text-right">
-                    {%- if site.github.build_revision -%}
+                    {%- comment -%}
+                      Commit id for the footer. Prefer _data/build.yml (written by the
+                      GitHub Actions workflow), fall back to site.github (legacy Pages
+                      build), then to a plain branch label.
+                    {%- endcomment -%}
+                    {%- if site.data.build.revision -%}
+                    <span class="footer-build" title="Deployed commit">
+                        <i class="fas fa-code-branch"></i>
+                        <span class="fb-branch">{{ site.data.build.branch | default: "main" }}</span> ·
+                        <a href="{{ site.data.build.repository_url }}/commit/{{ site.data.build.revision }}" target="_blank" rel="noopener">{{ site.data.build.revision_short | default: site.data.build.revision | slice: 0, 7 }}</a>
+                    </span>
+                    {%- elsif site.github.build_revision -%}
                     <span class="footer-build" title="Deployed commit">
                         <i class="fas fa-code-branch"></i>
                         <span class="fb-branch">{{ site.github.build_branch | default: "main" }}</span> ·

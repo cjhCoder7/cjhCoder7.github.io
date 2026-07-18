@@ -8,3 +8,6 @@ vendor/
 Gemfile.lock
 
 .DS_Store
+
+# Build info written by CI (GitHub Actions) — not source
+_data/build.yml
