@@ -24,6 +24,9 @@
     --accent: #C15F3C;
     --accent-strong: #A64B2C;
     --accent-soft: rgba(193, 95, 60, 0.08);
+    /* Pointer sheen — stronger than --accent-soft so the warm glow reads on the
+       near-white cards in light mode. */
+    --sheen-color: rgba(193, 95, 60, 0.20);
     --navbar-bg: rgba(250, 249, 245, 0.80);
     --navbar-border: rgba(31, 30, 29, 0.08);
     --card-overlay-bg: rgba(250, 249, 245, 0.92);
@@ -66,6 +69,7 @@
     --accent: #E08A66;
     --accent-strong: #EC9F80;
     --accent-soft: rgba(224, 138, 102, 0.12);
+    --sheen-color: rgba(224, 138, 102, 0.18);
     --navbar-bg: rgba(20, 20, 19, 0.80);
     --navbar-border: rgba(222, 220, 209, 0.10);
     --card-overlay-bg: rgba(38, 38, 36, 0.94);
@@ -284,8 +288,8 @@ a:hover {
     border-radius: inherit;
     background: radial-gradient(
         24rem 24rem at var(--mx, 50%) var(--my, 30%),
-        var(--accent-soft),
-        transparent 62%
+        var(--sheen-color),
+        transparent 70%
     );
     opacity: 0;
     transition: opacity 0.45s ease;
