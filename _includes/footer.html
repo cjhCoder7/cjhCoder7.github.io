@@ -1,14 +1,35 @@
 <footer class="footer">
     <div class="{% if page.container_class %}{{ page.container_class }}{% else %}container-lg{% endif %}">
-        <div class="row my-3">
-            <div class="col-6">
-                <div class="text-muted">
+        <div class="row my-3 align-items-center">
+            <div class="col-12 col-sm-4">
+                <div class="text-muted text-center text-sm-left">
                     <i>Last updated: {{ "now" | date: "%b %Y" }}</i>
                 </div>
             </div>
-            <div class="col-6">
-                <div class="text-right text-muted">
-                    {{ site.data.display.footer_text }}
+            <div class="col-sm-4 d-none d-sm-block">
+                <div class="text-center">
+                    <span class="footer-kbd-hint text-muted">
+                        Press <kbd>?</kbd> for keyboard shortcuts
+                    </span>
+                </div>
+            </div>
+            <div class="col-sm-4 d-none d-sm-block">
+                <div class="text-right">
+                    {%- if site.github.build_revision -%}
+                    <span class="footer-build" title="Deployed commit">
+                        <i class="fas fa-code-branch"></i>
+                        <span class="fb-branch">{{ site.github.build_branch | default: "main" }}</span> ·
+                        <a href="{{ site.github.repository_url }}/commit/{{ site.github.build_revision }}" target="_blank" rel="noopener">{{ site.github.build_revision | slice: 0, 7 }}</a>
+                    </span>
+                    {%- else -%}
+                    <span class="footer-build" title="Source on GitHub">
+                        <i class="fas fa-code-branch"></i>
+                        <span class="fb-branch">main</span>
+                    </span>
+                    {%- endif -%}
+                    {% if site.data.display.footer_text %}
+                    <div class="text-muted">{{ site.data.display.footer_text }}</div>
+                    {% endif %}
                 </div>
             </div>
         </div>

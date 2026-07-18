@@ -1,30 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
+<!--
+  ┌─────────────────────────────────────────────────────────────┐
+  │  Hi — you read the source. Nice.                            │
+  │                                                             │
+  │  Junhang Cheng · building LLM foundation models @ Beihang.  │
+  │  Held together by curiosity, coffee, and gradient descent.  │
+  │                                                             │
+  │  Say hello   →  chengjunhang7@gmail.com                     │
+  │  Tinker with →  press ? on any page for keyboard shortcuts  │
+  └─────────────────────────────────────────────────────────────┘
+  Built on Jekyll · academic-homepage by luost26.
+-->
 <!-- Template: https://github.com/luost26/academic-homepage -->
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="google-site-verification" content="dtoF-0fE4r7O8X5WG3EbP7jDbBhge1wqbCiq1zXj0_M" />
     <title>{{ site.data.profile.navbar_name }} - {{ page.title }}</title>
+
+    <!-- SEO / social share -->
+    {%- assign page_desc = page.description | default: site.description -%}
+    {%- assign og_image = '/assets/images/og-card.png' | absolute_url -%}
+    <meta name="description" content="{{ page_desc | strip_html | strip_newlines | escape }}">
+    <meta name="author" content="{{ site.data.profile.primary_name | escape }}">
+    <link rel="canonical" href="{{ page.url | absolute_url }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ site.title | default: site.data.profile.navbar_name | escape }}">
+    <meta property="og:title" content="{{ site.data.profile.navbar_name }} — {{ page.title }}">
+    <meta property="og:description" content="{{ page_desc | strip_html | strip_newlines | escape }}">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    <meta property="og:image" content="{{ og_image }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ site.data.profile.navbar_name }} — {{ page.title }}">
+    <meta name="twitter:description" content="{{ page_desc | strip_html | strip_newlines | escape }}">
+    <meta name="twitter:image" content="{{ og_image }}">
+
+    <!-- Match the browser UI chrome to the theme (warm paper / charcoal) -->
+    <meta name="theme-color" content="#FAF9F5" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+
     <link rel="icon" href="{{ '/favicon.ico' | relative_url }}" type="image/x-icon">
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-P5MgMn1jBN01asBgU0z60Qk4QxiXo86+wlFahKrsQf37c9cro517WzVSPPV1tDKzhku2iJ2FVgL67wG03SGnNA==" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Raleway:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap" rel="stylesheet">
+    <!-- Official Anthropic Sans (self-hosted, variable) — see assets/fonts/README.md -->
+    <link rel="preload" href="{{ '/assets/fonts/AnthropicSans-Variable.woff2' | relative_url }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ '/assets/css/global.css' | relative_url }}">
     <script src="{{ '/assets/js/theme-toggle.js' | relative_url }}"></script>
 </head>
 <body class="bg-light" {{ page.body_attr }}>
+    <!-- Fixed corner decorations: pinned to the viewport, behind page content -->
+    <div class="corner-decor corner-decor--spiderman" aria-hidden="true"></div>
+    <div class="corner-decor corner-decor--cr7" aria-hidden="true"></div>
+
     {% include navbar.html %}
     <div class="{% if page.container_class %}{{ page.container_class }}{% else %}container-lg{% endif %}">
         {{content}}
     </div>
     {% include footer.html %}
+
+    <button id="back-to-top" type="button" aria-label="Back to top" title="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Keyboard shortcut help (opened with "?") -->
+    <div id="kbd-help" class="kbd-help-backdrop" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts" aria-hidden="true">
+        <div class="kbd-help">
+            <h6><i class="fas fa-keyboard"></i> Keyboard shortcuts</h6>
+            <div class="kbd-help-row"><span>Go to home</span><span class="keys"><kbd>g</kbd> <kbd>h</kbd></span></div>
+            <div class="kbd-help-row"><span>Go to publications</span><span class="keys"><kbd>g</kbd> <kbd>p</kbd></span></div>
+            <div class="kbd-help-row"><span>Toggle dark mode</span><span class="keys"><kbd>t</kbd></span></div>
+            <div class="kbd-help-row"><span>Back to top</span><span class="keys"><kbd>Home</kbd></span></div>
+            <div class="kbd-help-row"><span>This help</span><span class="keys"><kbd>?</kbd></span></div>
+            <div class="kbd-help-row"><span>Dismiss</span><span class="keys"><kbd>Esc</kbd></span></div>
+        </div>
+    </div>
+
+    <script>window.__SITE_BASEURL__ = "{{ '/' | relative_url }}";</script>
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -49,5 +107,7 @@
     </script>
     <script src="{{ '/assets/js/common.js' | relative_url }}"></script>
     <script src="{{ '/assets/js/bubble_visual_hash.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/reveal.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/interactions.js' | relative_url }}"></script>
 </body>
 </html>

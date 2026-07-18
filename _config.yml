@@ -14,6 +14,11 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://cjhcoder7.github.io" # the base hostname & protocol for the site (used for absolute URLs in social meta)
+
+# Used by social/SEO meta tags (see _layouts/default.html)
+title: "Junhang Cheng"
+description: "Junhang Cheng (程浚航) — building LLM foundation models at Beihang University. Research on data engineering, pre-training, mid-training, and post-training for large language models."
 
 # Build settings
 markdown: kramdown

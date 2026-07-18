@@ -1,126 +1,357 @@
 @charset "utf-8";
 
 /* ============================================
-   Theme Variables (Light - default)
+   Theme Variables (Light — default)
    ============================================ */
+/* Neutrals aligned to Anthropic's official design tokens (from Claude's
+   MCP Apps design guidelines): ink #141413, paper #FAF9F5, secondary #F5F4ED,
+   text-secondary #3D3D3A, text-tertiary #73726C, border hue #1F1E1D. The
+   warm-terracotta accent is Claude's brand color and is intentionally kept. */
 :root {
-    --bg-primary: #FDFDF7;
-    --bg-card: #FDFDF7;
-    --bg-card-hover: #F5F5F0;
-    --text-primary: #171717;
-    --text-secondary: #3E3E3E;
-    --text-muted: #707070;
-    --border-color: #DEDEDE;
-    --shadow-color: rgba(0, 0, 0, 0.06);
-    --shadow-sm: 0 .125rem .25rem rgba(0, 0, 0, 0.06);
-    --link-color: #C85A3A;
-    --link-hover-color: #DE7356;
-    --navbar-bg: #FDFDF7;
-    --navbar-border: rgba(0, 0, 0, 0.08);
-    --card-overlay-bg: rgba(253, 253, 247, 0.92);
-    --hr-color: #F0F0F0;
-    --badge-bg: #F0F0F0;
-    --badge-text: #171717;
-    --modal-bg: #FDFDF7;
-    --code-bg: #FDFDF7;
-    --img-thumbnail-bg: #FDFDF7;
-    --img-thumbnail-border: #DEDEDE;
-    --scrollbar-track: #F0F0F0;
-    --scrollbar-thumb: #C8C8C8;
-    --tooltip-bg: #171717;
-    --tooltip-text: #FDFDF7;
+    --bg-primary: #FAF9F5;
+    --bg-card: #FFFFFF;
+    --bg-card-hover: #F5F4ED;
+    --text-primary: #141413;
+    --text-secondary: #3D3D3A;
+    --text-muted: #73726C;
+    --border-color: #E7E5DC;
+    --border-strong: #D7D4C9;
+    --shadow-sm: 0 1px 2px rgba(50, 40, 25, 0.05);
+    --shadow-md: 0 1px 3px rgba(50, 40, 25, 0.05), 0 4px 16px rgba(50, 40, 25, 0.05);
+    --shadow-lg: 0 2px 6px rgba(50, 40, 25, 0.06), 0 12px 32px rgba(50, 40, 25, 0.09);
+    --link-color: #B2532F;
+    --link-hover-color: #A64B2C;
+    --accent: #C15F3C;
+    --accent-strong: #A64B2C;
+    --accent-soft: rgba(193, 95, 60, 0.08);
+    --navbar-bg: rgba(250, 249, 245, 0.80);
+    --navbar-border: rgba(31, 30, 29, 0.08);
+    --card-overlay-bg: rgba(250, 249, 245, 0.92);
+    --hr-color: #ECEAE1;
+    --badge-bg: #F0EEE6;
+    --badge-text: #141413;
+    --chip-bg: transparent;
+    --chip-border: #D7D4C9;
+    --modal-bg: #FFFFFF;
+    --code-bg: #F5F4ED;
+    --img-thumbnail-bg: #FFFFFF;
+    --img-thumbnail-border: #E7E5DC;
+    --scrollbar-track: transparent;
+    --scrollbar-thumb: #D5D0C4;
+    --tooltip-bg: #141413;
+    --tooltip-text: #FAF9F5;
 }
 
 /* ============================================
    Dark Theme Variables
    ============================================ */
+/* Dark neutrals aligned to Anthropic's official dark tokens: page #141413,
+   secondary surface #262624, elevated #30302E, text #FAF9F5 / #C2C0B6 / #9C9A92,
+   borders derived from #DEDCD1. Claude's dark UI is a warm charcoal, NOT black —
+   this replaces the previous near-black (#0B0B0C) that read as generic dark mode. */
 [data-theme="dark"] {
-    --bg-primary: #09090B;
-    --bg-card: #171717;
-    --bg-card-hover: #1E1E1E;
-    --text-primary: #DEDEDE;
-    --text-secondary: #9E9E9E;
-    --text-muted: #707070;
-    --border-color: #262626;
-    --shadow-color: rgba(0, 0, 0, 0.4);
-    --shadow-sm: 0 .125rem .25rem rgba(0, 0, 0, 0.4);
-    --link-color: #DE7356;
-    --link-hover-color: #E8947C;
-    --navbar-bg: #171717;
-    --navbar-border: rgba(255, 255, 255, 0.06);
-    --card-overlay-bg: rgba(23, 23, 23, 0.94);
-    --hr-color: #262626;
-    --badge-bg: #262626;
-    --badge-text: #DEDEDE;
-    --modal-bg: #171717;
-    --code-bg: #09090B;
-    --img-thumbnail-bg: #171717;
-    --img-thumbnail-border: #262626;
-    --scrollbar-track: #171717;
-    --scrollbar-thumb: #333333;
-    --tooltip-bg: #DEDEDE;
-    --tooltip-text: #09090B;
+    --bg-primary: #141413;
+    --bg-card: #262624;
+    --bg-card-hover: #30302E;
+    --text-primary: #FAF9F5;
+    --text-secondary: #C2C0B6;
+    --text-muted: #9C9A92;
+    --border-color: #37362F;
+    --border-strong: #44433C;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 2px 6px rgba(0, 0, 0, 0.5), 0 12px 32px rgba(0, 0, 0, 0.45);
+    --link-color: #E08A66;
+    --link-hover-color: #EC9F80;
+    --accent: #E08A66;
+    --accent-strong: #EC9F80;
+    --accent-soft: rgba(224, 138, 102, 0.12);
+    --navbar-bg: rgba(20, 20, 19, 0.80);
+    --navbar-border: rgba(222, 220, 209, 0.10);
+    --card-overlay-bg: rgba(38, 38, 36, 0.94);
+    --hr-color: #37362F;
+    --badge-bg: #30302E;
+    --badge-text: #FAF9F5;
+    --chip-bg: transparent;
+    --chip-border: #44433C;
+    --modal-bg: #262624;
+    --code-bg: #1E1E1C;
+    --img-thumbnail-bg: #262624;
+    --img-thumbnail-border: #37362F;
+    --scrollbar-track: transparent;
+    --scrollbar-thumb: #44433C;
+    --tooltip-bg: #FAF9F5;
+    --tooltip-text: #141413;
 }
 
 /* ============================================
-   Base Styles with Theme Support
+   Base
    ============================================ */
+/* Official Anthropic Sans — Claude's own typeface, self-hosted. One variable
+   font covers weight 300–800 and optical size 16–48. See assets/fonts/README.md
+   for provenance + licensing. Latin only, so CJK falls through to the system CJK
+   fonts in the stack below. Mono uses the system monospace, matching Claude's
+   official `font-mono` token (`ui-monospace, monospace`). */
+@font-face {
+    font-family: "Anthropic Sans";
+    src: url("/assets/fonts/AnthropicSans-Variable.woff2") format("woff2");
+    font-weight: 300 800;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --font-sans: "Anthropic Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB",
+        "Microsoft YaHei", sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+        "Liberation Mono", monospace;
+}
+
 body {
-    font-family: "Lato", sans-serif;
+    font-family: var(--font-sans);
     font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.65;
     padding-top: 5rem;
     background-color: var(--bg-primary) !important;
     color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-optical-sizing: auto;
     transition: background-color 0.3s ease, color 0.3s ease;
+    /* Own stacking context so the fixed corner decorations (z-index:-1) paint
+       above the page background but below all page content. */
+    position: relative;
+    z-index: 0;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6 {
-    font-weight: 700;
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.011em;
+    text-wrap: balance;
 }
 
+h1, .h1 {
+    font-weight: 650;
+    letter-spacing: -0.022em;
+}
+
+p {
+    line-height: 1.65;
+}
+
+/* ============================================
+   Cards & surfaces — quiet borders, minimal shadow
+   ============================================ */
 .card {
-    border-radius: 0.8rem !important;
+    border-radius: 0.9rem !important;
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    transition: background-color 0.3s ease, border-color 0.3s ease,
+        box-shadow 0.3s ease;
 }
 
 .card-img-overlay {
-    border-radius: 0.8rem !important;
+    border-radius: 0.9rem !important;
+}
+
+.card.shadow-sm,
+.bg-white.shadow-sm {
+    box-shadow: var(--shadow-md) !important;
+    border-radius: 0.9rem !important;
+    overflow: hidden;
+}
+
+.card-body {
+    color: var(--text-primary);
+}
+
+.shadow-sm {
+    box-shadow: var(--shadow-sm) !important;
 }
 
 .rounded-xl {
-    border-radius: 0.8rem !important;
+    border-radius: 0.9rem !important;
 }
 
 .rounded-xl-bottom {
-    border-bottom-right-radius: 0.8rem !important;
-    border-bottom-left-radius: 0.8rem !important;
+    border-bottom-right-radius: 0.9rem !important;
+    border-bottom-left-radius: 0.9rem !important;
 }
 
 .rounded-xl-top {
-    border-top-left-radius: 0.8rem !important;
-    border-top-right-radius: 0.8rem !important;
+    border-top-left-radius: 0.9rem !important;
+    border-top-right-radius: 0.9rem !important;
 }
 
+/* ============================================
+   Navbar
+   ============================================ */
+.navbar {
+    background-color: var(--navbar-bg) !important;
+    border-bottom: 1px solid transparent;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    backdrop-filter: saturate(180%) blur(16px);
+    transition: background-color 0.3s ease, border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+/* Flat while at the top of the page; hairline + soft lift once scrolled. */
+.navbar--scrolled {
+    border-bottom-color: var(--navbar-border);
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.navbar-brand,
+.navbar-brand strong {
+    color: var(--text-primary) !important;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.navbar .nav-link {
+    position: relative;
+    color: var(--text-secondary) !important;
+    font-weight: 450;
+    transition: color 0.2s ease;
+}
+
+.navbar .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: 0.35rem;
+    height: 1.5px;
+    border-radius: 2px;
+    background: var(--accent);
+    opacity: 0;
+    transform: scaleX(0.5);
+    transform-origin: center;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-item.active .nav-link {
+    color: var(--text-primary) !important;
+}
+
+.navbar .nav-item.active .nav-link::after {
+    opacity: 1;
+    transform: scaleX(1);
+}
+
+.navbar-toggler {
+    color: var(--text-secondary) !important;
+    border-color: var(--border-strong) !important;
+}
+
+/* ============================================
+   Links
+   ============================================ */
+a {
+    color: var(--link-color);
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--link-hover-color);
+}
+
+/* ============================================
+   Pointer-aware warm sheen
+   ============================================ */
+/* A faint warm light that trails the cursor (with inertia, set from JS) across
+   any surface marked .sheen-surface. Painted behind the card's content but over
+   its background, so it reads as the surface itself catching the light. Fades in
+   only while hovering; off for touch devices and reduced-motion (see below). */
+.sheen-surface {
+    position: relative;
+    isolation: isolate;
+}
+
+.sheen-surface::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: radial-gradient(
+        24rem 24rem at var(--mx, 50%) var(--my, 30%),
+        var(--accent-soft),
+        transparent 62%
+    );
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    pointer-events: none;
+}
+
+.sheen-surface.is-pointer-active::before {
+    opacity: 1;
+}
+
+/* ============================================
+   Profile
+   ============================================ */
 .text-profile-position {
     font-weight: 400;
+    color: var(--text-secondary);
 }
 
 .text-profile-bio {
     font-weight: 400;
+    color: var(--text-secondary);
 }
 
-.navbar {
-    opacity: 0.95;
+.text-profile-bio p {
+    margin-bottom: 0.85rem;
+}
+
+.profile-name {
+    font-weight: 500;
+    letter-spacing: -0.022em;
+    line-height: 1.1;
+    color: var(--text-primary);
+}
+
+.profile-name small {
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.profile-portrait {
+    border-radius: 0.9rem !important;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--img-thumbnail-border) !important;
+    padding: 0.35rem;
+    background-color: var(--bg-card);
+}
+
+/* `img.` raises specificity so this wins over the shared `.img-thumbnail`
+   transition (which otherwise drops `transform`, making the hover lift snap
+   instantly — read as a small bounce). Smooth, symmetric easing lets the
+   portrait settle calmly. */
+img.profile-portrait {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.4s ease,
+        background-color 0.3s ease,
+        border-color 0.3s ease;
+}
+
+img.profile-portrait:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-lg);
+}
+
+.text-profile-position img.inline-badge {
+    height: 17px;
+    vertical-align: -14%;
 }
 
 .inline-badge {
@@ -134,6 +365,78 @@ h6,
     white-space: nowrap;
 }
 
+/* ============================================
+   Contact links — understated outlined chips
+   ============================================ */
+.contact-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.42rem;
+    margin: 0.28rem 0.5rem 0.28rem 0;
+    padding: 0.32rem 0.8rem;
+    border: 1px solid var(--chip-border);
+    border-radius: 8px;
+    background-color: var(--chip-bg);
+    color: var(--text-secondary) !important;
+    font-size: 0.9rem;
+    font-weight: 450;
+    text-decoration: none !important;
+    transition: border-color 0.2s ease, color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.contact-links a i {
+    color: var(--accent);
+    font-size: 0.95em;
+}
+
+.contact-links a:hover {
+    color: var(--text-primary) !important;
+    border-color: var(--border-strong);
+    background-color: var(--bg-card-hover);
+}
+
+.contact-links .email-text {
+    font-family: var(--font-mono);
+    font-size: 0.83rem;
+    letter-spacing: -0.01em;
+}
+
+.email-text {
+    font-family: var(--font-mono);
+}
+
+/* ============================================
+   Section sub-headings (Education / Experience / Awards)
+   ============================================ */
+.section-heading-icon {
+    display: inline-block;
+    width: 1.35em;
+    line-height: 1;
+    text-align: center;
+}
+
+section > h6 {
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.005em;
+    margin-bottom: 0.65rem !important;
+}
+
+/* Card list headers ("News", "Selected Publications", year groups) */
+.bg-white > h6,
+.card h6 {
+    font-weight: 600;
+}
+
+.bg-white > h6 a {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* ============================================
+   Publications
+   ============================================ */
 .cover-image {
     width: 180px;
     max-height: 120px;
@@ -143,9 +446,77 @@ h6,
     min-height: 100px;
 }
 
+.pub-item-row {
+    transition: background-color 0.2s ease;
+}
+
+.pub-item-row .pub-cover-wrap {
+    overflow: hidden;
+    border-radius: 0.55rem;
+    border: 1px solid var(--border-color);
+}
+
+.pub-item-row img.lazy,
+.pub-item-row .bubble-visual-hash {
+    display: block;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pub-item-row:hover {
+    background-color: var(--accent-soft);
+}
+
+/* Cover gently pushes in within its frame as you hover the row. */
+.pub-item-row:hover img.lazy,
+.pub-item-row:hover .bubble-visual-hash {
+    transform: scale(1.04);
+}
+
+.pub-item-row h5,
+.pub-item-mobile-overlay h5 {
+    font-weight: 600;
+    letter-spacing: -0.013em;
+    line-height: 1.35;
+    /* Let publication titles wrap normally — no balanced-line adjustment.
+       (text-wrap's default is `wrap`; `normal` is not a valid value.) */
+    text-wrap: wrap;
+}
+
+/* Year headings on the publications page — plain and quiet */
+.pub-year {
+    font-weight: 650;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    scroll-margin-top: 6rem;
+    margin-bottom: 0.75rem;
+}
+
+/* Publication resource links — quiet inline text links */
+.abstract-links {
+    margin-top: 0.35rem !important;
+}
+
+.abstract-links a {
+    display: inline-block;
+    margin: 0.15rem 0.55rem 0.05rem 0;
+    color: var(--link-color) !important;
+    font-size: 0.82rem;
+    font-weight: 500;
+    text-decoration: none !important;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.abstract-links a:hover {
+    color: var(--link-hover-color) !important;
+    border-bottom-color: currentColor;
+}
+
+/* Lazy-load spinner */
 img.lazy,
 div.lazy {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='16' fill='none' stroke='%23DEDEDE' stroke-width='3'/%3E%3Cpath d='M20 4a16 16 0 0 1 16 16' fill='none' stroke='%23DE7356' stroke-width='3' stroke-linecap='round'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 20 20' to='360 20 20' dur='1.4s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='16' fill='none' stroke='%23E7E5DC' stroke-width='3'/%3E%3Cpath d='M20 4a16 16 0 0 1 16 16' fill='none' stroke='%23C15F3C' stroke-width='3' stroke-linecap='round'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 20 20' to='360 20 20' dur='1.4s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: 40px 40px;
@@ -154,75 +525,16 @@ div.lazy {
 
 [data-theme="dark"] img.lazy,
 [data-theme="dark"] div.lazy {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='16' fill='none' stroke='%23333333' stroke-width='3'/%3E%3Cpath d='M20 4a16 16 0 0 1 16 16' fill='none' stroke='%23DE7356' stroke-width='3' stroke-linecap='round'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 20 20' to='360 20 20' dur='1.4s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='16' fill='none' stroke='%23333333' stroke-width='3'/%3E%3Cpath d='M20 4a16 16 0 0 1 16 16' fill='none' stroke='%23E08A66' stroke-width='3' stroke-linecap='round'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 20 20' to='360 20 20' dur='1.4s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E");
 }
 
 .badge-publication {
     font-size: 100%;
 }
 
-.email-text {
-    font-family: Courier, monospace;
-}
-
 /* ============================================
-   Dark Mode Component Overrides
+   Bootstrap surface / utility overrides
    ============================================ */
-
-/* --- Headings --- */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6 {
-    color: var(--text-primary);
-}
-
-/* --- Links --- */
-a {
-    color: var(--link-color);
-    transition: color 0.2s ease;
-}
-
-a:hover {
-    color: var(--link-hover-color);
-}
-
-/* --- Navbar --- */
-.navbar {
-    background-color: var(--navbar-bg) !important;
-    border-bottom: 1px solid var(--navbar-border);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.navbar-brand,
-.navbar-brand strong {
-    color: var(--text-primary) !important;
-}
-
-.navbar .nav-link {
-    color: var(--text-secondary) !important;
-    transition: color 0.2s ease;
-}
-
-.navbar .nav-link:hover,
-.navbar .nav-item.active .nav-link {
-    color: var(--text-primary) !important;
-}
-
-.navbar-toggler {
-    color: var(--text-secondary) !important;
-    border-color: var(--border-color) !important;
-}
-
-/* --- Bootstrap bg-light / bg-white overrides --- */
 .bg-light {
     background-color: var(--bg-primary) !important;
 }
@@ -231,23 +543,6 @@ a:hover {
     background-color: var(--bg-card) !important;
 }
 
-/* --- Cards --- */
-.card {
-    background-color: var(--bg-card) !important;
-    border-color: var(--border-color) !important;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-}
-
-.card-body {
-    color: var(--text-primary);
-}
-
-/* --- Shadow override --- */
-.shadow-sm {
-    box-shadow: var(--shadow-sm) !important;
-}
-
-/* --- Text utilities --- */
 .text-muted {
     color: var(--text-muted) !important;
 }
@@ -260,12 +555,18 @@ a:hover {
     color: var(--text-primary) !important;
 }
 
-[data-theme="dark"] mark {
-    background-color: rgba(222, 115, 86, 0.2);
-    color: var(--text-primary);
+mark {
+    background-color: var(--accent-soft);
+    color: var(--text-secondary);
+    padding: 0.05em 0.3em;
+    border-radius: 4px;
 }
 
-/* --- Border utilities --- */
+[data-theme="dark"] mark {
+    background-color: rgba(224, 138, 102, 0.14);
+    color: var(--text-secondary);
+}
+
 .border-bottom,
 .border-top,
 .border-gray,
@@ -277,19 +578,21 @@ hr {
     border-top-color: var(--hr-color);
 }
 
-/* --- Image thumbnail --- */
 .img-thumbnail {
     background-color: var(--img-thumbnail-bg);
     border-color: var(--img-thumbnail-border);
 }
 
-/* --- Badges (both themes) --- */
+/* ============================================
+   Badges — solid, muted
+   ============================================ */
 .badge {
+    font-weight: 500;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .badge-primary {
-    background-color: #DE7356 !important;
+    background-color: var(--accent) !important;
 }
 
 .badge-info {
@@ -307,63 +610,81 @@ hr {
 
 [data-theme="dark"] .badge-warning {
     background-color: #C89040;
-    color: #DEDEDE;
+    color: var(--text-primary);
 }
 
 [data-theme="dark"] .badge-info {
     background-color: #C0886A;
 }
 
-/* --- Bootstrap .btn-primary override (both themes) --- */
+/* ============================================
+   Buttons — solid accent, restrained
+   ============================================ */
+.btn {
+    font-weight: 500;
+    border-radius: 8px;
+    transition: background-color 0.2s ease, border-color 0.2s ease,
+        color 0.2s ease;
+}
+
 .btn-primary {
-    background-color: #DE7356 !important;
-    border-color: #DE7356 !important;
+    background-color: var(--accent) !important;
+    border-color: var(--accent) !important;
     color: #fff !important;
 }
 
 .btn-primary:hover,
 .btn-primary:focus {
-    background-color: #C85A3A !important;
-    border-color: #C85A3A !important;
+    background-color: var(--accent-strong) !important;
+    border-color: var(--accent-strong) !important;
 }
 
 .btn-primary:active,
 .btn-primary.active {
-    background-color: #B34E30 !important;
-    border-color: #B34E30 !important;
+    background-color: var(--accent-strong) !important;
+    border-color: var(--accent-strong) !important;
 }
 
 .btn-outline-primary {
-    color: #DE7356 !important;
-    border-color: #DE7356 !important;
+    color: var(--accent) !important;
+    border-color: var(--accent) !important;
 }
 
 .btn-outline-primary:hover {
-    background-color: #DE7356 !important;
-    border-color: #DE7356 !important;
+    background-color: var(--accent) !important;
+    border-color: var(--accent) !important;
     color: #fff !important;
 }
 
-/* --- Year navigation pills (publications page, both themes) --- */
+/* ============================================
+   Year navigation pills (Publications page)
+   ============================================ */
 .nav-pills .nav-link {
     color: var(--text-secondary);
+    border-radius: 8px;
+    padding: 0.3rem 0.75rem;
+    margin-bottom: 0.1rem;
+    font-weight: 450;
     transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .nav-pills .nav-link:hover {
     color: var(--text-primary);
+    background-color: var(--accent-soft);
 }
 
 .nav-pills .nav-link.active {
     color: #fff !important;
-    background-color: #DE7356 !important;
+    background-color: var(--accent) !important;
 }
 
-/* --- Focus ring override (remove Bootstrap blue glow) --- */
+/* ============================================
+   Focus & selection
+   ============================================ */
 .btn-primary:focus,
 .btn-primary.focus,
 .form-control:focus {
-    box-shadow: 0 0 0 0.2rem rgba(222, 115, 86, 0.25) !important;
+    box-shadow: 0 0 0 0.2rem var(--accent-soft) !important;
 }
 
 .nav-link:focus,
@@ -373,22 +694,35 @@ hr {
     outline: none;
 }
 
-/* --- Selection color --- */
+/* Keyboard focus only — a quiet accent ring, never shown on mouse click. */
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+.nav-link:focus-visible,
+#theme-toggle-btn:focus-visible,
+#back-to-top:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
 ::selection {
-    background-color: rgba(222, 115, 86, 0.2);
+    background-color: var(--accent-soft);
     color: inherit;
 }
 
-/* --- Bootstrap link-primary / text-primary color override --- */
 a.text-primary,
 a.text-primary:hover {
     color: var(--link-color) !important;
 }
 
-/* --- Modals --- */
+/* ============================================
+   Modals
+   ============================================ */
 .modal-content {
     background-color: var(--modal-bg);
     border-color: var(--border-color);
+    border-radius: 0.9rem;
     color: var(--text-primary);
 }
 
@@ -396,31 +730,74 @@ a.text-primary:hover {
     border-top-color: var(--border-color);
 }
 
-/* --- Publication item mobile overlay --- */
-[data-theme="dark"] .d-md-none>.w-100 {
+/* ============================================
+   Publication mobile overlay
+   ============================================ */
+[data-theme="dark"] .d-md-none > .w-100 {
     background-color: var(--card-overlay-bg) !important;
 }
 
-/* --- Publication page bg-white containers --- */
 [data-theme="dark"] .my-0.p-0.bg-white {
     background-color: var(--bg-card) !important;
 }
 
-/* --- Publication item mobile overlay (replaces inline style) --- */
 .pub-item-mobile-overlay {
     background-color: var(--card-overlay-bg);
 }
 
-/* --- Footer --- */
+/* ============================================
+   Footer
+   ============================================ */
 .footer {
     background-color: var(--bg-primary);
-    color: var(--text-secondary);
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    margin-top: 3.5rem;
     transition: background-color 0.3s ease;
 }
 
-/* --- Scrollbar (WebKit browsers) --- */
+.footer-kbd-hint {
+    font-size: 0.8rem;
+    opacity: 0.75;
+}
+
+.footer-kbd-hint kbd {
+    font-size: 0.72em;
+    padding: 0.2em 0.42em;
+}
+
+/* Quiet build signature — a git-style ref, monospace, for the curious.
+   Shows the deployed commit on GitHub Pages; a plain branch ref otherwise. */
+.footer-build {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    letter-spacing: -0.01em;
+    color: var(--text-muted);
+    opacity: 0.8;
+    white-space: nowrap;
+}
+
+.footer-build .fb-branch {
+    color: var(--text-secondary);
+}
+
+.footer-build a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.footer-build a:hover {
+    color: var(--accent);
+    border-bottom-color: currentColor;
+}
+
+/* ============================================
+   Scrollbar
+   ============================================ */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 9px;
 }
 
 ::-webkit-scrollbar-track {
@@ -429,15 +806,15 @@ a.text-primary:hover {
 
 ::-webkit-scrollbar-thumb {
     background: var(--scrollbar-thumb);
-    border-radius: 4px;
+    border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--text-secondary);
+    background: var(--text-muted);
 }
 
 /* ============================================
-   Theme Toggle Button
+   Theme toggle button
    ============================================ */
 #theme-toggle-btn {
     display: flex;
@@ -446,12 +823,13 @@ a.text-primary:hover {
     width: 36px;
     height: 36px;
     padding: 0;
-    border: 1.5px solid var(--border-color);
+    border: 1px solid var(--border-strong);
     border-radius: 50%;
     background: transparent;
     color: var(--text-secondary);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: color 0.2s ease, border-color 0.2s ease,
+        background-color 0.2s ease;
     outline: none;
     margin-left: 8px;
     margin-right: auto;
@@ -459,24 +837,349 @@ a.text-primary:hover {
 }
 
 #theme-toggle-btn:hover {
-    color: var(--text-primary);
-    border-color: var(--text-primary);
-    background-color: var(--bg-card-hover);
-    transform: rotate(15deg);
+    color: var(--accent);
+    border-color: var(--accent);
+    background-color: var(--accent-soft);
 }
 
 #theme-toggle-btn:active {
-    transform: scale(0.9);
+    transform: scale(0.92);
 }
 
 #theme-toggle-btn .icon-sun,
 #theme-toggle-btn .icon-moon {
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 1;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#theme-toggle-btn:hover .icon-sun,
+#theme-toggle-btn:hover .icon-moon {
+    transform: rotate(-18deg);
+}
+
+/* ============================================
+   Back-to-top — quiet floating chip, appears after scrolling
+   ============================================ */
+#back-to-top {
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    z-index: 1030;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+    background-color: var(--bg-card);
+    color: var(--text-secondary);
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+        color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+#back-to-top.is-visible {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+}
+
+#back-to-top:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    background-color: var(--accent-soft);
+}
+
+#back-to-top:active {
+    transform: scale(0.92);
+}
+
+#back-to-top i {
+    font-size: 15px;
     line-height: 1;
 }
 
+@media (max-width: 575.98px) {
+    #back-to-top {
+        right: 1rem;
+        bottom: 1rem;
+    }
+}
 
-/* --- Smooth transitions for all themed elements --- */
+/* ============================================
+   Inline code / preformatted — use our mono token
+   (otherwise these fall back to Bootstrap's default mono stack)
+   ============================================ */
+code,
+pre,
+samp,
+tt {
+    font-family: var(--font-mono);
+}
+
+/* ============================================
+   Keyboard hints — <kbd> keycaps
+   ============================================ */
+kbd,
+.kbd {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.78em;
+    line-height: 1;
+    padding: 0.28em 0.5em;
+    color: var(--text-secondary);
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-bottom-width: 2px;
+    border-radius: 6px;
+    box-shadow: none;
+    white-space: nowrap;
+    vertical-align: baseline;
+}
+
+/* ============================================
+   Keyboard-shortcut help panel (opened with "?")
+   ============================================ */
+.kbd-help-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1080;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background-color: rgba(20, 16, 10, 0.28);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+[data-theme="dark"] .kbd-help-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.kbd-help-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.kbd-help {
+    width: 100%;
+    max-width: 380px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 0.9rem;
+    box-shadow: var(--shadow-lg);
+    padding: 1.35rem 1.5rem 1.5rem;
+    transform: translateY(8px) scale(0.98);
+    transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kbd-help-backdrop.is-open .kbd-help {
+    transform: none;
+}
+
+.kbd-help h6 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.kbd-help-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.4rem 0;
+}
+
+.kbd-help-row + .kbd-help-row {
+    border-top: 1px solid var(--hr-color);
+}
+
+.kbd-help-row span {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+}
+
+.kbd-help-row .keys {
+    display: inline-flex;
+    gap: 0.3rem;
+    flex-shrink: 0;
+}
+
+/* ============================================
+   Scroll reveal — gentle fade-up
+   ============================================ */
+[data-reveal] {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+
+[data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* ============================================
+   Error / prompt page
+   ============================================ */
+.error-page {
+    padding: 14vh 0 6vh;
+}
+
+.error-code {
+    font-family: var(--font-sans);
+    font-weight: 650;
+    font-size: clamp(4.5rem, 16vw, 8rem);
+    line-height: 1;
+    letter-spacing: -0.05em;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+}
+
+/* A small terminal line: the 404 as a shell would report it. The attempted
+   path is filled in by JS so the message reads true for the actual URL. */
+.error-shell {
+    display: inline-block;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0.85rem 1.1rem;
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    background-color: var(--code-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 0.7rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.error-shell .sh-prompt {
+    color: var(--accent);
+    font-weight: 600;
+    margin-right: 0.4rem;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.error-shell .sh-path {
+    color: var(--text-primary);
+}
+
+/* ============================================
+   Fixed corner decorations — quiet silhouettes pinned to the viewport
+   ============================================ */
+/* Two silhouettes fixed to the viewport corners (they don't scroll). They sit
+   on a low layer BEHIND the page content, so cards partially occlude them — a
+   subtle "peeking from behind" effect. Tinted via mask (the source SVGs are a
+   raw near-black that would otherwise vanish on the dark charcoal theme).
+   Non-interactive and hidden on small screens where space is tight. */
+.corner-decor {
+    position: fixed;
+    /* z-index -1 + the body stacking context (position:relative;z-index:0 on body)
+       makes paint order: body background → decoration → page content. So content
+       cards occlude the decorations, but they still show over the page bg. */
+    z-index: -1;
+    pointer-events: none;
+    background-color: var(--accent);
+    opacity: 0.14;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    transition: opacity 0.3s ease;
+}
+
+.corner-decor--spiderman {
+    top: 4.5rem;            /* just below the fixed navbar */
+    left: -0.75rem;         /* nudged inward, same 0.75rem step as CR7 */
+    width: 190px;
+    height: 300px;
+    -webkit-mask-image: url("/assets/images/decorate/spider-man.svg");
+    mask-image: url("/assets/images/decorate/spider-man.svg");
+}
+
+.corner-decor--cr7 {
+    right: 0.75rem;         /* just clear of the scrollbar, still near the edge */
+    bottom: 0;
+    width: 200px;
+    height: 300px;
+    -webkit-mask-image: url("/assets/images/decorate/cr7.svg");
+    mask-image: url("/assets/images/decorate/cr7.svg");
+}
+
+[data-theme="dark"] .corner-decor {
+    opacity: 0.16;
+}
+
+/* Space is tight below the lg breakpoint — hide the decorations there. */
+@media (max-width: 1199.98px) {
+    .corner-decor {
+        display: none;
+    }
+}
+
+/* ============================================
+   Motion preferences
+   ============================================ */
+html {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    [data-reveal] {
+        opacity: 1;
+        transform: none;
+    }
+
+    /* Keep decorative motion off, but never leave content shifted. */
+    .sheen-surface.is-pointer-active::before {
+        opacity: 0;
+    }
+
+    .profile-portrait:hover,
+    .pub-item-row:hover img.lazy,
+    .pub-item-row:hover .bubble-visual-hash,
+    #theme-toggle-btn:hover .icon-sun,
+    #theme-toggle-btn:hover .icon-moon {
+        transform: none;
+    }
+}
+
+/* Shared transitions */
 .card,
 .card-body,
 .navbar,
@@ -487,8 +1190,6 @@ a.text-primary:hover {
 .btn,
 .badge,
 hr,
-.border-bottom,
-.border-top,
 a,
 .text-muted,
 .img-thumbnail {
