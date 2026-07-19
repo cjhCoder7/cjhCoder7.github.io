@@ -15,7 +15,7 @@
 
     function revealNow(el, stagger) {
         if (el.classList.contains('is-visible')) return;
-        if (stagger) el.style.transitionDelay = stagger + 'ms';
+        if (stagger) el.style.setProperty('--reveal-delay', stagger + 'ms');
         el.classList.add('is-visible');
     }
 

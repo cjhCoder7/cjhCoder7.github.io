@@ -28,7 +28,7 @@
      */
     function setTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
-        updateToggleIcon(theme);
+        updateToggleState(theme);
     }
 
     /**
@@ -39,23 +39,12 @@
         localStorage.setItem(STORAGE_KEY, theme);
     }
 
-    /**
-     * Update the toggle button icon
-     */
-    function updateToggleIcon(theme) {
+    function updateToggleState(theme) {
         var btn = document.getElementById('theme-toggle-btn');
         if (!btn) return;
-        var iconSun = btn.querySelector('.icon-sun');
-        var iconMoon = btn.querySelector('.icon-moon');
-        if (iconSun && iconMoon) {
-            if (theme === DARK) {
-                iconSun.style.display = 'inline-block';
-                iconMoon.style.display = 'none';
-            } else {
-                iconSun.style.display = 'none';
-                iconMoon.style.display = 'inline-block';
-            }
-        }
+        var label = theme === DARK ? 'Switch to light mode' : 'Switch to dark mode';
+        btn.setAttribute('aria-label', label);
+        btn.setAttribute('title', label);
     }
 
     /**
@@ -90,8 +79,7 @@
         var btn = document.getElementById('theme-toggle-btn');
         if (btn) {
             btn.addEventListener('click', toggleTheme);
-            // Ensure icon is correct on load
-            updateToggleIcon(getPreferredTheme());
+            updateToggleState(getPreferredTheme());
         }
     });
 })();

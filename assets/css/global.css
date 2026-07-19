@@ -496,13 +496,14 @@ section>h6 {
 }
 
 .pub-item-row {
-    transition: background-color 0.2s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .pub-item-row .pub-cover-wrap {
     overflow: hidden;
     border-radius: 0.55rem;
     border: 1px solid var(--border-color);
+    transition: border-color 0.3s ease;
 }
 
 .pub-item-row img.lazy,
@@ -529,6 +530,12 @@ section>h6 {
     /* Let publication titles wrap normally — no balanced-line adjustment.
        (text-wrap's default is `wrap`; `normal` is not a valid value.) */
     text-wrap: wrap;
+    transition: color 0.3s ease;
+}
+
+.pub-item-row p,
+.pub-item-mobile-overlay p {
+    transition: color 0.3s ease;
 }
 
 /* Year headings on the publications page — plain and quiet */
@@ -539,6 +546,7 @@ section>h6 {
     color: var(--text-primary);
     scroll-margin-top: 6rem;
     margin-bottom: 0.75rem;
+    transition: color 0.3s ease;
 }
 
 /* Publication resource links — quiet inline text links */
@@ -554,7 +562,7 @@ section>h6 {
     font-weight: 500;
     text-decoration: none !important;
     border-bottom: 1px solid transparent;
-    transition: border-color 0.2s ease, color 0.2s ease;
+    transition: border-color 0.3s ease, color 0.3s ease;
 }
 
 .abstract-links a:hover {
@@ -714,7 +722,7 @@ hr {
     padding: 0.3rem 0.75rem;
     margin-bottom: 0.1rem;
     font-weight: 450;
-    transition: color 0.2s ease, background-color 0.2s ease;
+    transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 .nav-pills .nav-link:hover {
@@ -792,6 +800,11 @@ a.text-primary:hover {
 
 .pub-item-mobile-overlay {
     background-color: var(--card-overlay-bg);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pub-item-mobile-row {
+    transition: border-color 0.3s ease;
 }
 
 /* ============================================
@@ -813,6 +826,7 @@ a.text-primary:hover {
 .footer-kbd-hint kbd {
     font-size: 0.72em;
     padding: 0.2em 0.42em;
+    margin-right: 0.18em;
 }
 
 /* Quiet build signature — a git-style ref, monospace, for the curious.
@@ -877,8 +891,9 @@ a.text-primary:hover {
     background: transparent;
     color: var(--text-secondary);
     cursor: pointer;
-    transition: color 0.2s ease, border-color 0.2s ease,
-        background-color 0.2s ease;
+    position: relative;
+    transition: color 0.3s ease, border-color 0.3s ease,
+        background-color 0.3s ease, transform 0.15s ease;
     outline: none;
     margin-left: 8px;
     flex-shrink: 0;
@@ -896,14 +911,39 @@ a.text-primary:hover {
 
 #theme-toggle-btn .icon-sun,
 #theme-toggle-btn .icon-moon {
+    position: absolute;
     font-size: 15px;
     line-height: 1;
-    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 0.3s ease,
+        transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-#theme-toggle-btn:hover .icon-sun,
-#theme-toggle-btn:hover .icon-moon {
-    transform: rotate(-18deg);
+#theme-toggle-btn .icon-sun {
+    opacity: 0;
+    transform: rotate(-45deg) scale(0.65);
+}
+
+#theme-toggle-btn .icon-moon {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
+[data-theme="dark"] #theme-toggle-btn .icon-sun {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+}
+
+[data-theme="dark"] #theme-toggle-btn .icon-moon {
+    opacity: 0;
+    transform: rotate(45deg) scale(0.65);
+}
+
+:root:not([data-theme="dark"]) #theme-toggle-btn:hover .icon-moon {
+    transform: rotate(-12deg) scale(1);
+}
+
+[data-theme="dark"] #theme-toggle-btn:hover .icon-sun {
+    transform: rotate(12deg) scale(1);
 }
 
 /* ============================================
@@ -1403,14 +1443,20 @@ kbd,
 [data-reveal] {
     opacity: 0;
     transform: translateY(12px);
-    transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
     will-change: opacity, transform;
 }
 
 [data-reveal].is-visible {
     opacity: 1;
     transform: none;
+}
+
+.pub-year[data-reveal] {
+    transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+        color 0.3s ease;
 }
 
 /* ============================================
