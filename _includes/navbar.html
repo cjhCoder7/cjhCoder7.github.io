@@ -1,6 +1,17 @@
 <nav class="navbar navbar-expand-sm navbar-light bg-light fixed-top mb-5 shadow-sm">
     <div class="{% if page.container_class %}{{ page.container_class }}{% else %}container-lg{% endif %}">
-        <a class="navbar-brand" href="{{ '/' | relative_url }}"><strong>{{site.data.profile.navbar_name}}</strong></a>
+        <a class="navbar-brand" href="{{ '/' | relative_url }}">
+            <!-- Pixel prompt mark: an 8-bit ">" drawn as hard pixels, echoing the
+                 terminal motif ($ whoami / $ cat). Decorative; name follows. -->
+            <svg class="pixel-mark" width="9" height="14" viewBox="0 0 9 14" fill="currentColor" aria-hidden="true" focusable="false">
+                <rect x="0" y="0" width="2" height="2"/>
+                <rect x="2" y="2" width="2" height="2"/>
+                <rect x="4" y="4" width="2" height="2"/>
+                <rect x="6" y="6" width="2" height="2"/>
+                <rect x="4" y="8" width="2" height="2"/>
+                <rect x="2" y="10" width="2" height="2"/>
+                <rect x="0" y="12" width="2" height="2"/>
+            </svg><strong>{{site.data.profile.navbar_name}}</strong></a>
 
         <!-- Command-palette trigger (opens #cmdk; also ⌘K / Ctrl+K / "/") -->
         <button id="cmdk-trigger" class="cmdk-trigger" type="button"
@@ -16,8 +27,8 @@
             <i class="fas fa-moon icon-moon"></i>
         </button>
 
-        <button class="navbar-toggler" style="font-size: 1em; padding: 0.5em;" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fas fa-map"></i> Menu
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-map"></i> <span class="navbar-toggler-text">Menu</span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarResponsive">

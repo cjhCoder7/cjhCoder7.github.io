@@ -439,7 +439,7 @@
         var value = 'color:inherit;font-size:12px;' + mono;
 
         try {
-            console.log('%c$ whoami', accent);
+            console.log('%c$ whoami █', accent); // trailing block = pixel caret
             console.log('%cJunhang Cheng %c程浚航', head, label);
             console.log('%cBuilding LLM foundation models @ Beihang University.', value);
             console.log(
