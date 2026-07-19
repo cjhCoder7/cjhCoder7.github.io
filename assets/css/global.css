@@ -1140,6 +1140,10 @@ kbd,
         gap: 0;
     }
 
+    #theme-toggle-btn {
+        margin-right: 0.9rem;
+    }
+
     /* Hamburger: drop the "Menu" label and go icon-only — the map glyph alone is
        clear, and the word is what pushed the controls onto a second row. */
     .navbar-toggler-text {
