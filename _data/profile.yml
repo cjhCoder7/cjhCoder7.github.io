@@ -3,11 +3,11 @@ secondary_name: ""
 navbar_name: "Junhang Cheng"
 
 positions:
-- logo: /assets/images/badges/BUAA.svg
+- logo: /assets/images/photos/BUAA.svg
   name: Ph.D. in Computer Science & Technology, Beihang University (Expected)
-- logo: /assets/images/badges/BUAA.svg
+- logo: /assets/images/photos/BUAA.svg
   name: B.E. in Computer Science & Technology, Beihang University
-- logo: /assets/images/badges/XDFZ.png
+- logo: /assets/images/photos/XDFZ.png
   name: Junior & Senior High School Education, High School Affiliated to Southwest University
 
 
@@ -42,19 +42,19 @@ portrait_url: /assets/images/photos/Chengjunhang.jpg
 
 education:
 - name: Beihang University
-  logo: /assets/images/badges/BUAA.svg
+  logo: /assets/images/photos/BUAA.svg
   position: >-
     School of Computer Science <br/>
     Ph.D. Student
   date: Sep. 2027 - Jun. 2030 (Expected)
 - name: Beihang University
-  logo: /assets/images/badges/BUAA.svg
+  logo: /assets/images/photos/BUAA.svg
   position: >-
     School of Computer Science <br/>
     B.E. Student
   date: Sep. 2023 - Jun. 2027 (Expected)
 - name: High School Affiliated to Southwest University
-  logo: /assets/images/badges/XDFZ.png
+  logo: /assets/images/photos/XDFZ.png
   position: >-
     Science Track (Physics, Chemistry, Biology) <br/>
     Gaokao 670 · Ranked 284th in Chongqing
@@ -78,11 +78,11 @@ experience:
   position: Huawei Developer Advocate
   date: Dec. 2025 - present
 - name: Beihang University
-  logo: /assets/images/badges/BUAA.svg
+  logo: /assets/images/photos/BUAA.svg
   position: State Key Laboratory of Complex & Critical Software Environment, Research Intern
   date: Apr. 2024 - Jun. 2026
 - name: Beihang University
-  logo: /assets/images/badges/BUAA.svg
+  logo: /assets/images/photos/BUAA.svg
   position: Advanced Programming Language Design, Teaching Assistant
   date: Sep. 2024 - Jan. 2025
 - name: Tutor

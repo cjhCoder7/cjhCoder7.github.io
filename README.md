@@ -1,7 +1,7 @@
 # Junhang Cheng — Academic Homepage
 
-[![Website](https://img.shields.io/badge/website-cjhcoder7.github.io-2563eb?style=flat-square&logo=github)](https://cjhcoder7.github.io/)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+[![Website: cjhcoder7.github.io](assets/images/badges/website.svg)](https://cjhcoder7.github.io/)
+[![License: MIT](assets/images/badges/license-mit.svg)](LICENSE)
 
 Source code for my personal academic homepage: **[cjhcoder7.github.io](https://cjhcoder7.github.io/)**.
 
