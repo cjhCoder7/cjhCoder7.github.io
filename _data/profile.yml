@@ -13,7 +13,7 @@ positions:
 
 email: "chengjunhang7@gmail.com"
 secondary_email: "23230617@buaa.edu.cn"
-gscholar: DOqGLmEAAAAJ&hl  # This is an example, replace it with your own Google Scholar ID
+gscholar: DOqGLmEAAAAJ&hl
 github: cjhCoder7
 # twitter: your_twitter_id  # Do not include the '@' symbol
 # wechat_qrcode: /assets/images/etc/wechat.jpg
@@ -26,14 +26,14 @@ cv_link: /assets/files/resume_1_0_0.pdf
 short_bio_text_justify: false
 short_bio: >-
   <p>
-    I am currently pursuing a B.Eng. degree in Computer Science and Technology, at <a href="https://hc.buaa.edu.cn/xygk/gdlgxy.htm">School of Advanced Engineering</a>, <a href="https://ev.buaa.edu.cn/Schools___Colleges/Shen_Yuan_Honors_College.htm">Shen Yuan Honors College</a>, <a href="https://ev.buaa.edu.cn/">Beihang University</a>.
-    Starting in 2027, I will pursue a Ph.D. in Computer Science at Beihang University under the supervision of Prof. <a href="https://wgrong.github.io/">Wenge Rong</a>.
+    I am currently pursuing a B.Eng. in Computer Science and Technology at the <a href="https://hc.buaa.edu.cn/xygk/gdlgxy.htm">School of Advanced Engineering</a>, <a href="https://ev.buaa.edu.cn/Schools___Colleges/Shen_Yuan_Honors_College.htm">Shen Yuan Honors College</a>, <a href="https://ev.buaa.edu.cn/">Beihang University</a>.
+    Beginning in 2027, I will continue at Beihang for a Ph.D. in Computer Science, recommended for admission exempt from the entrance examination, under the supervision of Prof. <a href="https://wgrong.github.io/">Wenge Rong</a>.
   </p>
   <p>
-    During my junior year and prior, I conducted research on <strong>AI for Software Engineering (SE)</strong> under the supervision of Asst. Prof. <a href="https://liufang816.github.io/">Fang Liu</a> and Prof. <a href="https://scse.buaa.edu.cn/info/1078/2647.htm">Li Zhang</a>.
+    In my junior year and earlier, I worked on <strong>AI for Software Engineering (SE)</strong>, advised by Asst. Prof. <a href="https://liufang816.github.io/">Fang Liu</a> and Prof. <a href="https://scse.buaa.edu.cn/info/1078/2647.htm">Li Zhang</a>.
   </p>
   <p>
-    I also collaborated with Assoc. Prof. <a href="https://csjianyang.github.io/">Jian Yang</a>, focusing on <strong>Natural Language Processing (NLP)</strong>. Now, my research centers on <strong>LLM Foundation Models</strong>, including <u> <i> Data Engineering </i>, <i> Pre-training </i>, <i> Mid-training </i>, and <i> Post-training </i> techniques for Large Language Models </u>.
+    I have also collaborated with Assoc. Prof. <a href="https://csjianyang.github.io/">Jian Yang</a> on <strong>Natural Language Processing (NLP)</strong>. My research now centers on <strong>LLM Foundation Models</strong>, spanning <u><i>Data Engineering</i>, <i>Pre-training</i>, <i>Mid-training</i>, and <i>Post-training</i> for Large Language Models</u>.
   </p>
 
 portrait_url: /assets/images/photos/Chengjunhang.jpg
@@ -55,7 +55,9 @@ education:
   date: Sep. 2023 - Jun. 2027 (Expected)
 - name: High School Affiliated to Southwest University
   logo: /assets/images/badges/XDFZ.png
-  position: Physics, Chemistry, Biology
+  position: >-
+    Science Track (Physics, Chemistry, Biology) <br/>
+    Gaokao 670 · Ranked 284th in Chongqing
   date: Sep. 2017 - Jun. 2023
 
 experience:
