@@ -135,8 +135,18 @@ body {
     z-index: 0;
 }
 
-h1, h2, h3, h4, h5, h6,
-.h1, .h2, .h3, .h4, .h5, .h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
     font-family: var(--font-sans);
     font-weight: 600;
     color: var(--text-primary);
@@ -144,7 +154,8 @@ h1, h2, h3, h4, h5, h6,
     text-wrap: balance;
 }
 
-h1, .h1 {
+h1,
+.h1 {
     font-weight: 650;
     letter-spacing: -0.022em;
 }
@@ -322,11 +333,9 @@ a:hover {
     inset: 0;
     z-index: -1;
     border-radius: inherit;
-    background: radial-gradient(
-        24rem 24rem at var(--mx, 50%) var(--my, 30%),
-        var(--sheen-color),
-        transparent 70%
-    );
+    background: radial-gradient(24rem 24rem at var(--mx, 50%) var(--my, 30%),
+            var(--sheen-color),
+            transparent 70%);
     opacity: 0;
     transition: opacity 0.45s ease;
     pointer-events: none;
@@ -456,7 +465,7 @@ img.profile-portrait:hover {
     text-align: center;
 }
 
-section > h6 {
+section>h6 {
     font-weight: 600;
     color: var(--text-primary);
     letter-spacing: -0.005em;
@@ -464,12 +473,12 @@ section > h6 {
 }
 
 /* Card list headers ("News", "Selected Publications", year groups) */
-.bg-white > h6,
+.bg-white>h6,
 .card h6 {
     font-weight: 600;
 }
 
-.bg-white > h6 a {
+.bg-white>h6 a {
     font-weight: 500;
     font-size: 0.9rem;
 }
@@ -773,7 +782,7 @@ a.text-primary:hover {
 /* ============================================
    Publication mobile overlay
    ============================================ */
-[data-theme="dark"] .d-md-none > .w-100 {
+[data-theme="dark"] .d-md-none>.w-100 {
     background-color: var(--card-overlay-bg) !important;
 }
 
@@ -1047,7 +1056,7 @@ kbd,
     padding: 0.4rem 0;
 }
 
-.kbd-help-row + .kbd-help-row {
+.kbd-help-row+.kbd-help-row {
     border-top: 1px solid var(--hr-color);
 }
 
@@ -1109,7 +1118,7 @@ kbd,
     background-color: var(--accent-soft);
 }
 
-.cmdk-trigger > i {
+.cmdk-trigger>i {
     font-size: 0.82rem;
 }
 
@@ -1282,7 +1291,7 @@ kbd,
     scroll-margin: 0.4rem;
 }
 
-.cmdk-item > i {
+.cmdk-item>i {
     width: 1.15rem;
     text-align: center;
     flex-shrink: 0;
@@ -1317,7 +1326,7 @@ kbd,
     background-color: var(--accent-soft);
 }
 
-.cmdk-item.is-active > i {
+.cmdk-item.is-active>i {
     color: var(--accent);
 }
 
@@ -1377,7 +1386,7 @@ kbd,
     pointer-events: none;
 }
 
-.scroll-progress > span {
+.scroll-progress>span {
     display: block;
     height: 100%;
     width: 100%;
@@ -1480,8 +1489,10 @@ kbd,
 }
 
 .corner-decor--spiderman {
-    top: 4.5rem;            /* just below the fixed navbar */
-    left: -0.75rem;         /* nudged inward, same 0.75rem step as CR7 */
+    top: 4.5rem;
+    /* just below the fixed navbar */
+    left: -0.75rem;
+    /* nudged inward, same 0.75rem step as CR7 */
     width: 190px;
     height: 300px;
     -webkit-mask-image: url("/assets/images/decorate/spider-man.svg");
@@ -1489,7 +1500,8 @@ kbd,
 }
 
 .corner-decor--cr7 {
-    right: 0.75rem;         /* just clear of the scrollbar, still near the edge */
+    right: 0.75rem;
+    /* just clear of the scrollbar, still near the edge */
     bottom: 0;
     width: 200px;
     height: 300px;
@@ -1539,8 +1551,16 @@ kbd,
 }
 
 @keyframes pixel-blink {
-    0%, 50%      { opacity: 1; }
-    50.01%, 100% { opacity: 0; }
+
+    0%,
+    50% {
+        opacity: 1;
+    }
+
+    50.01%,
+    100% {
+        opacity: 0;
+    }
 }
 
 /* Dithered divider — a dotted run of squares, faded at both ends. */
@@ -1549,15 +1569,11 @@ hr.pixel-divider {
     height: 2px;
     margin-top: 1rem;
     margin-bottom: 1rem;
-    background-image: repeating-linear-gradient(
-        to right,
-        var(--border-strong) 0, var(--border-strong) 2px,
-        transparent 2px, transparent 6px
-    );
-    -webkit-mask-image: linear-gradient(
-        to right, transparent, #000 12%, #000 88%, transparent);
-    mask-image: linear-gradient(
-        to right, transparent, #000 12%, #000 88%, transparent);
+    background-image: repeating-linear-gradient(to right,
+            var(--border-strong) 0, var(--border-strong) 2px,
+            transparent 2px, transparent 6px);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
     opacity: 0.85;
 }
 
@@ -1600,6 +1616,7 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
