@@ -836,7 +836,6 @@ a.text-primary:hover {
         background-color 0.2s ease;
     outline: none;
     margin-left: 8px;
-    margin-right: auto;
     flex-shrink: 0;
 }
 
@@ -1025,6 +1024,312 @@ kbd,
     display: inline-flex;
     gap: 0.3rem;
     flex-shrink: 0;
+}
+
+/* ============================================
+   Command-palette trigger (navbar "Search ⌘K" pill)
+   ============================================ */
+.cmdk-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 36px;
+    /* Push everything after the brand to the right, so the search pill, theme
+       toggle and nav links read as one right-aligned cluster (Linear/Vercel
+       style) instead of clinging to the brand with a void in the middle. */
+    margin-left: auto;
+    padding: 0 0.7rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+/* On desktop the expanded nav-collapse would grow (flex:1) and shove the nav
+   links to the far edge, leaving a void after the search pill. Stop it from
+   growing so the pill's `margin-left:auto` gathers search + toggle + links into
+   one tidy right-aligned cluster. (Below sm the collapse is hidden, so this
+   min-width scope leaves the mobile layout untouched.) */
+@media (min-width: 576px) {
+    .navbar-expand-sm .navbar-collapse {
+        flex-grow: 0;
+    }
+
+    /* Separate the controls (search + theme) from the nav links so the moon
+       icon doesn't butt against "Home". */
+    #theme-toggle-btn {
+        margin-right: 0.75rem;
+    }
+}
+
+.cmdk-trigger:hover {
+    color: var(--text-primary);
+    border-color: var(--accent);
+    background-color: var(--accent-soft);
+}
+
+.cmdk-trigger > i {
+    font-size: 0.82rem;
+}
+
+.cmdk-trigger-label {
+    font-weight: 450;
+}
+
+.cmdk-trigger-keys {
+    display: inline-flex;
+    gap: 0.15rem;
+}
+
+.cmdk-trigger-keys kbd {
+    font-size: 0.66rem;
+    padding: 0.15em 0.38em;
+    border-bottom-width: 1px;
+    color: var(--text-muted);
+    background-color: transparent;
+}
+
+/* Below sm the navbar is tight — shrink to an icon-only button. */
+@media (max-width: 575.98px) {
+    .cmdk-trigger {
+        margin-left: auto;
+        margin-right: 0.4rem;
+        padding: 0 0.55rem;
+        gap: 0;
+    }
+
+    .cmdk-trigger-label,
+    .cmdk-trigger-keys {
+        display: none;
+    }
+}
+
+/* ============================================
+   Command palette (⌘K / Ctrl+K, or "/")
+   ============================================ */
+/* A search-driven menu for navigating and acting on the site — the natural
+   companion to the vim-style shortcuts above. Reuses the card/kbd design
+   language; opens near the top like Spotlight/Raycast/Linear. */
+.cmdk-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1090;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 15vh 1.25rem 1.25rem;
+    background-color: rgba(20, 16, 10, 0.30);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+}
+
+[data-theme="dark"] .cmdk-backdrop {
+    background-color: rgba(0, 0, 0, 0.55);
+}
+
+.cmdk-backdrop.is-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.cmdk-panel {
+    width: 100%;
+    max-width: 560px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 0.9rem;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    transform: translateY(-8px) scale(0.985);
+    opacity: 0.6;
+    transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
+}
+
+.cmdk-backdrop.is-open .cmdk-panel {
+    transform: none;
+    opacity: 1;
+}
+
+.cmdk-input-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--hr-color);
+}
+
+.cmdk-input-icon {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    flex-shrink: 0;
+}
+
+.cmdk-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 1.02rem;
+    line-height: 1.5;
+    outline: none;
+    padding: 0;
+}
+
+.cmdk-input::placeholder {
+    color: var(--text-muted);
+    opacity: 1;
+}
+
+.cmdk-esc {
+    flex-shrink: 0;
+    font-size: 0.7em;
+    padding: 0.2em 0.5em;
+    color: var(--text-muted);
+}
+
+.cmdk-list {
+    list-style: none;
+    margin: 0;
+    padding: 0.4rem;
+    max-height: min(52vh, 360px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.cmdk-group {
+    padding: 0.55rem 0.65rem 0.3rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.cmdk-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.65rem;
+    border-radius: 0.55rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    scroll-margin: 0.4rem;
+}
+
+.cmdk-item > i {
+    width: 1.15rem;
+    text-align: center;
+    flex-shrink: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    transition: color 0.15s ease;
+}
+
+.cmdk-label {
+    flex: 1 1 auto;
+    min-width: 0;
+    color: var(--text-primary);
+    font-size: 0.94rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cmdk-hint {
+    display: inline-flex;
+    gap: 0.28rem;
+    flex-shrink: 0;
+}
+
+.cmdk-hint kbd {
+    font-size: 0.68em;
+    padding: 0.18em 0.42em;
+}
+
+/* Keyboard/pointer highlight — a quiet warm wash, no jump. */
+.cmdk-item.is-active {
+    background-color: var(--accent-soft);
+}
+
+.cmdk-item.is-active > i {
+    color: var(--accent);
+}
+
+.cmdk-empty {
+    padding: 1.4rem 1rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.cmdk-footer {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    padding: 0.55rem 0.95rem;
+    border-top: 1px solid var(--hr-color);
+    color: var(--text-muted);
+    font-size: 0.72rem;
+}
+
+.cmdk-footer span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.cmdk-footer kbd {
+    font-size: 0.9em;
+    padding: 0.1em 0.4em;
+    border-bottom-width: 1px;
+}
+
+@media (max-width: 575.98px) {
+    .cmdk-backdrop {
+        padding: 8vh 0.9rem 0.9rem;
+    }
+
+    .cmdk-footer {
+        display: none;
+    }
+}
+
+/* ============================================
+   Scroll progress — a warm hairline that tracks reading depth
+   ============================================ */
+/* A 2px accent line pinned to the very top of the viewport; its fill grows
+   from 0 to full as the page is scrolled. Sits above the navbar but below the
+   dialogs. Invisible at the top of the page (zero width). */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 1050;
+    background: transparent;
+    pointer-events: none;
+}
+
+.scroll-progress > span {
+    display: block;
+    height: 100%;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    background: var(--accent);
+    opacity: 0.9;
+    transition: transform 0.12s linear;
 }
 
 /* ============================================

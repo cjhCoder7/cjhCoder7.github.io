@@ -5,11 +5,14 @@
  *   1. Pointer sheen: a warm light that trails the cursor across any card,
  *      easing toward the pointer with a little inertia (pointer devices only,
  *      off for touch and reduced-motion).
- *   2. Scroll-aware navbar — flat at the top, hairline + soft lift once scrolled.
+ *   2. Scroll-aware navbar — flat at the top, hairline + soft lift once scrolled;
+ *      also drives the reading-progress hairline at the top of the viewport.
  *   3. Back-to-top chip that fades in after scrolling.
- *   4. Keyboard shortcuts (Vim-flavoured): `g h` / `g p` to navigate, `t` to
+ *   4. Command palette (⌘K / Ctrl+K / "/"): fuzzy-searchable navigate + actions
+ *      (jump, toggle theme, copy email, open links), full keyboard control.
+ *   5. Keyboard shortcuts (Vim-flavoured): `g h` / `g p` to navigate, `t` to
  *      toggle theme, `?` for the help panel, `Esc` to dismiss.
- *   5. A quiet console signature for the curious.
+ *   6. A quiet console signature for the curious.
  */
 (function () {
     'use strict';
@@ -69,18 +72,26 @@
         });
     }
 
-    /* -- 2. Scroll-aware navbar & 3. back-to-top -------------------------- */
+    /* -- 2. Scroll-aware navbar, 3. back-to-top & reading progress -------- */
     function initScrollUI() {
         var navbar = document.querySelector('.navbar');
         var toTop = document.getElementById('back-to-top');
-        if (!navbar && !toTop) return;
+        var progress = document.getElementById('scroll-progress-bar');
+        if (!navbar && !toTop && !progress) return;
 
         var ticking = false;
+        var docEl = document.documentElement;
 
         function onScroll() {
-            var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+            var y = window.pageYOffset || docEl.scrollTop || 0;
             if (navbar) navbar.classList.toggle('navbar--scrolled', y > 8);
             if (toTop) toTop.classList.toggle('is-visible', y > 400);
+            if (progress) {
+                // Fraction of the page scrolled through (0 at top, 1 at bottom).
+                var max = (docEl.scrollHeight - docEl.clientHeight) || 1;
+                var ratio = Math.min(1, Math.max(0, y / max));
+                progress.style.transform = 'scaleX(' + ratio.toFixed(4) + ')';
+            }
             ticking = false;
         }
 
@@ -100,8 +111,240 @@
         }
     }
 
-    /* -- 4. Keyboard shortcuts ------------------------------------------- */
-    function initShortcuts() {
+    /* -- 4. Command palette (⌘K / Ctrl+K / "/") --------------------------- */
+    // A search-driven menu to navigate and act on the site. Fuzzy (subsequence)
+    // filter, full keyboard control, mouse hover to highlight. Returns a small
+    // API {open, close, isOpen} so the keyboard-shortcut layer can summon it.
+    function initCommandPalette() {
+        var backdrop = document.getElementById('cmdk');
+        if (!backdrop) return null;
+        var input = document.getElementById('cmdk-input');
+        var list = document.getElementById('cmdk-list');
+        var empty = backdrop.querySelector('.cmdk-empty');
+        var items = Array.prototype.slice.call(list.querySelectorAll('.cmdk-item'));
+        var groups = Array.prototype.slice.call(list.querySelectorAll('.cmdk-group'));
+        var baseurl = (window.__SITE_BASEURL__ || '').replace(/\/$/, '');
+        var lastFocused = null;
+        var activeItem = null;
+
+        // Precompute search haystacks; give each row an id for aria-activedescendant
+        // and remember its original position for stable ranking tie-breaks.
+        items.forEach(function (it, i) {
+            it.id = 'cmdk-item-' + i;
+            it._order = i;
+            var labelEl = it.querySelector('.cmdk-label');
+            var label = labelEl ? labelEl.textContent : '';
+            it._hay = (label + ' ' + (it.getAttribute('data-keywords') || '')).toLowerCase();
+        });
+
+        // Original DOM order (groups + items), so we can restore it when the
+        // query is cleared after a scored reorder.
+        var originalOrder = Array.prototype.slice.call(list.children);
+
+        function isOpen() { return backdrop.classList.contains('is-open'); }
+
+        // Relevance score for a query against a haystack; -1 means no match.
+        // Tiers: word-boundary substring > substring > subsequence ("gh" →
+        // GitHub). Earlier and tighter matches rank higher, so "git" surfaces
+        // GitHub above other rows that merely contain the letters.
+        function score(q, hay) {
+            var idx = hay.indexOf(q);
+            if (idx !== -1) {
+                var boundary = idx === 0 || hay.charAt(idx - 1) === ' ';
+                return 1000 + (boundary ? 500 : 0) - idx;
+            }
+            var i = 0, first = -1, last = -1;
+            for (var j = 0; j < hay.length && i < q.length; j++) {
+                if (hay.charAt(j) === q.charAt(i)) {
+                    if (first < 0) first = j;
+                    last = j;
+                    i++;
+                }
+            }
+            if (i !== q.length) return -1;
+            return 200 - (last - first) - first * 0.5; // prefer tight, early spans
+        }
+
+        // Visible items in DOM order — which equals ranked order after a search.
+        function visibleItems() {
+            return Array.prototype.slice.call(list.querySelectorAll('.cmdk-item'))
+                .filter(function (it) { return !it.hidden; });
+        }
+
+        function setActive(it, scroll) {
+            if (activeItem) {
+                activeItem.classList.remove('is-active');
+                activeItem.setAttribute('aria-selected', 'false');
+            }
+            activeItem = it || null;
+            if (activeItem) {
+                activeItem.classList.add('is-active');
+                activeItem.setAttribute('aria-selected', 'true');
+                input.setAttribute('aria-activedescendant', activeItem.id);
+                if (scroll) activeItem.scrollIntoView({ block: 'nearest' });
+            } else {
+                input.removeAttribute('aria-activedescendant');
+            }
+        }
+
+        function filter() {
+            var q = input.value.trim().toLowerCase();
+
+            if (!q) {
+                // No query: restore the original grouped layout in DOM order.
+                originalOrder.forEach(function (el) { list.appendChild(el); });
+                items.forEach(function (it) { it.hidden = false; });
+                groups.forEach(function (g) { g.hidden = false; });
+                if (empty) empty.hidden = true;
+                setActive(visibleItems()[0] || null, true);
+                return;
+            }
+
+            // Searching: hide group headers, rank matching items, reorder the DOM.
+            groups.forEach(function (g) { g.hidden = true; });
+            var scored = [];
+            items.forEach(function (it) {
+                var s = score(q, it._hay);
+                it.hidden = s < 0;
+                if (s >= 0) scored.push({ it: it, s: s });
+            });
+            scored.sort(function (a, b) {
+                if (b.s !== a.s) return b.s - a.s;
+                return a.it._order - b.it._order; // stable: original order breaks ties
+            });
+            scored.forEach(function (row) { list.appendChild(row.it); });
+
+            if (empty) empty.hidden = scored.length > 0;
+            setActive(scored.length ? scored[0].it : null, true);
+        }
+
+        function move(delta) {
+            var vis = visibleItems();
+            if (!vis.length) return;
+            var idx = vis.indexOf(activeItem);
+            idx = (idx + delta + vis.length) % vis.length;
+            setActive(vis[idx], true);
+        }
+
+        function open() {
+            if (isOpen()) return;
+            lastFocused = document.activeElement;
+            var help = document.getElementById('kbd-help');
+            if (help) help.classList.remove('is-open'); // never stack dialogs
+            backdrop.classList.add('is-open');
+            backdrop.setAttribute('aria-hidden', 'false');
+            input.value = '';
+            filter();
+            window.requestAnimationFrame(function () { input.focus(); });
+        }
+
+        function close() {
+            if (!isOpen()) return;
+            backdrop.classList.remove('is-open');
+            backdrop.setAttribute('aria-hidden', 'true');
+            // Move focus out of the now-hidden dialog. If it was opened from a
+            // real control (e.g. the navbar trigger), return focus there for
+            // accessibility; otherwise just blur so page shortcuts work again
+            // (focusing <body> is a no-op and would strand focus in the input).
+            if (document.activeElement && backdrop.contains(document.activeElement)) {
+                document.activeElement.blur();
+            }
+            if (lastFocused && lastFocused.focus && lastFocused !== document.body) {
+                lastFocused.focus();
+            }
+            lastFocused = null;
+        }
+
+        // Copy-to-clipboard with a graceful fallback + a brief in-row confirmation.
+        // Re-entrant safe: the pristine label/icon are cached once, and any
+        // pending restore is cleared, so rapid repeats can't strand the "Copied"
+        // text or lose the original icon.
+        function flashCopied(it) {
+            var labelEl = it.querySelector('.cmdk-label');
+            var icon = it.querySelector('i');
+            if (!labelEl) return;
+            if (it._flashTimer) {
+                clearTimeout(it._flashTimer);
+            } else {
+                it._origLabel = labelEl.textContent;
+                it._origIcon = icon ? icon.className : null;
+            }
+            labelEl.textContent = 'Copied to clipboard';
+            if (icon) icon.className = 'fas fa-check';
+            it._flashTimer = setTimeout(function () {
+                labelEl.textContent = it._origLabel;
+                if (icon && it._origIcon !== null) icon.className = it._origIcon;
+                it._flashTimer = null;
+            }, 1100);
+        }
+
+        function legacyCopy(text) {
+            try {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.setAttribute('readonly', '');
+                ta.style.position = 'absolute';
+                ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+            } catch (e) { /* clipboard unavailable — nothing to do */ }
+        }
+
+        function copyText(text, it) {
+            function done() { if (it) flashCopied(it); }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(done, function () { legacyCopy(text); done(); });
+            } else {
+                legacyCopy(text);
+                done();
+            }
+        }
+
+        function run(it) {
+            if (!it) return;
+            var action = it.getAttribute('data-action');
+            var value = it.getAttribute('data-value') || '';
+            switch (action) {
+                case 'nav':   close(); window.location.href = baseurl + value; break;
+                case 'link':  window.open(value, '_blank', 'noopener'); close(); break;
+                case 'mail':  close(); window.location.href = 'mailto:' + value; break;
+                case 'theme': var b = document.getElementById('theme-toggle-btn'); if (b) b.click(); close(); break;
+                case 'top':   close(); window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' }); break;
+                case 'copy':  copyText(value, it); break; // stay open to show the confirmation
+                default:      close();
+            }
+        }
+
+        input.addEventListener('input', filter);
+
+        input.addEventListener('keydown', function (e) {
+            if (e.key === 'ArrowDown') { e.preventDefault(); move(1); }
+            else if (e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
+            else if (e.key === 'Enter') { e.preventDefault(); run(activeItem); }
+            else if (e.key === 'Escape') { e.preventDefault(); close(); }
+        });
+
+        backdrop.addEventListener('click', function (e) {
+            if (e.target === backdrop) close(); // click outside the panel dismisses
+        });
+
+        var trigger = document.getElementById('cmdk-trigger');
+        if (trigger) trigger.addEventListener('click', open);
+
+        items.forEach(function (it) {
+            it.addEventListener('click', function () { run(it); });
+            it.addEventListener('mousemove', function () {
+                if (activeItem !== it) setActive(it, false);
+            });
+        });
+
+        return { open: open, close: close, isOpen: isOpen };
+    }
+
+    /* -- 5. Keyboard shortcuts ------------------------------------------- */
+    function initShortcuts(palette) {
         var help = document.getElementById('kbd-help');
         var baseurl = (window.__SITE_BASEURL__ || '').replace(/\/$/, '');
 
@@ -119,6 +362,15 @@
         var gTimer = null;
 
         document.addEventListener('keydown', function (e) {
+            // ⌘K / Ctrl+K summons the command palette — caught before the guards
+            // below so it works even while a field is focused. (Not Alt.)
+            if ((e.metaKey || e.ctrlKey) && !e.altKey &&
+                (e.key === 'k' || e.key === 'K')) {
+                e.preventDefault();
+                if (palette) { palette.isOpen() ? palette.close() : palette.open(); }
+                return;
+            }
+
             // Never hijack typing, modifier combos, or IME composition.
             var t = e.target;
             var typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' ||
@@ -129,10 +381,16 @@
 
             if (e.key === '?') { toggleHelp(); e.preventDefault(); return; }
 
-            if (help && help.classList.contains('is-open')) {
-                // While help is open, ignore other shortcuts.
+            // "/" opens the palette — the familiar "quick search" key.
+            if (e.key === '/') {
+                e.preventDefault();
+                if (palette) palette.open();
                 return;
             }
+
+            // While a dialog is open, ignore the plain shortcuts below.
+            if (help && help.classList.contains('is-open')) return;
+            if (palette && palette.isOpen()) return;
 
             if (pendingG) {
                 pendingG = false;
@@ -160,7 +418,7 @@
         });
     }
 
-    /* -- 5. Console signature -------------------------------------------- */
+    /* -- 6. Console signature -------------------------------------------- */
     // A small `whoami` for anyone who opens the console. Uses the live theme
     // accent so it matches light/dark, and stays quiet — no noise, just a hello.
     function initConsoleSignature() {
@@ -190,15 +448,16 @@
                 '\n%cwrite  %c~ chengjunhang7@gmail.com',
                 label, value, label, value, label, value
             );
-            console.log('%cTip: press %c?%c anywhere for keyboard shortcuts.',
-                label, accent, label);
+            console.log('%cTip: press %c⌘K%c (or %c/%c) for the command palette, %c?%c for shortcuts.',
+                label, accent, label, accent, label, accent, label);
         } catch (err) { /* older consoles: no styling, no problem */ }
     }
 
     function init() {
         initPointerSheen();
         initScrollUI();
-        initShortcuts();
+        var palette = initCommandPalette();
+        initShortcuts(palette);
         initConsoleSignature();
     }
 

@@ -2,6 +2,14 @@
     <div class="{% if page.container_class %}{{ page.container_class }}{% else %}container-lg{% endif %}">
         <a class="navbar-brand" href="{{ '/' | relative_url }}"><strong>{{site.data.profile.navbar_name}}</strong></a>
 
+        <!-- Command-palette trigger (opens #cmdk; also ⌘K / Ctrl+K / "/") -->
+        <button id="cmdk-trigger" class="cmdk-trigger" type="button"
+                aria-label="Open command palette" title="Search & commands  (⌘K)">
+            <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+            <span class="cmdk-trigger-label">Search</span>
+            <span class="cmdk-trigger-keys" aria-hidden="true"><kbd>⌘</kbd><kbd>K</kbd></span>
+        </button>
+
         <!-- Theme Toggle Button (always visible) -->
         <button id="theme-toggle-btn" type="button" aria-label="Toggle dark mode" title="Toggle dark/light theme">
             <i class="fas fa-sun icon-sun" style="display:none;"></i>

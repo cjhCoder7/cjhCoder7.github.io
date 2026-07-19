@@ -55,6 +55,9 @@
     <script src="{{ '/assets/js/theme-toggle.js' | relative_url }}"></script>
 </head>
 <body class="bg-light" {{ page.body_attr }}>
+    <!-- Reading-progress hairline (fill width set from JS) -->
+    <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress-bar"></span></div>
+
     <!-- Fixed corner decorations: pinned to the viewport, behind page content -->
     <div class="corner-decor corner-decor--spiderman" aria-hidden="true"></div>
     <div class="corner-decor corner-decor--cr7" aria-hidden="true"></div>
@@ -73,12 +76,89 @@
     <div id="kbd-help" class="kbd-help-backdrop" role="dialog" aria-modal="true" aria-label="Keyboard shortcuts" aria-hidden="true">
         <div class="kbd-help">
             <h6><i class="fas fa-keyboard"></i> Keyboard shortcuts</h6>
+            <div class="kbd-help-row"><span>Command palette</span><span class="keys"><kbd>⌘</kbd> <kbd>K</kbd></span></div>
             <div class="kbd-help-row"><span>Go to home</span><span class="keys"><kbd>g</kbd> <kbd>h</kbd></span></div>
             <div class="kbd-help-row"><span>Go to publications</span><span class="keys"><kbd>g</kbd> <kbd>p</kbd></span></div>
             <div class="kbd-help-row"><span>Toggle dark mode</span><span class="keys"><kbd>t</kbd></span></div>
             <div class="kbd-help-row"><span>Back to top</span><span class="keys"><kbd>Home</kbd></span></div>
             <div class="kbd-help-row"><span>This help</span><span class="keys"><kbd>?</kbd></span></div>
             <div class="kbd-help-row"><span>Dismiss</span><span class="keys"><kbd>Esc</kbd></span></div>
+        </div>
+    </div>
+
+    <!-- Command palette (⌘K / Ctrl+K, or "/") — items are declarative; the
+         behaviour (fuzzy filter, keyboard nav, run) lives in interactions.js.
+         URLs are pulled from _data/profile.yml so they stay in sync. -->
+    {%- assign p = site.data.profile -%}
+    <div id="cmdk" class="cmdk-backdrop" role="dialog" aria-modal="true" aria-label="Command palette" aria-hidden="true">
+        <div class="cmdk-panel">
+            <div class="cmdk-input-row">
+                <i class="fas fa-magnifying-glass cmdk-input-icon" aria-hidden="true"></i>
+                <input id="cmdk-input" class="cmdk-input" type="text" role="combobox"
+                       aria-controls="cmdk-list" aria-expanded="true" aria-autocomplete="list"
+                       placeholder="Type a command or search…" autocomplete="off" spellcheck="false">
+                <kbd class="cmdk-esc">Esc</kbd>
+            </div>
+            <ul id="cmdk-list" class="cmdk-list" role="listbox" aria-label="Commands">
+                <li class="cmdk-group" role="presentation">Navigate</li>
+                <li class="cmdk-item" role="option" data-action="nav" data-value="/" data-keywords="home about profile bio index">
+                    <i class="fas fa-house" aria-hidden="true"></i><span class="cmdk-label">Home</span>
+                    <span class="cmdk-hint"><kbd>g</kbd><kbd>h</kbd></span>
+                </li>
+                <li class="cmdk-item" role="option" data-action="nav" data-value="/publications.html" data-keywords="publications papers research arxiv work">
+                    <i class="fas fa-book" aria-hidden="true"></i><span class="cmdk-label">Publications</span>
+                    <span class="cmdk-hint"><kbd>g</kbd><kbd>p</kbd></span>
+                </li>
+
+                <li class="cmdk-group" role="presentation">Actions</li>
+                <li class="cmdk-item" role="option" data-action="theme" data-keywords="theme dark light mode toggle appearance night day">
+                    <i class="fas fa-circle-half-stroke" aria-hidden="true"></i><span class="cmdk-label">Toggle dark / light theme</span>
+                    <span class="cmdk-hint"><kbd>t</kbd></span>
+                </li>
+                <li class="cmdk-item" role="option" data-action="copy" data-value="{{ p.email }}" data-keywords="copy email address contact mail reach">
+                    <i class="fas fa-at" aria-hidden="true"></i><span class="cmdk-label">Copy email address</span>
+                </li>
+                <li class="cmdk-item" role="option" data-action="top" data-keywords="top scroll up back beginning start">
+                    <i class="fas fa-arrow-up" aria-hidden="true"></i><span class="cmdk-label">Scroll to top</span>
+                    <span class="cmdk-hint"><kbd>Home</kbd></span>
+                </li>
+
+                <li class="cmdk-group" role="presentation">Links</li>
+                {%- if p.github %}
+                <li class="cmdk-item" role="option" data-action="link" data-value="https://github.com/{{ p.github }}" data-keywords="github code source repositories git open source">
+                    <i class="fab fa-github" aria-hidden="true"></i><span class="cmdk-label">GitHub — @{{ p.github }}</span>
+                    <i class="fas fa-arrow-up-right-from-square cmdk-ext" aria-hidden="true" style="width:auto;font-size:0.72rem;"></i>
+                </li>
+                {%- endif %}
+                {%- if p.gscholar %}
+                {%- if p.gscholar contains 'scholar.google' -%}{%- assign gs = p.gscholar -%}{%- else -%}{%- assign gs = 'https://scholar.google.com/citations?user=' | append: p.gscholar -%}{%- endif -%}
+                <li class="cmdk-item" role="option" data-action="link" data-value="{{ gs }}" data-keywords="google scholar citations papers profile academic">
+                    <i class="fas fa-graduation-cap" aria-hidden="true"></i><span class="cmdk-label">Google Scholar</span>
+                    <i class="fas fa-arrow-up-right-from-square cmdk-ext" aria-hidden="true" style="width:auto;font-size:0.72rem;"></i>
+                </li>
+                {%- endif %}
+                {%- if p.orcid %}
+                <li class="cmdk-item" role="option" data-action="link" data-value="https://orcid.org/{{ p.orcid }}" data-keywords="orcid id researcher identifier">
+                    <i class="fab fa-orcid" aria-hidden="true"></i><span class="cmdk-label">ORCID</span>
+                    <i class="fas fa-arrow-up-right-from-square cmdk-ext" aria-hidden="true" style="width:auto;font-size:0.72rem;"></i>
+                </li>
+                {%- endif %}
+                {%- if p.cv_link %}
+                <li class="cmdk-item" role="option" data-action="link" data-value="{{ p.cv_link | relative_url }}" data-keywords="resume cv curriculum vitae pdf download">
+                    <i class="fas fa-file-lines" aria-hidden="true"></i><span class="cmdk-label">Résumé (PDF)</span>
+                    <i class="fas fa-arrow-up-right-from-square cmdk-ext" aria-hidden="true" style="width:auto;font-size:0.72rem;"></i>
+                </li>
+                {%- endif %}
+                <li class="cmdk-item" role="option" data-action="mail" data-value="{{ p.email }}" data-keywords="email compose write message contact mail">
+                    <i class="fas fa-paper-plane" aria-hidden="true"></i><span class="cmdk-label">Send an email</span>
+                </li>
+            </ul>
+            <div class="cmdk-empty" hidden>No matching commands.</div>
+            <div class="cmdk-footer" aria-hidden="true">
+                <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+                <span><kbd>↵</kbd> run</span>
+                <span><kbd>esc</kbd> close</span>
+            </div>
         </div>
     </div>
 
