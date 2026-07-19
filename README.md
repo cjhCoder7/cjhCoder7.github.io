@@ -1,79 +1,103 @@
-# academic-homepage
+# Junhang Cheng — Academic Homepage
 
-![Preview](assets/images/etc/preview.png)
+[![Website](https://img.shields.io/badge/website-cjhcoder7.github.io-2563eb?style=flat-square&logo=github)](https://cjhcoder7.github.io/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 
-[![pages-build-deployment](https://github.com/luost26/academic-homepage/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/luost26/academic-homepage/actions/workflows/pages/pages-build-deployment)
-[![W3C Validation](https://img.shields.io/w3c-validation/html?targetUrl=https%3A%2F%2Fluost26.github.io%2Facademic-homepage)](https://validator.nu/?doc=https%3A%2F%2Fluost26.github.io%2Facademic-homepage)
-[![GitHub stars](https://img.shields.io/github/stars/luost26/academic-homepage)](https://github.com/luost26/academic-homepage)
-[![GitHub forks](https://img.shields.io/github/forks/luost26/academic-homepage)](https://github.com/luost26/academic-homepage/forks)
-<!-- [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fluost26%2Facademic-homepage&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com) -->
+Source code for my personal academic homepage: **[cjhcoder7.github.io](https://cjhcoder7.github.io/)**.
 
-A GitHub Pages (Jekyll) template for personal academic website. Click [here](https://luost.me/academic-homepage/) to see the demo.
+> This repository is a personalized fork of [luost26/academic-homepage](https://github.com/luost26/academic-homepage), created by [Shitong Luo](https://github.com/luost26). The original project is a Jekyll template for building personal academic websites.
 
-## User Community
+![Homepage preview](assets/images/etc/preview.png)
 
-[🏡](https://luost.me/)
-[:star:](https://cch1999.github.io/)
-[:star:](https://kyrrego.github.io/)
-[:star:](https://ced3-han.github.io/)
-[:star:](https://lihengchen.com/)
-[:star:](https://hpwang-whu.github.io/)
-[:star:](https://zhang-yingyi.github.io/)
-[:star:](https://wby24.github.io/)
-[:star:](https://pengfeixu.com/)
-[:star:](https://boqiuphd.github.io/)
-[:star:](https://www.huabing.li/)
-[:star:](https://xiecuiying.github.io/)
-[:star:](https://hannyang.github.io/)
-[:star:](https://king-play.github.io/)
-[🤖](https://andrewcwlee.github.io)
-[:star:](https://laiyao1.github.io)
-[🌜](https://tmsultan.github.io)
-[🚀](https://zaxguo.github.io)
-[:gemini:](https://hongyang-du.github.io)
-[🇻‍🇳](https://thuanz123.github.io)
-[🧬](https://gdalba.github.io/)
+## Highlights
 
-:hugs: Feel free to tell us if you are using this template for your website by creating an issue [here](https://github.com/luost26/academic-homepage/issues/new?assignees=&labels=&projects=&template=user-report.md&title=I+am+using+this+template%21).
+- Responsive academic profile built with Jekyll and GitHub Pages
+- Dedicated publication page with year-based navigation
+- Light and dark themes with mobile-friendly controls
+- Keyboard navigation and a command palette for quick access
+- Content-driven configuration through YAML and Markdown files
 
+## Repository Structure
 
-## Need Help?
+```text
+.
+├── _config.yml          # Site metadata and Jekyll configuration
+├── _data/               # Profile, navigation, display, and author data
+├── _publications/       # Publication entries grouped by year
+├── _includes/           # Reusable page components
+├── _layouts/            # Page layouts
+├── assets/              # Styles, scripts, images, fonts, and CV
+├── index.html            # Homepage
+└── publications.html     # Full publication list
+```
 
-If you run into **any** issues while using this template, or have suggestions for improvements, please don't hesitate to create an issue [here](https://github.com/luost26/academic-homepage/issues/new).
+## Updating the Website
 
-### FAQs
-- [Need blogging feature?](https://github.com/luost26/academic-homepage/issues/13#issuecomment-2646371324)
+Most content can be maintained without changing the page templates:
 
+- Edit personal information, education, experience, and awards in [`_data/profile.yml`](_data/profile.yml).
+- Add or update papers in [`_publications/`](_publications/).
+- Adjust navigation in [`_data/navigation.yml`](_data/navigation.yml).
+- Control homepage sections in [`_data/display.yml`](_data/display.yml).
+- Update site title, description, URL, and build settings in [`_config.yml`](_config.yml).
+- Replace images, publication covers, or the CV under [`assets/`](assets/).
 
-## Getting Started
+A publication entry uses YAML front matter similar to the following:
 
-1. First, fork this repository or click the "Use this template" button to create a new repository. The name of the repository should be `<your-github-username>.github.io` (click [here](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#types-of-github-pages-sites) to learn more about naming a GitHub Pages repository).
-   - If you plan to customize the functionality or style of the template, and do not want to get updates from this repository, choose "Use this template".
-   - If you plan to only edit the content (biography, publications, news, etc.), and would like to get updates from this repository, choose "Fork".
-   - If you want to contribute to this project, fork the repository and submit a pull request.
+```yaml
+---
+title: "Paper Title"
+date: 2026-01-01 00:00:00 +0800
+selected: true
+pub: "Conference or Journal"
+pub_date: "2026"
+cover: /assets/images/covers/example.png
+authors:
+  - Junhang Cheng
+links:
+  Paper: https://arxiv.org/abs/xxxx.xxxxx
+  Code: https://github.com/username/repository
+---
+```
 
-### Running Locally (Debug & Preview)
+## Local Development
 
-2. Follow the **step 1** and **step 2** of the instruction [here](https://jekyllrb.com/docs/) to install prerequisites and jekyll.
+Make sure Ruby, Bundler, and the Jekyll prerequisites are installed, then run:
 
-3. Clone your forked repository to your local machine.
+```bash
+git clone git@github.com:cjhCoder7/cjhCoder7.github.io.git
+cd cjhCoder7.github.io
+bundle install
+bundle exec jekyll serve
+```
 
-4. Run the following command in the root directory of the repository:
+Open the local address shown in the terminal, usually `http://127.0.0.1:4000`.
 
-   ```bash
-   bundle exec jekyll serve
-   ```
+If cached files cause unexpected results, rebuild the site with:
 
-5. Browse to the displayed URL to see the website.
+```bash
+bundle exec jekyll clean
+bundle exec jekyll serve
+```
 
-> Tip: clear cache
-> ```bash
-> bundle exec jekyll clean
-> ```
+## Deployment
 
-### Deploying to GitHub Pages
+This repository is configured as a GitHub user site. After GitHub Pages is enabled for the repository, updates pushed to the publishing branch are built and deployed automatically.
 
-2. Go to the repository settings and enable GitHub Pages. Detailed instructions can be found [here](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site#creating-your-site).
+## Upstream / Fork Information
 
-3. Navigate to your created website, and follow the instructions displayed on the homepage (if any) to finalize the setup.
+| Item | Original project information |
+| --- | --- |
+| Project | [`academic-homepage`](https://github.com/luost26/academic-homepage) |
+| Author | [Shitong Luo (`luost26`)](https://github.com/luost26) |
+| Description | A GitHub Pages and Jekyll template for personal academic websites |
+| Original demo | [luost.me/academic-homepage](https://luost.me/academic-homepage/) |
+| License | [MIT License](https://github.com/luost26/academic-homepage/blob/main/LICENSE) |
 
+The upstream repository provides the original layouts, components, configuration structure, and deployment instructions. This fork retains that foundation while adding my own academic content and further customizations to the visual style, interactions, command palette, theme controls, and mobile experience.
+
+For the upstream user community, FAQs, issue tracker, and original setup guide, see the [original README](https://github.com/luost26/academic-homepage#readme).
+
+Thanks to Shitong Luo and the contributors to the original project for making the template publicly available.
+
+This fork remains available under the [MIT License](LICENSE). The repository preserves the original copyright and license notice; please retain it when reusing the code.
