@@ -27,6 +27,9 @@
     /* Pointer sheen — stronger than --accent-soft so the warm glow reads on the
        near-white cards in light mode, but kept gentle. */
     --sheen-color: rgba(193, 95, 60, 0.14);
+    /* Cursor-following glare on tilted images — a soft white highlight that
+       catches the light as the surface turns. */
+    --tilt-glare: rgba(255, 255, 255, 0.28);
     --navbar-bg: rgba(250, 249, 245, 0.80);
     --navbar-border: rgba(31, 30, 29, 0.08);
     --card-overlay-bg: rgba(250, 249, 245, 0.92);
@@ -73,6 +76,7 @@
     --accent-strong: #EC9F80;
     --accent-soft: rgba(224, 138, 102, 0.12);
     --sheen-color: rgba(224, 138, 102, 0.13);
+    --tilt-glare: rgba(255, 255, 255, 0.16);
     --navbar-bg: rgba(20, 20, 19, 0.80);
     --navbar-border: rgba(222, 220, 209, 0.10);
     --card-overlay-bg: rgba(38, 38, 36, 0.94);
@@ -346,6 +350,45 @@ a:hover {
 }
 
 /* ============================================
+   Depth tilt — pointer-aware 3D on images
+   ============================================ */
+/* A restrained take on the "depth card": as the cursor moves across an image,
+   the surface tilts a few degrees in 3D and a soft glare tracks the pointer,
+   as if it were catching the light. Angles (--rx/--ry), pointer position
+   (--gx/--gy) and glare strength (--glow) are all set from JS; with no JS the
+   element sits perfectly flat. Off for touch and reduced-motion (see below). */
+.depth-tilt {
+    position: relative;
+    transform: perspective(720px)
+        rotateX(var(--rx, 0deg))
+        rotateY(var(--ry, 0deg));
+    /* Short, symmetric easing: the tilt trails the cursor closely while moving
+       and settles calmly back to flat on leave. */
+    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+}
+
+/* Cursor-following glare, clipped to the image's rounded corners. Painted over
+   the image but under any framing (padding/border stays crisp). */
+.depth-tilt::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    background: radial-gradient(18rem 18rem at var(--gx, 50%) var(--gy, 50%),
+            var(--tilt-glare),
+            transparent 60%);
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+}
+
+.depth-tilt.is-tilting::after {
+    opacity: var(--glow, 1);
+}
+
+/* ============================================
    Profile
    ============================================ */
 .text-profile-position {
@@ -380,6 +423,12 @@ a:hover {
     border: 1px solid var(--img-thumbnail-border) !important;
     padding: 0.35rem;
     background-color: var(--bg-card);
+}
+
+/* Round the portrait's tilt glare to match the frame (the ::after inherits
+   this). No overflow clip here — that would cut off the portrait's shadow. */
+.figure.depth-tilt {
+    border-radius: 0.9rem;
 }
 
 /* `img.` raises specificity so this wins over the shared `.img-thumbnail`
@@ -503,7 +552,10 @@ section>h6 {
     overflow: hidden;
     border-radius: 0.55rem;
     border: 1px solid var(--border-color);
-    transition: border-color 0.3s ease;
+    /* Keep the transform easing from .depth-tilt so the tilt settles back to
+       flat on leave, rather than snapping. */
+    transition: border-color 0.3s ease,
+        transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .pub-item-row img.lazy,
@@ -1680,6 +1732,15 @@ html {
     /* Keep decorative motion off, but never leave content shifted. */
     .sheen-surface.is-pointer-active::before {
         opacity: 0;
+    }
+
+    /* No 3D tilt or glare — hold every image flat. */
+    .depth-tilt {
+        transform: none;
+    }
+
+    .depth-tilt::after {
+        opacity: 0 !important;
     }
 
     .profile-portrait:hover,

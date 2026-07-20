@@ -72,6 +72,66 @@
         });
     }
 
+    /* -- 1b. Depth tilt: pointer-aware 3D on images ----------------------- */
+    // As the cursor crosses a `.depth-tilt` surface, tilt it a few degrees in
+    // 3D toward the pointer and drift a soft glare along with it. The CSS reads
+    // --rx/--ry (rotation), --gx/--gy (glare position) and --glow (its strength)
+    // and eases each change; here we only set them. Progressive enhancement:
+    // off for touch and reduced-motion, and the element sits flat without JS.
+    function initDepthTilt() {
+        if (reduceMotion || !finePointer) return;
+        var tiles = Array.prototype.slice.call(document.querySelectorAll('.depth-tilt'));
+        if (!tiles.length) return;
+
+        var MAX = 10; // peak tilt in degrees — kept gentle, not a gimmick
+
+        tiles.forEach(function (tile) {
+            var raf = null;
+            var pending = null; // latest pointer position, applied on the next frame
+
+            function apply() {
+                raf = null;
+                if (!pending) return;
+                var rect = tile.getBoundingClientRect();
+                if (!rect.width || !rect.height) return;
+                // Pointer position within the tile, 0..1 on each axis.
+                var px = (pending.x - rect.left) / rect.width;
+                var py = (pending.y - rect.top) / rect.height;
+                px = Math.min(1, Math.max(0, px));
+                py = Math.min(1, Math.max(0, py));
+                // Turn the surface to face the cursor: the corner nearest the
+                // pointer rises toward the viewer (the familiar tilt-card feel).
+                // Positive rotateX tips the top away, so the top half wants a
+                // negative angle; likewise the right half wants negative rotateY.
+                var rx = (py - 0.5) * 2 * MAX;
+                var ry = (0.5 - px) * 2 * MAX;
+                tile.style.setProperty('--rx', rx.toFixed(2) + 'deg');
+                tile.style.setProperty('--ry', ry.toFixed(2) + 'deg');
+                tile.style.setProperty('--gx', (px * 100).toFixed(1) + '%');
+                tile.style.setProperty('--gy', (py * 100).toFixed(1) + '%');
+                // Glare is faintest dead-centre, brightening toward the corners.
+                var dist = Math.min(1, Math.hypot(px - 0.5, py - 0.5) / 0.7071);
+                tile.style.setProperty('--glow', (0.5 + dist * 0.5).toFixed(2));
+            }
+
+            tile.addEventListener('mouseenter', function () {
+                tile.classList.add('is-tilting');
+            });
+            tile.addEventListener('mousemove', function (e) {
+                pending = { x: e.clientX, y: e.clientY };
+                if (raf === null) raf = window.requestAnimationFrame(apply);
+            });
+            tile.addEventListener('mouseleave', function () {
+                if (raf !== null) { window.cancelAnimationFrame(raf); raf = null; }
+                pending = null;
+                tile.classList.remove('is-tilting');
+                // Ease back to flat — the CSS transition carries it home.
+                tile.style.setProperty('--rx', '0deg');
+                tile.style.setProperty('--ry', '0deg');
+            });
+        });
+    }
+
     /* -- 2. Scroll-aware navbar, 3. back-to-top & reading progress -------- */
     function initScrollUI() {
         var navbar = document.querySelector('.navbar');
@@ -455,6 +515,7 @@
 
     function init() {
         initPointerSheen();
+        initDepthTilt();
         initScrollUI();
         var palette = initCommandPalette();
         initShortcuts(palette);
