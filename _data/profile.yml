@@ -26,14 +26,14 @@ cv_link: /assets/files/resume_1_0_0.pdf
 short_bio_text_justify: false
 short_bio: >-
   <p>
-    I am currently pursuing a B.Eng. in Computer Science and Technology at the <a href="https://hc.buaa.edu.cn/xygk/gdlgxy.htm">School of Advanced Engineering</a>, <a href="https://ev.buaa.edu.cn/Schools___Colleges/Shen_Yuan_Honors_College.htm">Shen Yuan Honors College</a>, <a href="https://ev.buaa.edu.cn/">Beihang University</a>.
-    Beginning in 2027, I will continue at Beihang for a Ph.D. in Computer Science, recommended for admission exempt from the entrance examination, under the supervision of Prof. <a href="https://wgrong.github.io/">Wenge Rong</a>.
+    I am currently pursuing a B.Eng. in Computer Science and Technology at the <a href="https://hc.buaa.edu.cn/xygk/gdlgxy.htm" data-preview="/assets/images/photos/advanced-engineering-college.png" data-preview-logo>School of Advanced Engineering</a>, <a href="https://ev.buaa.edu.cn/Schools___Colleges/Shen_Yuan_Honors_College.htm" data-preview="/assets/images/photos/shenyuan-college.png" data-preview-logo>Shen Yuan Honors College</a>, <a href="https://ev.buaa.edu.cn/" data-preview="/assets/images/photos/BUAA.svg" data-preview-logo>Beihang University</a>.
+    Beginning in 2027, I will continue at Beihang for a Ph.D. in Computer Science, recommended for admission exempt from the entrance examination, under the supervision of Prof. <a href="https://wgrong.github.io/" data-preview="/assets/images/photos/rwg.jpg">Wenge Rong</a>.
   </p>
   <p>
-    In my junior year and earlier, I worked on <strong>AI for Software Engineering (SE)</strong>, advised by Asst. Prof. <a href="https://liufang816.github.io/">Fang Liu</a> and Prof. <a href="https://scse.buaa.edu.cn/info/1078/2647.htm">Li Zhang</a>.
+    In my junior year and earlier, I worked on <strong>AI for Software Engineering (SE)</strong>, advised by Asst. Prof. <a href="https://liufang816.github.io/" data-preview="/assets/images/photos/fang.jpeg">Fang Liu</a> and Prof. <a href="https://scse.buaa.edu.cn/info/1078/2647.htm" data-preview="/assets/images/photos/lizhang.jpg">Li Zhang</a>.
   </p>
   <p>
-    I have also collaborated with Assoc. Prof. <a href="https://csjianyang.github.io/">Jian Yang</a> on <strong>Natural Language Processing (NLP)</strong>. My research now centers on <strong>LLM Foundation Models</strong>, spanning <u><i>Data Engineering</i>, <i>Pre-training</i>, <i>Mid-training</i>, and <i>Post-training</i> for Large Language Models</u>.
+    I have also collaborated with Assoc. Prof. <a href="https://csjianyang.github.io/" data-preview="/assets/images/photos/jianyang.png">Jian Yang</a> on <strong>Natural Language Processing (NLP)</strong>. My research now centers on <strong>LLM Foundation Models</strong>, spanning <u><i>Data Engineering</i>, <i>Pre-training</i>, <i>Mid-training</i>, and <i>Post-training</i> for Large Language Models</u>.
   </p>
 
 portrait_url: /assets/images/photos/Chengjunhang.jpg

@@ -389,6 +389,90 @@ a:hover {
 }
 
 /* ============================================
+   Hover preview
+   ============================================ */
+/* A square preview follows the pointer when a named link in the bio is hovered
+   (advisors, colleges). JS owns the translate/rotate spring on the outer node;
+   the inner frame owns the enter/exit scale and image cross-fade. Splitting the
+   transforms keeps the spring responsive while retaining a smooth reveal. */
+.hover-preview {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1100;
+    width: 125px;
+    height: 125px;
+    border-radius: 0.85rem;
+    pointer-events: none;
+    visibility: hidden;
+    transform-origin: center;
+    transition: visibility 0s linear 0.14s;
+    will-change: transform;
+}
+
+.hover-preview.is-visible {
+    visibility: visible;
+    transition-delay: 0s;
+}
+
+.hover-preview-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--img-thumbnail-border);
+    border-radius: inherit;
+    background-color: var(--bg-card);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.14s ease-in, transform 0.14s ease-in;
+}
+
+.hover-preview.is-visible .hover-preview-frame {
+    opacity: 1;
+    transform: scale(1);
+    transition-duration: 0.18s;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hover-preview-image {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: inherit;
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.14s ease, transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+
+.hover-preview-image.is-current {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Transparent logos (crests, seals) sit on a padded white mat and show the
+   whole mark. The mat remains white in both site themes. */
+.hover-preview.is-logo .hover-preview-frame {
+    background-color: #FFFFFF;
+    border-color: #E7E5DC;
+}
+
+.hover-preview.is-logo .hover-preview-image {
+    inset: 0.625rem;
+    width: calc(100% - 1.25rem);
+    height: calc(100% - 1.25rem);
+    object-fit: contain;
+    object-position: center;
+    border-radius: 0.4rem;
+}
+
+/* ============================================
    Profile
    ============================================ */
 .text-profile-position {
@@ -403,6 +487,22 @@ a:hover {
 
 .text-profile-bio p {
     margin-bottom: 0.85rem;
+}
+
+/* Links that carry a hover preview get a quiet dotted underline, hinting
+   there's something to peek at without shouting. On pointer devices the
+   underline warms on hover in step with the floating thumbnail. */
+.text-profile-bio a[data-preview] {
+    padding: 4px;
+    margin: -4px;
+    text-decoration: underline dotted var(--border-strong);
+    text-underline-offset: 0.18em;
+    text-decoration-thickness: 1px;
+    transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.text-profile-bio a[data-preview]:hover {
+    text-decoration-color: var(--link-hover-color);
 }
 
 .profile-name {
@@ -1741,6 +1841,11 @@ html {
 
     .depth-tilt::after {
         opacity: 0 !important;
+    }
+
+    /* No floating link preview. */
+    .hover-preview {
+        display: none !important;
     }
 
     .profile-portrait:hover,

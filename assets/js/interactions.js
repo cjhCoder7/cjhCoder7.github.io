@@ -132,6 +132,289 @@
         });
     }
 
+    /* -- 1c. Hover preview: a peek image for named links in the bio -------- */
+    // Certain links in the profile bio carry a `data-preview` image (advisors,
+    // colleges). The preview follows the pointer with a soft spring; its tilt
+    // and small x/y offset come from the pointer's position within the link,
+    // matching the ReactBits interaction without bringing a motion library into
+    // this otherwise dependency-free site. One card and two image layers are
+    // shared by every link so switching targets can cross-fade cleanly.
+    function initHoverPreview() {
+        if (reduceMotion || !finePointer) return;
+        var links = Array.prototype.slice.call(
+            document.querySelectorAll('.text-profile-bio a[data-preview]'));
+        if (!links.length) return;
+
+        var baseurl = (window.__SITE_BASEURL__ || '').replace(/\/$/, '');
+        function resolvePreviewUrl(value) {
+            if (!value) return '';
+            // Keep remote/data/blob URLs intact. Root-relative profile values
+            // need the Jekyll baseurl prepended when deployed below a sub-path.
+            if (/^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(value)) return value;
+            return baseurl + '/' + value.replace(/^\/+/, '');
+        }
+
+        // Resolve once, but fetch on demand. Several portraits are high-quality
+        // source images; eagerly preloading all of them would make a visitor pay
+        // that bandwidth even when they never use the hover enhancement.
+        var sources = links.map(function (link) {
+            return resolvePreviewUrl(link.getAttribute('data-preview'));
+        });
+
+        // The outer node owns pointer-following transforms; the frame owns the
+        // enter/exit scale. Keeping those transforms separate prevents CSS
+        // transitions from fighting the per-frame spring updates.
+        var card = document.createElement('div');
+        card.className = 'hover-preview';
+        card.setAttribute('aria-hidden', 'true');
+        var frame = document.createElement('div');
+        frame.className = 'hover-preview-frame';
+        var images = [document.createElement('img'), document.createElement('img')];
+        images.forEach(function (image) {
+            image.className = 'hover-preview-image';
+            image.alt = '';
+            image.decoding = 'async';
+            image.draggable = false;
+            frame.appendChild(image);
+        });
+        card.appendChild(frame);
+        document.body.appendChild(card);
+
+        // Tuned for the compact 125px card: a tighter pose and quicker response
+        // keep it close to the pointer without making small movements feel busy.
+        var MAX_ROTATION = 10;
+        var MAX_OFFSET = 10;
+        var GAP = 18;
+        var POSITION_RESPONSE = 40;
+        var POSE_RESPONSE = 58;
+        // Leave enough room for the corners of a 125px card at 10deg rotation,
+        // not merely for its unrotated box and shadow.
+        var EDGE = 14;
+        var active = null;
+        var hideTimer = null;
+        var imageToken = 0;
+        var currentLayer = -1;
+        var currentSrc = '';
+        var raf = null;
+        var lastTime = 0;
+        var state = { x: 0, y: 0, rotation: 0, offsetX: 0, offsetY: 0 };
+        var target = { x: 0, y: 0, rotation: 0, offsetX: 0, offsetY: 0 };
+
+        function clamp(value, min, max) {
+            return Math.min(max, Math.max(min, value));
+        }
+
+        function render() {
+            var width = card.offsetWidth || 125;
+            var height = card.offsetHeight || 125;
+            var below = state.y - height - GAP + state.offsetY < EDGE;
+            var x = state.x - width / 2 + state.offsetX;
+            var y = below ? state.y + GAP + state.offsetY :
+                state.y - height - GAP + state.offsetY;
+
+            x = clamp(x, EDGE, Math.max(EDGE, window.innerWidth - width - EDGE));
+            y = clamp(y, EDGE, Math.max(EDGE, window.innerHeight - height - EDGE));
+
+            card.style.transform = 'translate3d(' + x.toFixed(2) + 'px,' +
+                y.toFixed(2) + 'px,0) rotate(' + state.rotation.toFixed(2) + 'deg)';
+        }
+
+        // Frame-rate-independent exponential springs. Pointer position follows
+        // closely; rotation/offset trail a little more, like Motion's softer
+        // secondary springs in the reference component.
+        function tick(now) {
+            var dt = lastTime ? Math.min(40, now - lastTime) : 16.67;
+            lastTime = now;
+            var positionEase = 1 - Math.exp(-dt / POSITION_RESPONSE);
+            var poseEase = 1 - Math.exp(-dt / POSE_RESPONSE);
+
+            state.x += (target.x - state.x) * positionEase;
+            state.y += (target.y - state.y) * positionEase;
+            state.rotation += (target.rotation - state.rotation) * poseEase;
+            state.offsetX += (target.offsetX - state.offsetX) * poseEase;
+            state.offsetY += (target.offsetY - state.offsetY) * poseEase;
+            render();
+
+            var unsettled = Math.abs(target.x - state.x) > 0.05 ||
+                Math.abs(target.y - state.y) > 0.05 ||
+                Math.abs(target.rotation - state.rotation) > 0.03 ||
+                Math.abs(target.offsetX - state.offsetX) > 0.03 ||
+                Math.abs(target.offsetY - state.offsetY) > 0.03;
+            if (active && unsettled) {
+                raf = window.requestAnimationFrame(tick);
+                return;
+            }
+            raf = null;
+            lastTime = 0;
+        }
+        function kick() {
+            if (raf === null) raf = window.requestAnimationFrame(tick);
+        }
+
+        // Inline links can wrap into several independent line boxes. The union
+        // returned by getBoundingClientRect() has the wrong centre for all but
+        // one of those lines, so choose the fragment under (or nearest to) the
+        // pointer when calculating tilt and offset.
+        function getPointerFragment(link, clientX, clientY) {
+            var fragments = link.getClientRects ?
+                Array.prototype.slice.call(link.getClientRects()) : [];
+            if (!fragments.length) return link.getBoundingClientRect();
+
+            var nearest = fragments[0];
+            var nearestDistance = Infinity;
+            fragments.forEach(function (rect) {
+                var right = rect.right === undefined ? rect.left + rect.width : rect.right;
+                var bottom = rect.bottom === undefined ? rect.top + rect.height : rect.bottom;
+                var dx = clientX < rect.left ? rect.left - clientX :
+                    (clientX > right ? clientX - right : 0);
+                var dy = clientY < rect.top ? rect.top - clientY :
+                    (clientY > bottom ? clientY - bottom : 0);
+                var distance = dx * dx + dy * dy;
+                if (distance < nearestDistance) {
+                    nearest = rect;
+                    nearestDistance = distance;
+                }
+            });
+            return nearest;
+        }
+
+        function updateTarget(link, clientX, clientY) {
+            var rect = getPointerFragment(link, clientX, clientY);
+            var relativeX = rect.width ?
+                clamp((clientX - (rect.left + rect.width / 2)) / (rect.width / 2), -1, 1) : 0;
+            var relativeY = rect.height ?
+                clamp((clientY - (rect.top + rect.height / 2)) / (rect.height / 2), -1, 1) : 0;
+
+            target.x = clientX;
+            target.y = clientY;
+            target.rotation = relativeX * MAX_ROTATION;
+            target.offsetX = relativeX * MAX_OFFSET;
+            target.offsetY = relativeY * MAX_OFFSET;
+            kick();
+        }
+
+        function revealImage(src, token) {
+            if (!src || token !== imageToken || !active) return;
+            if (src === currentSrc && currentLayer >= 0) {
+                images[currentLayer].classList.add('is-current');
+                return;
+            }
+            var nextLayer = (currentLayer + 1) % images.length;
+            var nextImage = images[nextLayer];
+            var readyHandled = false;
+
+            function commit() {
+                if (token !== imageToken || !active ||
+                        nextImage.getAttribute('src') !== src) return;
+                if (currentLayer >= 0) images[currentLayer].classList.remove('is-current');
+                // Force the new layer's initial state to be painted before its
+                // class changes when swapping between already-cached images.
+                nextImage.getBoundingClientRect();
+                nextImage.classList.add('is-current');
+                currentLayer = nextLayer;
+                currentSrc = src;
+                card.classList.add('is-visible');
+            }
+
+            function ready() {
+                if (readyHandled) return;
+                readyHandled = true;
+                if (nextImage.decode) {
+                    nextImage.decode().then(commit, commit);
+                } else {
+                    commit();
+                }
+            }
+
+            nextImage.classList.remove('is-current');
+            nextImage.onload = ready;
+            nextImage.onerror = function () {
+                if (token !== imageToken) return;
+                card.classList.remove('is-visible');
+            };
+            nextImage.src = src;
+            if (nextImage.complete && nextImage.naturalWidth) ready();
+        }
+
+        function show(link, index, clientX, clientY) {
+            var src = sources[index];
+            if (!src) return;
+            if (hideTimer !== null) {
+                window.clearTimeout(hideTimer);
+                hideTimer = null;
+            }
+
+            var wasVisible = card.classList.contains('is-visible');
+            active = link;
+            imageToken += 1;
+            card.classList.toggle('is-logo', link.hasAttribute('data-preview-logo'));
+
+            // Never flash the previous target's image on a fresh hover. During
+            // a quick target-to-target switch the old layer may stay for the
+            // cross-fade, but a closed card waits for the new bitmap to decode.
+            if (!wasVisible && currentSrc !== src && currentLayer >= 0) {
+                images[currentLayer].classList.remove('is-current');
+            }
+
+            if (!wasVisible) {
+                state.x = clientX;
+                state.y = clientY;
+                state.rotation = 0;
+                state.offsetX = 0;
+                state.offsetY = 0;
+                render();
+            }
+            revealImage(src, imageToken);
+            if (wasVisible || currentSrc === src) card.classList.add('is-visible');
+            updateTarget(link, clientX, clientY);
+        }
+
+        function scheduleHide(link) {
+            if (hideTimer !== null) window.clearTimeout(hideTimer);
+            hideTimer = window.setTimeout(function () {
+                hideTimer = null;
+                if (link && active !== link) return;
+                active = null;
+                imageToken += 1;
+                target.rotation = 0;
+                target.offsetX = 0;
+                target.offsetY = 0;
+                card.classList.remove('is-visible');
+                kick();
+            }, 50);
+        }
+
+        links.forEach(function (link, index) {
+            link.addEventListener('mouseenter', function (event) {
+                show(link, index, event.clientX, event.clientY);
+            });
+            link.addEventListener('mousemove', function (event) {
+                if (active !== link) return;
+                updateTarget(link, event.clientX, event.clientY);
+            });
+            link.addEventListener('mouseleave', function () {
+                scheduleHide(link);
+            });
+            link.addEventListener('focus', function () {
+                var fragments = link.getClientRects ? link.getClientRects() : [];
+                var rect = fragments.length ? fragments[0] : link.getBoundingClientRect();
+                show(link, index, rect.left + rect.width / 2, rect.top + rect.height / 2);
+            });
+            link.addEventListener('blur', function () {
+                scheduleHide(link);
+            });
+        });
+
+        // A fixed preview should not linger at stale coordinates if the page is
+        // scrolled, resized, backgrounded, or the browser window loses focus.
+        window.addEventListener('scroll', function () { scheduleHide(null); }, { passive: true });
+        window.addEventListener('resize', function () { scheduleHide(null); });
+        window.addEventListener('blur', function () { scheduleHide(null); });
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) scheduleHide(null);
+        });
+    }
+
     /* -- 2. Scroll-aware navbar, 3. back-to-top & reading progress -------- */
     function initScrollUI() {
         var navbar = document.querySelector('.navbar');
@@ -516,6 +799,7 @@
     function init() {
         initPointerSheen();
         initDepthTilt();
+        initHoverPreview();
         initScrollUI();
         var palette = initCommandPalette();
         initShortcuts(palette);
