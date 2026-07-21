@@ -621,6 +621,147 @@ section>h6 {
     margin-bottom: 0.65rem !important;
 }
 
+/* Education and experience share one restrained selection treatment; awards
+   use a distinct medal-like highlight. Decorative layers sit behind the copy,
+   so institution logos remain completely still. */
+.profile-entry {
+    position: relative;
+    isolation: isolate;
+    border-radius: 0.5rem;
+}
+
+.profile-entry::before,
+.profile-entry::after {
+    pointer-events: none;
+}
+
+.profile-entry-title {
+    transition: color 0.24s ease;
+}
+
+.profile-entry .media-body,
+.profile-entry-main,
+.profile-entry-subtitle {
+    transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.profile-entry-date {
+    color: var(--text-muted);
+    transition: color 0.24s ease,
+        background-color 0.24s ease,
+        transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Education and experience: a quiet underline grows beneath the institution
+   while a wide, low-contrast wash enters from the left. */
+.profile-entry--history::before {
+    content: "";
+    position: absolute;
+    inset: -0.12rem -0.4rem;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--accent-soft), transparent 88%);
+    opacity: 0;
+    transform: translateX(-0.55rem) scaleX(0.96);
+    transform-origin: left center;
+    transition: opacity 0.22s ease,
+        transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.profile-entry--history .profile-entry-title {
+    width: fit-content;
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    background-size: 0 1px;
+    transition: color 0.24s ease,
+        background-size 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Awards: a contained highlight lifts the result and turns the year into a
+   small label; the diamond marker echoes a medal without adding another icon. */
+.profile-entry--award {
+    list-style: none;
+}
+
+.profile-entry--award::before {
+    content: "";
+    position: absolute;
+    inset: -0.16rem -0.4rem -0.16rem -1rem;
+    z-index: -1;
+    border-radius: inherit;
+    background-color: var(--accent-soft);
+    opacity: 0;
+    transform: translateY(0.12rem) scale(0.985);
+    transition: opacity 0.22s ease,
+        transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.profile-entry--award::after {
+    content: "";
+    position: absolute;
+    top: 0.72rem;
+    left: -0.72rem;
+    width: 0.32rem;
+    height: 0.32rem;
+    border-radius: 1px;
+    background-color: var(--accent);
+    opacity: 0.35;
+    transform: rotate(45deg) scale(0.62);
+    transition: opacity 0.2s ease,
+        transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.profile-entry--award .profile-entry-date {
+    margin-left: 0.65rem !important;
+    padding: 0.02rem 0.34rem;
+    border-radius: 999px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .profile-entry--history:hover::before {
+        opacity: 1;
+        transform: translateX(0) scaleX(1);
+    }
+
+    .profile-entry--history:hover .media-body {
+        transform: translateX(0.28rem);
+    }
+
+    .profile-entry--history:hover .profile-entry-title {
+        color: var(--accent-strong);
+        background-size: 100% 1px;
+    }
+
+    .profile-entry--award:hover::before {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    .profile-entry--award:hover::after {
+        opacity: 1;
+        transform: rotate(45deg) scale(1);
+    }
+
+    .profile-entry--award:hover .profile-entry-main {
+        transform: translateY(-0.08rem);
+    }
+
+    .profile-entry--award:hover .profile-entry-title {
+        color: var(--accent-strong);
+    }
+
+    .profile-entry--award:hover .profile-entry-date {
+        color: var(--accent-strong);
+        background-color: var(--bg-card);
+        transform: translateX(-0.12rem);
+    }
+
+    .profile-entry--award:hover .profile-entry-subtitle {
+        transform: translateX(0.18rem);
+    }
+}
+
 /* Card list headers ("News", "Selected Publications", year groups) */
 .bg-white>h6,
 .card h6 {
@@ -645,7 +786,48 @@ section>h6 {
 }
 
 .pub-item-row {
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+}
+
+/* Selecting one paper should read as a change in hierarchy, not as movement
+   of its cover. A warm wash enters behind the row while the short accent rail
+   anchors the active item. Both layers are non-interactive and stay behind the
+   publication content. */
+.pub-item-row::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(90deg, var(--accent-soft) 0%, transparent 78%);
+    opacity: 0;
+    transform: translateX(-1rem) scaleX(0.96);
+    transform-origin: left center;
+    transition: opacity 0.24s ease,
+        transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pub-item-row::after {
+    content: "";
+    position: absolute;
+    top: 1rem;
+    bottom: 1rem;
+    left: 0;
+    width: 3px;
+    border-radius: 0 999px 999px 0;
+    background-color: var(--accent);
+    opacity: 0;
+    transform: scaleY(0.2);
+    transform-origin: center;
+    transition: opacity 0.18s ease,
+        transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pub-item-copy {
+    transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .pub-item-row .pub-cover-wrap {
@@ -664,8 +846,26 @@ section>h6 {
     transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.pub-item-row:hover {
-    background-color: var(--accent-soft);
+.pub-item-row:hover::before,
+.pub-item-row:focus-within::before {
+    opacity: 1;
+    transform: translateX(0) scaleX(1);
+}
+
+.pub-item-row:hover::after,
+.pub-item-row:focus-within::after {
+    opacity: 1;
+    transform: scaleY(1);
+}
+
+.pub-item-row:hover .pub-item-copy,
+.pub-item-row:focus-within .pub-item-copy {
+    transform: translateX(0.35rem);
+}
+
+.pub-item-row:hover h5,
+.pub-item-row:focus-within h5 {
+    color: var(--accent-strong);
 }
 
 /* Cover gently pushes in within its frame as you hover the row. */
@@ -1893,6 +2093,20 @@ html {
     .navbar-brand:hover .pixel-mark,
     #theme-toggle-btn:hover .icon-sun,
     #theme-toggle-btn:hover .icon-moon {
+        transform: none;
+    }
+
+    /* Preserve the publication selection cue without moving its copy. */
+    .pub-item-row:hover .pub-item-copy,
+    .pub-item-row:focus-within .pub-item-copy {
+        transform: none;
+    }
+
+    /* Keep the profile-row highlight, but remove all selection movement. */
+    .profile-entry--history:hover .media-body,
+    .profile-entry--award:hover .profile-entry-main,
+    .profile-entry--award:hover .profile-entry-date,
+    .profile-entry--award:hover .profile-entry-subtitle {
         transform: none;
     }
 
