@@ -887,6 +887,45 @@ hr {
     background-color: var(--accent) !important;
 }
 
+/* The publication year rail uses one shared highlight, positioned by
+   interactions.js, so ScrollSpy changes glide between years instead of
+   cross-fading two separate pill backgrounds. Without JS the active rule
+   above remains the complete fallback. */
+#navbar-year::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--year-indicator-height, 0px);
+    border-radius: 8px;
+    background-color: var(--accent);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate3d(0, var(--year-indicator-y, 0px), 0);
+}
+
+#navbar-year .nav-link {
+    position: relative;
+    z-index: 1;
+    transition: color 0.25s ease, background-color 0.25s ease,
+        transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#navbar-year.is-year-indicator-ready::before {
+    opacity: 1;
+    transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        height 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+        background-color 0.3s ease, opacity 0.2s ease;
+    will-change: transform;
+}
+
+#navbar-year.is-year-indicator-ready .nav-link.active {
+    background-color: transparent !important;
+    transform: translateX(2px);
+}
+
 /* ============================================
    Focus & selection
    ============================================ */

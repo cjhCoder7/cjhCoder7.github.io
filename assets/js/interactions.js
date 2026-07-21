@@ -8,11 +8,12 @@
  *   2. Scroll-aware navbar — flat at the top, hairline + soft lift once scrolled;
  *      also drives the reading-progress hairline at the top of the viewport.
  *   3. Back-to-top chip that fades in after scrolling.
- *   4. Command palette (⌘K / Ctrl+K / "/"): fuzzy-searchable navigate + actions
+ *   4. Publication year rail whose active highlight glides with ScrollSpy.
+ *   5. Command palette (⌘K / Ctrl+K / "/"): fuzzy-searchable navigate + actions
  *      (jump, toggle theme, copy email, open links), full keyboard control.
- *   5. Keyboard shortcuts (Vim-flavoured): `g h` / `g p` to navigate, `t` to
+ *   6. Keyboard shortcuts (Vim-flavoured): `g h` / `g p` to navigate, `t` to
  *      toggle theme, `?` for the help panel, `Esc` to dismiss.
- *   6. A quiet console signature for the curious.
+ *   7. A quiet console signature for the curious.
  */
 (function () {
     'use strict';
@@ -454,7 +455,51 @@
         }
     }
 
-    /* -- 4. Command palette (⌘K / Ctrl+K / "/") --------------------------- */
+    /* -- 4. Smooth publication-year ScrollSpy indicator ------------------ */
+    function initPublicationYearIndicator() {
+        var nav = document.getElementById('navbar-year');
+        if (!nav) return;
+
+        var links = Array.prototype.slice.call(nav.querySelectorAll('.nav-link'));
+        if (!links.length) return;
+
+        var frame = null;
+
+        function positionIndicator() {
+            frame = null;
+            var active = nav.querySelector('.nav-link.active');
+            if (!active) {
+                nav.classList.remove('is-year-indicator-ready');
+                return;
+            }
+
+            nav.style.setProperty('--year-indicator-y', active.offsetTop + 'px');
+            nav.style.setProperty('--year-indicator-height', active.offsetHeight + 'px');
+            nav.classList.add('is-year-indicator-ready');
+        }
+
+        function schedulePosition() {
+            if (frame === null) frame = window.requestAnimationFrame(positionIndicator);
+        }
+
+        // Bootstrap ScrollSpy expresses its state by toggling `.active` on the
+        // links. Observe that final DOM state instead of competing with its
+        // scroll calculations.
+        if ('MutationObserver' in window) {
+            var observer = new MutationObserver(schedulePosition);
+            observer.observe(nav, {
+                attributes: true,
+                attributeFilter: ['class'],
+                subtree: true
+            });
+        }
+
+        window.addEventListener('resize', schedulePosition);
+        window.addEventListener('load', schedulePosition);
+        schedulePosition();
+    }
+
+    /* -- 5. Command palette (⌘K / Ctrl+K / "/") --------------------------- */
     // A search-driven menu to navigate and act on the site. Fuzzy (subsequence)
     // filter, full keyboard control, mouse hover to highlight. Returns a small
     // API {open, close, isOpen} so the keyboard-shortcut layer can summon it.
@@ -686,7 +731,7 @@
         return { open: open, close: close, isOpen: isOpen };
     }
 
-    /* -- 5. Keyboard shortcuts ------------------------------------------- */
+    /* -- 6. Keyboard shortcuts ------------------------------------------- */
     function initShortcuts(palette) {
         var help = document.getElementById('kbd-help');
         var baseurl = (window.__SITE_BASEURL__ || '').replace(/\/$/, '');
@@ -761,7 +806,7 @@
         });
     }
 
-    /* -- 6. Console signature -------------------------------------------- */
+    /* -- 7. Console signature -------------------------------------------- */
     // A small `whoami` for anyone who opens the console. Uses the live theme
     // accent so it matches light/dark, and stays quiet — no noise, just a hello.
     function initConsoleSignature() {
@@ -801,6 +846,7 @@
         initDepthTilt();
         initHoverPreview();
         initScrollUI();
+        initPublicationYearIndicator();
         var palette = initCommandPalette();
         initShortcuts(palette);
         initConsoleSignature();
