@@ -648,7 +648,6 @@ section>h6 {
 .profile-entry-date {
     color: var(--text-muted);
     transition: color 0.24s ease,
-        background-color 0.24s ease,
         transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -678,8 +677,8 @@ section>h6 {
         background-size 0.42s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Awards: a contained highlight lifts the result and turns the year into a
-   small label; the diamond marker echoes a medal without adding another icon. */
+/* Awards: a contained highlight lifts the result and accents the year without
+   changing its footprint; the diamond echoes a medal without another icon. */
 .profile-entry--award {
     list-style: none;
 }
@@ -710,12 +709,6 @@ section>h6 {
     transform: rotate(45deg) scale(0.62);
     transition: opacity 0.2s ease,
         transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.profile-entry--award .profile-entry-date {
-    margin-left: 0.65rem !important;
-    padding: 0.02rem 0.34rem;
-    border-radius: 999px;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -753,7 +746,6 @@ section>h6 {
 
     .profile-entry--award:hover .profile-entry-date {
         color: var(--accent-strong);
-        background-color: var(--bg-card);
         transform: translateX(-0.12rem);
     }
 
