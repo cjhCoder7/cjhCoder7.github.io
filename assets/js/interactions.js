@@ -5,15 +5,17 @@
  *   1. Pointer sheen: a warm light that trails the cursor across any card,
  *      easing toward the pointer with a little inertia (pointer devices only,
  *      off for touch and reduced-motion).
- *   2. Scroll-aware navbar — flat at the top, hairline + soft lift once scrolled;
+ *   2. Contact links: a GSAP stagger on entry plus a small lift and icon response
+ *      for hover/focus, with automatic reduced-motion handling and cleanup.
+ *   3. Scroll-aware navbar — flat at the top, hairline + soft lift once scrolled;
  *      also drives the reading-progress hairline at the top of the viewport.
- *   3. Back-to-top chip that fades in after scrolling.
- *   4. Publication year rail whose active highlight glides with ScrollSpy.
- *   5. Command palette (⌘K / Ctrl+K / "/"): fuzzy-searchable navigate + actions
+ *   4. Back-to-top chip that fades in after scrolling.
+ *   5. Publication year rail whose active highlight glides with ScrollSpy.
+ *   6. Command palette (⌘K / Ctrl+K / "/"): fuzzy-searchable navigate + actions
  *      (jump, toggle theme, copy email, open links), full keyboard control.
- *   6. Keyboard shortcuts (Vim-flavoured): `g h` / `g p` to navigate, `t` to
+ *   7. Keyboard shortcuts (Vim-flavoured): `g h` / `g p` to navigate, `t` to
  *      toggle theme, `?` for the help panel, `Esc` to dismiss.
- *   7. A quiet console signature for the curious.
+ *   8. A quiet console signature for the curious.
  */
 (function () {
     'use strict';
@@ -416,7 +418,117 @@
         });
     }
 
-    /* -- 2. Scroll-aware navbar, 3. back-to-top & reading progress -------- */
+    /* -- 2. Contact-link motion (GSAP progressive enhancement) ----------- */
+    function initContactLinksMotion() {
+        var group = document.querySelector('.contact-links');
+        var gsap = window.gsap;
+        if (!group || !gsap || !gsap.matchMedia) return;
+
+        var links = Array.prototype.slice.call(group.querySelectorAll('a'));
+        if (!links.length) return;
+
+        // matchMedia creates a GSAP context internally: changing the OS motion
+        // preference reverts every tween and inline style created below.
+        var motion = gsap.matchMedia();
+        motion.add('(prefers-reduced-motion: no-preference)', function () {
+            var observer = null;
+            var hasEntered = false;
+            var bindings = [];
+            var canHover = window.matchMedia &&
+                window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+            function bind(target, type, handler) {
+                target.addEventListener(type, handler);
+                bindings.push({ target: target, type: type, handler: handler });
+            }
+
+            function playEntrance() {
+                if (hasEntered) return;
+                hasEntered = true;
+                gsap.fromTo(links,
+                    {
+                        autoAlpha: 0,
+                        y: 8,
+                        scale: 0.98,
+                        transformOrigin: '50% 100%'
+                    },
+                    {
+                        autoAlpha: 1,
+                        y: 0,
+                        scale: 1,
+                        duration: 0.48,
+                        ease: 'power3.out',
+                        stagger: { each: 0.055, from: 'start' },
+                        clearProps: 'opacity,visibility'
+                    }
+                );
+            }
+
+            // Set up the tween before observing so the first observer callback
+            // cannot race past the starting state. Without IntersectionObserver,
+            // play immediately and retain the same progressive enhancement.
+            gsap.set(links, { autoAlpha: 0, y: 8, scale: 0.98 });
+            if ('IntersectionObserver' in window) {
+                observer = new IntersectionObserver(function (entries) {
+                    if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
+                    observer.disconnect();
+                    observer = null;
+                    playEntrance();
+                }, { threshold: 0.25, rootMargin: '0px 0px -4% 0px' });
+                observer.observe(group);
+            } else {
+                playEntrance();
+            }
+
+            function animateLink(link, active) {
+                var icon = link.querySelector('i');
+                gsap.to(link, {
+                    y: active ? -3 : 0,
+                    scale: active ? 1.025 : 1,
+                    duration: active ? 0.22 : 0.34,
+                    ease: active ? 'power2.out' : 'power3.out',
+                    overwrite: 'auto'
+                });
+                if (icon) {
+                    gsap.to(icon, {
+                        y: active ? -1 : 0,
+                        rotation: active ? -6 : 0,
+                        scale: active ? 1.14 : 1,
+                        duration: active ? 0.3 : 0.34,
+                        ease: active ? 'back.out(2)' : 'power3.out',
+                        overwrite: 'auto'
+                    });
+                }
+            }
+
+            links.forEach(function (link) {
+                if (canHover) {
+                    bind(link, 'mouseenter', function () { animateLink(link, true); });
+                    bind(link, 'mouseleave', function () {
+                        if (document.activeElement !== link) animateLink(link, false);
+                    });
+                }
+                bind(link, 'focus', function () { animateLink(link, true); });
+                bind(link, 'blur', function () {
+                    if (!canHover || !link.matches(':hover')) animateLink(link, false);
+                });
+            });
+
+            // Non-GSAP work (observer and DOM listeners) must be cleaned up by
+            // the matchMedia callback; GSAP owns and reverts its tweens itself.
+            return function () {
+                if (observer) observer.disconnect();
+                bindings.forEach(function (binding) {
+                    binding.target.removeEventListener(binding.type, binding.handler);
+                });
+            };
+        });
+
+        // This is a static document, so the matchMedia context lives for the
+        // page lifetime; it reverts automatically whenever the query changes.
+    }
+
+    /* -- 3. Scroll-aware navbar, 4. back-to-top & reading progress -------- */
     function initScrollUI() {
         var navbar = document.querySelector('.navbar');
         var toTop = document.getElementById('back-to-top');
@@ -455,7 +567,7 @@
         }
     }
 
-    /* -- 4. Smooth publication-year ScrollSpy indicator ------------------ */
+    /* -- 5. Smooth publication-year ScrollSpy indicator ------------------ */
     function initPublicationYearIndicator() {
         var nav = document.getElementById('navbar-year');
         if (!nav) return;
@@ -499,7 +611,7 @@
         schedulePosition();
     }
 
-    /* -- 5. Command palette (⌘K / Ctrl+K / "/") --------------------------- */
+    /* -- 6. Command palette (⌘K / Ctrl+K / "/") --------------------------- */
     // A search-driven menu to navigate and act on the site. Fuzzy (subsequence)
     // filter, full keyboard control, mouse hover to highlight. Returns a small
     // API {open, close, isOpen} so the keyboard-shortcut layer can summon it.
@@ -731,7 +843,7 @@
         return { open: open, close: close, isOpen: isOpen };
     }
 
-    /* -- 6. Keyboard shortcuts ------------------------------------------- */
+    /* -- 7. Keyboard shortcuts ------------------------------------------- */
     function initShortcuts(palette) {
         var help = document.getElementById('kbd-help');
         var baseurl = (window.__SITE_BASEURL__ || '').replace(/\/$/, '');
@@ -806,7 +918,7 @@
         });
     }
 
-    /* -- 7. Console signature -------------------------------------------- */
+    /* -- 8. Console signature -------------------------------------------- */
     // A small `whoami` for anyone who opens the console. Uses the live theme
     // accent so it matches light/dark, and stays quiet — no noise, just a hello.
     function initConsoleSignature() {
@@ -845,6 +957,7 @@
         initPointerSheen();
         initDepthTilt();
         initHoverPreview();
+        initContactLinksMotion();
         initScrollUI();
         initPublicationYearIndicator();
         var palette = initCommandPalette();
