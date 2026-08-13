@@ -61,21 +61,25 @@ education:
   date: Sep. 2017 - Jun. 2023
 
 experience:
+- name: Shopee
+  logo: /assets/images/photos/Shopee.svg
+  position: Foundation Model Team, LLM Pre-training Intern
+  date: Aug. 2026 - present
 - name: Human Intelligence
   logo: /assets/images/photos/Human-Intelligence.png
-  position: Benchmark Research, Research Intern
+  position: Benchmark Research, Terminal Data Intern
   date: Jun. 2026 - Jul. 2026
 - name: Ubiquant
   logo: /assets/images/photos/Ubiquant.svg
-  position: IQuest AI Lab, Research Intern
+  position: IQuest AI Lab, LLM Post-training Intern
   date: Jan. 2026 - Jul. 2026
 - name: Huawei Cloud
   logo: /assets/images/photos/Huawei.svg
-  position: PaaS Lab, Research Intern
+  position: PaaS Lab, Coding Agent Intern
   date: Jan. 2026
 - name: Huawei
   logo: /assets/images/photos/Huawei.svg
-  position: Huawei Developer Advocate
+  position: Huawei Developer Advocate, Cangjie Domain
   date: Dec. 2025 - present
 - name: Beihang University
   logo: /assets/images/photos/BUAA.svg
