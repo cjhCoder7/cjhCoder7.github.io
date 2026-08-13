@@ -5,10 +5,12 @@
  *   1. Pointer sheen: a warm light that trails the cursor across any card,
  *      easing toward the pointer with a little inertia (pointer devices only,
  *      off for touch and reduced-motion).
+ *   1b. Elastic graph paper: the existing hero grid bends very slightly near
+ *      the pointer, then settles back; static on touch and reduced-motion.
  *   2. Contact links: a GSAP stagger on entry plus a small lift and icon response
  *      for hover/focus, with automatic reduced-motion handling and cleanup.
- *   3. Scroll-aware navbar — flat at the top, hairline + soft lift once scrolled;
- *      also drives the reading-progress hairline at the top of the viewport.
+ *   3. Scroll-aware navbar — wide and transparent at the top, then a compact
+ *      glass pill once scrolled; also drives the reading-progress hairline.
  *   4. Back-to-top chip that fades in after scrolling.
  *   5. Publication year rail whose active highlight glides with ScrollSpy.
  *   6. Command palette (⌘K / Ctrl+K / "/"): fuzzy-searchable navigate + actions
@@ -75,7 +77,246 @@
         });
     }
 
-    /* -- 1b. Depth tilt: pointer-aware 3D on images ----------------------- */
+    /* -- 1b. Elastic graph paper ----------------------------------------- */
+    function initPixelGridMotion() {
+        if (reduceMotion || !finePointer) return;
+
+        var surfaces = Array.prototype.slice.call(
+            document.querySelectorAll('.pixel-grid'));
+        if (!surfaces.length) return;
+
+        surfaces.forEach(function (surface) {
+            var canvas = document.createElement('canvas');
+            canvas.className = 'pixel-grid-motion';
+            canvas.setAttribute('aria-hidden', 'true');
+            surface.insertBefore(canvas, surface.firstChild);
+
+            var ctx = canvas.getContext('2d');
+            if (!ctx) {
+                surface.removeChild(canvas);
+                return;
+            }
+
+            /* These values are tied to the existing CSS grid. The deformation
+               is visible at a glance, while remaining soft enough to read as
+               part of the background texture rather than a foreground effect. */
+            var SPACING = 22;
+            var RADIUS = 165;
+            var MAX_OFFSET = 7;
+            var SPRING = 0.15;
+            var DAMPING = 0.76;
+            var FRAME_INTERVAL = 1000 / 30;
+
+            var width = 0;
+            var height = 0;
+            var columns = 0;
+            var rows = 0;
+            var nodes = [];
+            var lineColor = '';
+            var pointer = { x: 0, y: 0, active: false };
+            var raf = null;
+            var lastFrame = 0;
+            var visible = true;
+
+            function readLineColor() {
+                var value = getComputedStyle(document.documentElement)
+                    .getPropertyValue('--pixel-grid-line').trim();
+                return value || 'rgba(20, 20, 19, 0.07)';
+            }
+
+            function nodeAt(row, column) {
+                return nodes[row * columns + column];
+            }
+
+            function draw() {
+                if (!width || !height) return;
+                ctx.clearRect(0, 0, width, height);
+                ctx.beginPath();
+
+                var row;
+                var column;
+                var a;
+                var b;
+
+                for (row = 0; row < rows; row += 1) {
+                    for (column = 0; column < columns - 1; column += 1) {
+                        a = nodeAt(row, column);
+                        b = nodeAt(row, column + 1);
+                        ctx.moveTo(a.x, a.y);
+                        ctx.lineTo(b.x, b.y);
+                    }
+                }
+
+                for (column = 0; column < columns; column += 1) {
+                    for (row = 0; row < rows - 1; row += 1) {
+                        a = nodeAt(row, column);
+                        b = nodeAt(row + 1, column);
+                        ctx.moveTo(a.x, a.y);
+                        ctx.lineTo(b.x, b.y);
+                    }
+                }
+
+                ctx.strokeStyle = lineColor;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+
+            function rebuild() {
+                var rect = surface.getBoundingClientRect();
+                width = rect.width;
+                height = rect.height;
+                if (!width || !height) return;
+
+                var pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+                canvas.width = Math.round(width * pixelRatio);
+                canvas.height = Math.round(height * pixelRatio);
+                ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+
+                columns = Math.ceil(width / SPACING) + 1;
+                rows = Math.ceil(height / SPACING) + 1;
+                nodes = [];
+
+                for (var row = 0; row < rows; row += 1) {
+                    for (var column = 0; column < columns; column += 1) {
+                        /* Half-pixel resting coordinates keep 1px lines crisp. */
+                        var x = column * SPACING + 0.5;
+                        var y = row * SPACING + 0.5;
+                        nodes.push({
+                            restX: x,
+                            restY: y,
+                            x: x,
+                            y: y,
+                            vx: 0,
+                            vy: 0
+                        });
+                    }
+                }
+
+                lineColor = readLineColor();
+                draw();
+                surface.classList.add('pixel-grid--motion-ready');
+            }
+
+            function updateNodes() {
+                var maxMotion = 0;
+
+                nodes.forEach(function (node) {
+                    var targetX = node.restX;
+                    var targetY = node.restY;
+
+                    if (pointer.active) {
+                        var dx = node.restX - pointer.x;
+                        var dy = node.restY - pointer.y;
+                        var distance = Math.sqrt(dx * dx + dy * dy);
+                        if (distance > 0.01 && distance < RADIUS) {
+                            var influence = 1 - distance / RADIUS;
+                            var offset = influence * influence * MAX_OFFSET;
+                            targetX += dx / distance * offset;
+                            targetY += dy / distance * offset;
+                        }
+                    }
+
+                    node.vx = (node.vx + (targetX - node.x) * SPRING) * DAMPING;
+                    node.vy = (node.vy + (targetY - node.y) * SPRING) * DAMPING;
+                    node.x += node.vx;
+                    node.y += node.vy;
+
+                    var motion = Math.abs(node.vx) + Math.abs(node.vy) +
+                        Math.abs(targetX - node.x) + Math.abs(targetY - node.y);
+                    if (motion > maxMotion) maxMotion = motion;
+                });
+
+                return maxMotion;
+            }
+
+            function tick(now) {
+                if (!visible) {
+                    raf = null;
+                    return;
+                }
+
+                if (lastFrame && now - lastFrame < FRAME_INTERVAL) {
+                    raf = window.requestAnimationFrame(tick);
+                    return;
+                }
+                lastFrame = now;
+
+                var motion = updateNodes();
+                draw();
+                if (motion > 0.008) {
+                    raf = window.requestAnimationFrame(tick);
+                } else {
+                    raf = null;
+                }
+            }
+
+            function kick() {
+                if (visible && raf === null) {
+                    lastFrame = 0;
+                    raf = window.requestAnimationFrame(tick);
+                }
+            }
+
+            function updatePointer(event) {
+                var rect = surface.getBoundingClientRect();
+                pointer.x = event.clientX - rect.left;
+                pointer.y = event.clientY - rect.top;
+                pointer.active = true;
+                kick();
+            }
+
+            surface.addEventListener('mouseenter', updatePointer);
+            surface.addEventListener('mousemove', updatePointer);
+            surface.addEventListener('mouseleave', function () {
+                pointer.active = false;
+                kick();
+            });
+
+            rebuild();
+
+            if ('ResizeObserver' in window) {
+                var resizeObserver = new ResizeObserver(rebuild);
+                resizeObserver.observe(surface);
+            } else {
+                window.addEventListener('resize', rebuild);
+            }
+
+            if ('IntersectionObserver' in window) {
+                var visibilityObserver = new IntersectionObserver(function (entries) {
+                    visible = entries[0].isIntersecting;
+                    if (!visible) {
+                        pointer.active = false;
+                        if (raf !== null) window.cancelAnimationFrame(raf);
+                        raf = null;
+                        nodes.forEach(function (node) {
+                            node.x = node.restX;
+                            node.y = node.restY;
+                            node.vx = 0;
+                            node.vy = 0;
+                        });
+                    } else {
+                        draw();
+                    }
+                }, { threshold: 0 });
+                visibilityObserver.observe(surface);
+            }
+
+            /* Canvas colors do not inherit after drawing, so repaint when the
+               site's data-theme attribute changes. */
+            if ('MutationObserver' in window) {
+                var themeObserver = new MutationObserver(function () {
+                    lineColor = readLineColor();
+                    draw();
+                });
+                themeObserver.observe(document.documentElement, {
+                    attributes: true,
+                    attributeFilter: ['data-theme']
+                });
+            }
+        });
+    }
+
+    /* -- 1c. Depth tilt: pointer-aware 3D on images ----------------------- */
     // As the cursor crosses a `.depth-tilt` surface, tilt it a few degrees in
     // 3D toward the pointer and drift a soft glare along with it. The CSS reads
     // --rx/--ry (rotation), --gx/--gy (glare position) and --glow (its strength)
@@ -135,7 +376,7 @@
         });
     }
 
-    /* -- 1c. Hover preview: a peek image for named links in the bio -------- */
+    /* -- 1d. Hover preview: a peek image for named links in the bio -------- */
     // Certain links in the profile bio carry a `data-preview` image (advisors,
     // colleges). The preview follows the pointer with a soft spring; its tilt
     // and small x/y offset come from the pointer's position within the link,
@@ -540,6 +781,8 @@
 
         function onScroll() {
             var y = window.pageYOffset || docEl.scrollTop || 0;
+            /* Preserve the site's original near-immediate transition: once the
+               page has genuinely left the top, the fixed bar gains contrast. */
             if (navbar) navbar.classList.toggle('navbar--scrolled', y > 8);
             if (toTop) toTop.classList.toggle('is-visible', y > 400);
             if (progress) {
@@ -557,6 +800,22 @@
                 ticking = true;
             }
         }, { passive: true });
+
+        /* At the top of the page the bar is intentionally transparent. Give
+           Bootstrap's expanded mobile menu its own glass surface so its links
+           never overlap the page without contrast. */
+        if (navbar && window.jQuery) {
+            var collapse = navbar.querySelector('.navbar-collapse');
+            if (collapse) {
+                window.jQuery(collapse)
+                    .on('show.bs.collapse', function () {
+                        navbar.classList.add('navbar--menu-open');
+                    })
+                    .on('hidden.bs.collapse', function () {
+                        navbar.classList.remove('navbar--menu-open');
+                    });
+            }
+        }
 
         onScroll();
 
@@ -955,6 +1214,7 @@
 
     function init() {
         initPointerSheen();
+        initPixelGridMotion();
         initDepthTilt();
         initHoverPreview();
         initContactLinksMotion();

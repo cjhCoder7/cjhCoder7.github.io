@@ -30,7 +30,7 @@
     /* Cursor-following glare on tilted images — a soft white highlight that
        catches the light as the surface turns. */
     --tilt-glare: rgba(255, 255, 255, 0.28);
-    --navbar-bg: rgba(250, 249, 245, 0.80);
+    --navbar-bg: rgba(250, 249, 245, 0.64);
     --navbar-border: rgba(31, 30, 29, 0.08);
     --card-overlay-bg: rgba(250, 249, 245, 0.92);
     --hr-color: #ECEAE1;
@@ -77,7 +77,7 @@
     --accent-soft: rgba(224, 138, 102, 0.12);
     --sheen-color: rgba(224, 138, 102, 0.13);
     --tilt-glare: rgba(255, 255, 255, 0.16);
-    --navbar-bg: rgba(20, 20, 19, 0.80);
+    --navbar-bg: rgba(20, 20, 19, 0.64);
     --navbar-border: rgba(222, 220, 209, 0.10);
     --card-overlay-bg: rgba(38, 38, 36, 0.94);
     --hr-color: #37362F;
@@ -216,19 +216,37 @@ p {
    Navbar
    ============================================ */
 .navbar {
-    background-color: var(--navbar-bg) !important;
-    border-bottom: 1px solid transparent;
+    top: 0.5rem;
+    right: auto;
+    left: 50%;
+    width: calc(100% - 2rem);
+    /* Match this site's Bootstrap container instead of DeepSeek's much wider
+       content grid. */
+    max-width: 1140px;
+    transform: translateX(-50%);
+    background-color: transparent !important;
+    border: 1px solid transparent;
+    border-radius: 999px;
     box-shadow: none !important;
-    -webkit-backdrop-filter: saturate(180%) blur(16px);
-    backdrop-filter: saturate(180%) blur(16px);
-    transition: background-color 0.3s ease, border-color 0.3s ease,
-        box-shadow 0.3s ease;
+    -webkit-backdrop-filter: saturate(100%) blur(0);
+    backdrop-filter: saturate(100%) blur(0);
+    transition: max-width 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        background-color 0.3s ease, border-color 0.3s ease,
+        box-shadow 0.3s ease, backdrop-filter 0.3s ease,
+        -webkit-backdrop-filter 0.3s ease;
 }
 
-/* Flat while at the top of the page; hairline + soft lift once scrolled. */
+/* DeepSeek-inspired scroll state: the wide transparent bar contracts into a
+   centered glass pill once the opening section has passed. */
 .navbar--scrolled {
-    border-bottom-color: var(--navbar-border);
+    /* 960px is the existing container-lg width at this layout's desktop
+       breakpoint, so the compact bar remains aligned with the page rhythm. */
+    max-width: 960px;
+    background-color: var(--navbar-bg) !important;
+    border-color: var(--navbar-border);
     box-shadow: var(--shadow-sm) !important;
+    -webkit-backdrop-filter: saturate(180%) blur(16px);
+    backdrop-filter: saturate(180%) blur(16px);
 }
 
 .navbar-brand,
@@ -1525,10 +1543,10 @@ kbd,
 /* On desktop the expanded nav-collapse would grow (flex:1) and shove the nav
    links to the far edge, leaving a void after the search pill. Stop it from
    growing so the pill's `margin-left:auto` gathers search + toggle + links into
-   one tidy right-aligned cluster. (Below sm the collapse is hidden, so this
+   one tidy right-aligned cluster. (Below md the collapse is hidden, so this
    min-width scope leaves the mobile layout untouched.) */
-@media (min-width: 576px) {
-    .navbar-expand-sm .navbar-collapse {
+@media (min-width: 768px) {
+    .navbar-expand-md .navbar-collapse {
         flex-grow: 0;
     }
 
@@ -1566,9 +1584,31 @@ kbd,
     background-color: transparent;
 }
 
-/* Below sm the navbar is tight — shrink to icon-only controls so the whole bar
+/* Below md the navbar is tight — shrink to icon-only controls so the whole bar
    (brand · search · theme · menu) fits on one row without wrapping. */
-@media (max-width: 575.98px) {
+@media (max-width: 767.98px) {
+    .navbar {
+        width: calc(100% - 1rem);
+    }
+
+    /* There is no useful horizontal room to contract in compact layouts; keep
+       transparent-to-glass transition without squeezing the controls. */
+    .navbar--scrolled {
+        max-width: none;
+    }
+
+    /* Keep the expanded Bootstrap menu legible even when it is opened before
+       the page reaches the scroll threshold. */
+    .navbar--menu-open {
+        max-width: none;
+        background-color: var(--navbar-bg) !important;
+        border-color: var(--navbar-border);
+        border-radius: 1.25rem;
+        box-shadow: var(--shadow-sm) !important;
+        -webkit-backdrop-filter: saturate(180%) blur(16px);
+        backdrop-filter: saturate(180%) blur(16px);
+    }
+
     .cmdk-trigger {
         margin-left: auto;
         margin-right: 0.4rem;
@@ -2036,9 +2076,34 @@ kbd,
         linear-gradient(to right, var(--pixel-grid-line) 1px, transparent 1px),
         linear-gradient(to bottom, var(--pixel-grid-line) 1px, transparent 1px);
     background-size: 22px 22px;
-    -webkit-mask-image: radial-gradient(140% 130% at 92% -8%, #000, transparent 78%);
-    mask-image: radial-gradient(140% 130% at 92% -8%, #000, transparent 78%);
+    -webkit-mask-image: radial-gradient(165% 150% at 92% -8%, #000, transparent 82%);
+    mask-image: radial-gradient(165% 150% at 92% -8%, #000, transparent 82%);
     pointer-events: none;
+}
+
+/* Progressive replacement for the static grid. JavaScript draws the same
+   22px graph paper on this canvas and bends only the lines near the pointer;
+   without JS (or with reduced motion / touch), the ::after grid above remains. */
+.pixel-grid-motion {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    opacity: 0;
+    -webkit-mask-image: radial-gradient(165% 150% at 92% -8%, #000, transparent 82%);
+    mask-image: radial-gradient(165% 150% at 92% -8%, #000, transparent 82%);
+    pointer-events: none;
+}
+
+.pixel-grid--motion-ready::after {
+    opacity: 0;
+}
+
+.pixel-grid--motion-ready>.pixel-grid-motion {
+    opacity: 1;
 }
 
 /* ============================================
@@ -2116,7 +2181,6 @@ html {
 /* Shared transitions */
 .card,
 .card-body,
-.navbar,
 .footer,
 .modal-content,
 .bg-white,
