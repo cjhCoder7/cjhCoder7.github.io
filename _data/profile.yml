@@ -46,7 +46,7 @@ education:
   position: >-
     School of Computer Science <br/>
     Ph.D. Student
-  date: Sep. 2027 - Jun. 2030 (Expected)
+  date: Sep. 2027 - Jun. 2031 (Expected)
 - name: Beihang University
   logo: /assets/images/photos/BUAA.svg
   position: >-
@@ -63,7 +63,7 @@ education:
 experience:
 - name: Shopee
   logo: /assets/images/photos/Shopee.svg
-  position: Foundation Model Team, LLM Pre-training Intern
+  position: LLM Team, LLM Pre-training Intern
   date: Aug. 2026 - present
 - name: Human Intelligence
   logo: /assets/images/photos/Human-Intelligence.png
