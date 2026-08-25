@@ -2,7 +2,7 @@
 title:          "InCoder-32B-Thinking: Industrial Code World Model for Thinking"
 date:           2026-04-03 00:01:00 +0800
 selected:       true
-pub:            "Arxiv"
+pub:            "Empirical Methods in Natural Language Processing, EMNLP"
 pub_date:       "2026"
 
 cover:          /assets/images/covers/InCoder-32B-Thinking.png
