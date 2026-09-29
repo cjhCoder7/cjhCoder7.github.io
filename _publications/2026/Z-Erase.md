@@ -6,7 +6,7 @@ pub:            "International Conference on Machine Learning, ICML"
 pub_date:       "2026"
 
 cover:          /assets/images/covers/Z-Erase.png
-authors: 
+authors:
     - Nanxiang Jiang#
     - Zhaoxin Fan
     - Baisen Wang
@@ -20,5 +20,6 @@ authors:
     - Wenjun Wu
 links:
   Preprint: https://arxiv.org/abs/2603.25074
+  Paper: https://openreview.net/forum?id=fCvS9dhzhM
   Code: https://github.com/nxjiang-jnx/Z-Erase
 ---

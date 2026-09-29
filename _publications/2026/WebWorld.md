@@ -18,5 +18,5 @@ authors:
   - Xianglong Liu
   - Ming Zhou
 links:
-  Preprint: https://openreview.net/pdf/2a006ca014a3d40c8be1bafca190aebbc50419a0.pdf
+  Preprint: https://arxiv.org/abs/2608.30530
 ---
