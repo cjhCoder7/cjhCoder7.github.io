@@ -33,7 +33,7 @@ short_bio: >-
     In my junior year and earlier, I worked on <strong>AI for Software Engineering (SE)</strong>, advised by Asst. Prof. <a href="https://liufang816.github.io/" data-preview="/assets/images/photos/fang.jpeg">Fang Liu</a> and Prof. <a href="https://scse.buaa.edu.cn/info/1078/2647.htm" data-preview="/assets/images/photos/lizhang.jpg">Li Zhang</a>.
   </p>
   <p>
-    I have also collaborated with Assoc. Prof. <a href="https://csjianyang.github.io/" data-preview="/assets/images/photos/jianyang.png">Jian Yang</a> on <strong>Natural Language Processing (NLP)</strong>. My research now centers on <strong>LLM Foundation Models</strong>, spanning <u><i>Data Engineering</i>, <i>Pre-training</i>, <i>Mid-training</i>, and <i>Post-training</i> for Large Language Models</u>.
+    I have also collaborated with Assoc. Prof. <a href="https://csjianyang.github.io/" data-preview="/assets/images/photos/jianyang.png">Jian Yang</a> on <strong>Natural Language Processing (NLP)</strong>. My research now centers on <strong>LLM Foundation Models</strong>, spanning <u><i>Evaluation Algorithms</i>, <i>Data Engineering</i>, <i>Pre-training</i>, <i>Mid-training</i>, and <i>Post-training</i> for Large Language Models</u>.
   </p>
 
 portrait_url: /assets/images/photos/Chengjunhang.jpg
@@ -61,10 +61,14 @@ education:
   date: Sep. 2017 - Jun. 2023
 
 experience:
+- name: Tencent Hunyuan (Qingyun Project)
+  logo: /assets/images/photos/Hunyuan.svg
+  position: Hy Team, LLM Eval Intern
+  date: Nov. 2026 - present
 - name: Shopee
   logo: /assets/images/photos/Shopee.svg
   position: LLM Team, LLM Pre-training Intern
-  date: Aug. 2026 - present
+  date: Aug. 2026 - Oct. 2026
 - name: Human Intelligence
   logo: /assets/images/photos/Human-Intelligence.png
   position: Benchmark Research, Terminal Data Intern
@@ -73,10 +77,6 @@ experience:
   logo: /assets/images/photos/Ubiquant.svg
   position: IQuest AI Lab, LLM Post-training Intern
   date: Jan. 2026 - Jul. 2026
-- name: Huawei Cloud
-  logo: /assets/images/photos/Huawei.svg
-  position: PaaS Lab, Coding Agent Intern
-  date: Jan. 2026
 - name: Huawei
   logo: /assets/images/photos/Huawei.svg
   position: Huawei Developer Advocate, Cangjie Domain
@@ -89,10 +89,6 @@ experience:
   logo: /assets/images/photos/BUAA.svg
   position: Advanced Programming Language Design, Teaching Assistant
   date: Sep. 2024 - Jan. 2025
-- name: Tutor
-  logo: /assets/images/photos/Tutor.svg
-  position: Python Teaching
-  date: Nov. 2024 - Jan. 2025
 
 awards:
 - name: Huawei Scholarship

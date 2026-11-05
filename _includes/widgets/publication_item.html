@@ -1,4 +1,20 @@
 {% assign item = include.item %}
+{% assign link_labels = "Paper|Preprint|alphaXiv|Code|Model|Website|HF Daily Paper" | split: "|" %}
+{% for link in item.links %}
+    {% unless link_labels contains link[0] %}
+        {% assign link_labels = link_labels | push: link[0] %}
+    {% endunless %}
+{% endfor %}
+{% capture publication_links %}
+    {% for label in link_labels %}
+        {% assign link = item.links[label] %}
+        {% if link.url %}
+            <a target="{{ link.target }}" href="{{ link.url }}">{{ label }}</a>
+        {% elsif link %}
+            <a target="_blank" href="{{ link }}">{{ label }}</a>
+        {% endif %}
+    {% endfor %}
+{% endcapture %}
 <div class="d-none d-md-block">
     <div class="row no-gutters pub-item-row {% unless include.hide_bottom_border %}border-bottom{% endunless %} border-gray">
         <div class="col-md-3 col-xl-2 mb-md-0 p-md-3">
@@ -17,13 +33,7 @@
             <p class="mt-0 mb-0 small text-muted">{{ item.abstract }}</p>
 
             <p class="small pb-0 mb-0 lh-125 text-muted abstract-links">
-                {% for link in item.links %}
-                {% if link[1].url %}
-                <a target="{{ link[1]['target'] }}" href="{{ link[1]['url'] }}">{{ link[0] }}</a>
-                {% else %}
-                <a target="_blank" href="{{ link[1] }}">{{ link[0] }}</a>
-                {% endif %}
-                {% endfor %}
+                {{ publication_links }}
             </p>
 
         </div>
@@ -41,13 +51,7 @@
                 <p class="mt-0 mb-0 small text-muted">{{ item.abstract }}</p>
                 
                 <p class="small pb-0 mb-0 lh-125 text-muted abstract-links">
-                    {% for link in item.links %}
-                    {% if link[1].url %}
-                    <a target="{{ link[1]['target'] }}" href="{{ link[1]['url'] }}">{{ link[0] }}</a>
-                    {% else %}
-                    <a target="_blank" href="{{ link[1] }}">{{ link[0] }}</a>
-                    {% endif %}
-                    {% endfor %}
+                    {{ publication_links }}
                 </p>
             </div>
         </div>

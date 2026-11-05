@@ -37,6 +37,7 @@ authors:
   - Weifeng Lv
 links:
   Preprint: https://arxiv.org/abs/2603.16790
+  alphaXiv: https://www.alphaxiv.org/abs/2603.16790
   Code: https://github.com/CSJianYang/Industrial-Coder
   Model: https://huggingface.co/collections/Multilingual-Multimodal-NLP/industrialcoder
   HF Daily Paper: https://huggingface.co/papers/2603.16790

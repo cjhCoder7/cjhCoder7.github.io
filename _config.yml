@@ -18,7 +18,7 @@ url: "https://cjhcoder7.github.io" # the base hostname & protocol for the site (
 
 # Used by social/SEO meta tags (see _layouts/default.html)
 title: "Junhang Cheng"
-description: "Junhang Cheng (程浚航) — building LLM foundation models at Beihang University. Research on data engineering, pre-training, mid-training, and post-training for large language models."
+description: "Junhang Cheng (程浚航) — building LLM foundation models at Beihang University. Research on evaluation algorithms, data engineering, pre-training, mid-training, and post-training for large language models."
 
 # Build settings
 markdown: kramdown

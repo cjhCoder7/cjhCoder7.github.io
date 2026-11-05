@@ -1,7 +1,7 @@
 ---
 title:          "WebWorld: The Browser as a World Model for Self-Improving Web Code"
 date:           2026-08-20 00:01:00 +0800
-selected:       true
+selected:       false
 pub:            "Empirical Methods in Natural Language Processing, EMNLP"
 pub_date:       "2026"
 
@@ -19,4 +19,6 @@ authors:
   - Ming Zhou
 links:
   Preprint: https://arxiv.org/abs/2608.30530
+  Paper: https://aclanthology.org/2026.emnlp-main.612/
+  alphaXiv: https://www.alphaxiv.org/abs/2608.30530
 ---

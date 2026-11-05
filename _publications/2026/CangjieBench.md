@@ -16,5 +16,6 @@ authors:
 links:
   Preprint: https://arxiv.org/abs/2603.14501
   Paper: https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ESEM.2026.44
+  alphaXiv: https://www.alphaxiv.org/abs/2603.14501
   Code: https://github.com/cjhCoder7/CangjieBench
 ---

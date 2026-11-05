@@ -14,9 +14,9 @@ authors:
     - Tuney Zheng
     - Fanglin Xu
     - Weicheng Gu
-    - Lin Jing
+    - Linzheng Chai
     - Yaxin Du
-    - Joseph Li
+    - Haau-Sing Li
     - Yizhi Li
     - Yan Xing
     - Chuan Hao
@@ -27,13 +27,15 @@ authors:
     - Mingjie Tang
     - Chenghua Lin
     - Siheng Chen
-    - Wayne Xin Zhao#
+    - Wayne Xin Zhao
     - Xianglong Liu#
-    - Ming Zhou#
+    - Ming Zhou
     - Bryan Dai
     - Weifeng Lv
 links:
   Preprint: https://arxiv.org/abs/2604.03144
+  Paper: https://aclanthology.org/2026.emnlp-main.1827/
+  alphaXiv: https://www.alphaxiv.org/abs/2604.03144
   Code: https://github.com/CSJianYang/Industrial-Coder
   Model: https://huggingface.co/Multilingual-Multimodal-NLP/IndustrialCoder-Thinking
   HF Daily Paper: https://huggingface.co/papers/2604.03144

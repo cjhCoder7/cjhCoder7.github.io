@@ -16,5 +16,6 @@ authors:
 links:
   Preprint: https://arxiv.org/abs/2506.10525
   Paper: https://dl.acm.org/doi/full/10.1145/3755881.3755925
+  alphaXiv: https://www.alphaxiv.org/abs/2506.10525
   Code: https://github.com/cjhCoder7/AdaptiveLLM
 ---
