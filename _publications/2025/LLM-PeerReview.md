@@ -23,9 +23,9 @@ authors:
   - Hailong Sun#
 
 links:
+  Blog: https://zeyuji.github.io/LLM-PeerReview/
   Preprint: https://arxiv.org/abs/2512.23213
-  alphaXiv: https://www.alphaxiv.org/abs/2512.23213
-  Code: https://github.com/zeyuji/LLM-PeerReview
-  Website: https://zeyuji.github.io/LLM-PeerReview/
+  GitHub: https://github.com/zeyuji/LLM-PeerReview
   HF Paper: https://huggingface.co/papers/2512.23213
+  alphaXiv: https://www.alphaxiv.org/abs/2512.23213
 ---

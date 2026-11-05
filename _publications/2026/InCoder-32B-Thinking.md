@@ -33,12 +33,12 @@ authors:
     - Bryan Dai
     - Weifeng Lv
 links:
-  Preprint: https://arxiv.org/abs/2604.03144
   Paper: https://aclanthology.org/2026.emnlp-main.1827/
-  alphaXiv: https://www.alphaxiv.org/abs/2604.03144
-  Code: https://github.com/CSJianYang/Industrial-Coder
-  Model: https://huggingface.co/Multilingual-Multimodal-NLP/IndustrialCoder-Thinking
+  Preprint: https://arxiv.org/abs/2604.03144
+  GitHub: https://github.com/CSJianYang/Industrial-Coder
+  Hugging Face: https://huggingface.co/Multilingual-Multimodal-NLP/IndustrialCoder-Thinking
   ModelScope: https://modelscope.cn/models/Multilingual-Multimodal-NLP/IndustrialCoder-Thinking
   HF Daily Paper: https://huggingface.co/papers/2604.03144
+  alphaXiv: https://www.alphaxiv.org/abs/2604.03144
   机器之心: https://mp.weixin.qq.com/s/ySwvg7ht71bu2-IxQEjfdg
 ---

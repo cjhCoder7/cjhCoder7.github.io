@@ -1,0 +1,31 @@
+<section class="my-3 p-0 bg-white shadow-sm rounded-xl sheen-surface" data-reveal aria-labelledby="models-heading">
+    <h6 id="models-heading" class="border-bottom border-gray p-3 mb-0">
+        <i class="fas fa-layer-group" aria-hidden="true"></i> Models
+    </h6>
+    <ul class="list-unstyled mb-0">
+        {% for model in include.models %}
+        <li class="pub-item-row model-card-row{% unless forloop.last %} border-bottom border-gray{% endunless %}">
+            {% if model.background %}
+            <img class="model-card-background" src="{{ model.background | relative_url | escape }}"
+                 alt="" loading="lazy" decoding="async">
+            {% endif %}
+            <div class="pub-item-copy p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mt-0 mb-0">{{ model.title | escape }}</h5>
+                    {% if model.date %}
+                    <time class="model-card-date badge badge-pill border bg-white text-muted text-monospace px-3 py-1 ml-3"
+                          datetime="{{ model.date | replace: '.', '-' | escape }}">
+                        {{ model.date | escape }}
+                    </time>
+                    {% endif %}
+                </div>
+                {% if model.links %}
+                <p class="small pb-0 mb-0 lh-125 text-muted abstract-links">
+                    {% include widgets/resource_links.html links=model.links rel="noopener noreferrer" break_before_wechat=true %}
+                </p>
+                {% endif %}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</section>

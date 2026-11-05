@@ -1,0 +1,15 @@
+- title: IQuest-Q1
+  date: "2026.09"
+  background: /assets/images/covers/IQuest-Q1.jpeg
+  links:
+    Blog: https://iquestlab.github.io/
+    Tech Report: https://arxiv.org/abs/2610.30949
+    GitHub: https://github.com/IQuestLab/IQuest-Q1
+    Hugging Face: https://huggingface.co/IQuestLab/IQuest-Q1
+    ModelScope: https://modelscope.cn/models/IQuestLab/IQuest-Q1
+    HF Paper: https://huggingface.co/papers/2610.30949
+    alphaXiv: https://www.alphaxiv.org/abs/2610.30949
+    公众号: https://mp.weixin.qq.com/s/J57NgGoJz--Df_qL50_2JA
+    机器之心: https://mp.weixin.qq.com/s/Qr-GyQWBHlC7nhFKO19a9A
+    量子位: https://mp.weixin.qq.com/s/zeQVHS3cOHOz4_wcaG2BGw
+    新智元: https://mp.weixin.qq.com/s/EXuczh9JV57QzX_RTQ2EfQ

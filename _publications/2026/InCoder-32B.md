@@ -37,10 +37,10 @@ authors:
   - Weifeng Lv
 links:
   Preprint: https://arxiv.org/abs/2603.16790
-  alphaXiv: https://www.alphaxiv.org/abs/2603.16790
-  Code: https://github.com/CSJianYang/Industrial-Coder
-  Model: https://huggingface.co/collections/Multilingual-Multimodal-NLP/industrialcoder
+  GitHub: https://github.com/CSJianYang/Industrial-Coder
+  Hugging Face: https://huggingface.co/collections/Multilingual-Multimodal-NLP/industrialcoder
   ModelScope: https://modelscope.cn/models/Multilingual-Multimodal-NLP/IndustrialCoder
   HF Daily Paper: https://huggingface.co/papers/2603.16790
+  alphaXiv: https://www.alphaxiv.org/abs/2603.16790
   量子位: https://mp.weixin.qq.com/s/hS6mrYYZGeoOZVOVRg_3ug
 ---

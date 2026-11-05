@@ -19,9 +19,9 @@ authors:
   - Shubin Song
   - Yuanping Guo
 links:
-  Preprint: https://arxiv.org/abs/2511.03404
   Paper: https://dl.acm.org/doi/10.1145/3817056
-  alphaXiv: https://www.alphaxiv.org/abs/2511.03404
-  Code: https://github.com/whisperzqh/ProjectGen
+  Preprint: https://arxiv.org/abs/2511.03404
+  GitHub: https://github.com/whisperzqh/ProjectGen
   HF Paper: https://huggingface.co/papers/2511.03404
+  alphaXiv: https://www.alphaxiv.org/abs/2511.03404
 ---

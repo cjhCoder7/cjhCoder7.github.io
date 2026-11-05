@@ -1,0 +1,31 @@
+{% assign link_labels = "Blog|Paper|Preprint|Tech Report|GitHub|Hugging Face|ModelScope|Data|HF Paper|HF Daily Paper|alphaXiv" | split: "|" %}
+{% assign wechat_labels = "" | split: "|" %}
+{% for entry in include.links %}
+    {% unless link_labels contains entry[0] %}
+        {% assign href = entry[1].url | default: entry[1] %}
+        {% if href contains "://mp.weixin.qq.com/" %}
+            {% assign wechat_labels = wechat_labels | push: entry[0] %}
+        {% else %}
+            {% assign link_labels = link_labels | push: entry[0] %}
+        {% endif %}
+    {% endunless %}
+{% endfor %}
+{% assign link_labels = link_labels | concat: wechat_labels %}
+{%- assign first_wechat_label = wechat_labels | first -%}
+{% assign rendered_link = false %}
+
+{% for label in link_labels %}
+    {% assign link = include.links[label] %}
+    {% if link %}
+        {% assign href = link.url | default: link %}
+        {% assign target = "_blank" %}
+        {% if link.url %}
+            {% assign target = link.target %}
+        {% endif %}
+        {% if include.break_before_wechat and rendered_link and label == first_wechat_label %}
+            <br>
+        {% endif %}
+        <a target="{{ target | escape }}" href="{{ href | escape }}"{% if include.rel %} rel="{{ include.rel | escape }}"{% endif %}>{{ label | escape }}</a>
+        {% assign rendered_link = true %}
+    {% endif %}
+{% endfor %}
