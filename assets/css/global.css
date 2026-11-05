@@ -806,10 +806,7 @@ section>h6 {
     transition: border-color 0.3s ease;
 }
 
-/* Selecting one paper should read as a change in hierarchy, not as movement
-   of its cover. A warm wash enters behind the row while the short accent rail
-   anchors the active item. Both layers are non-interactive and stay behind the
-   publication content. */
+/* Highlight the active row with a warm gradient behind the content. */
 .pub-item-row::before {
     content: "";
     position: absolute;
@@ -822,22 +819,6 @@ section>h6 {
     transform-origin: left center;
     transition: opacity 0.24s ease,
         transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.pub-item-row::after {
-    content: "";
-    position: absolute;
-    top: 1rem;
-    bottom: 1rem;
-    left: 0;
-    width: 3px;
-    border-radius: 0 999px 999px 0;
-    background-color: var(--accent);
-    opacity: 0;
-    transform: scaleY(0.2);
-    transform-origin: center;
-    transition: opacity 0.18s ease,
-        transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .pub-item-copy {
@@ -860,25 +841,16 @@ section>h6 {
     transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.pub-item-row:hover::before,
-.pub-item-row:focus-within::before {
+.pub-item-row:is(:hover, :has(:focus-visible))::before {
     opacity: 1;
     transform: translateX(0) scaleX(1);
 }
 
-.pub-item-row:hover::after,
-.pub-item-row:focus-within::after {
-    opacity: 1;
-    transform: scaleY(1);
-}
-
-.pub-item-row:hover .pub-item-copy,
-.pub-item-row:focus-within .pub-item-copy {
+.pub-item-row:is(:hover, :has(:focus-visible)) .pub-item-copy {
     transform: translateX(0.35rem);
 }
 
-.pub-item-row:hover h5,
-.pub-item-row:focus-within h5 {
+.pub-item-row:is(:hover, :has(:focus-visible)) h5 {
     color: var(--accent-strong);
 }
 
@@ -936,8 +908,8 @@ section>h6 {
     border-bottom-color: currentColor;
 }
 
-.model-card-row::after {
-    content: none;
+.model-card-row > .pub-item-copy {
+    padding-inline: clamp(1.375rem, 2.75vw, 1.625rem) !important;
 }
 
 .model-card-background {
@@ -1086,7 +1058,7 @@ hr {
 }
 
 .btn-primary:hover,
-.btn-primary:focus {
+.btn-primary:focus-visible {
     background-color: var(--accent-strong) !important;
     border-color: var(--accent-strong) !important;
 }
@@ -1172,16 +1144,15 @@ hr {
 /* ============================================
    Focus & selection
    ============================================ */
-.btn-primary:focus,
-.btn-primary.focus,
+.btn-primary:focus-visible,
 .form-control:focus {
     box-shadow: 0 0 0 0.2rem var(--accent-soft) !important;
 }
 
-.nav-link:focus,
-.nav-link:active,
-.navbar .nav-link:focus {
-    box-shadow: none !important;
+button:focus:not(:focus-visible),
+.btn:focus:not(:focus-visible),
+.nav-link:focus:not(:focus-visible) {
+    box-shadow: none;
     outline: none;
 }
 
@@ -2187,8 +2158,7 @@ html {
     }
 
     /* Preserve the publication selection cue without moving its copy. */
-    .pub-item-row:hover .pub-item-copy,
-    .pub-item-row:focus-within .pub-item-copy {
+    .pub-item-row:is(:hover, :has(:focus-visible)) .pub-item-copy {
         transform: none;
     }
 

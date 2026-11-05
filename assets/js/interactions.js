@@ -640,6 +640,7 @@
                 scheduleHide(link);
             });
             link.addEventListener('focus', function () {
+                if (!link.matches(':focus-visible')) return;
                 var fragments = link.getClientRects ? link.getClientRects() : [];
                 var rect = fragments.length ? fragments[0] : link.getBoundingClientRect();
                 show(link, index, rect.left + rect.width / 2, rect.top + rect.height / 2);
@@ -746,10 +747,12 @@
                 if (canHover) {
                     bind(link, 'mouseenter', function () { animateLink(link, true); });
                     bind(link, 'mouseleave', function () {
-                        if (document.activeElement !== link) animateLink(link, false);
+                        if (!link.matches(':focus-visible')) animateLink(link, false);
                     });
                 }
-                bind(link, 'focus', function () { animateLink(link, true); });
+                bind(link, 'focus', function () {
+                    if (link.matches(':focus-visible')) animateLink(link, true);
+                });
                 bind(link, 'blur', function () {
                     if (!canHover || !link.matches(':hover')) animateLink(link, false);
                 });
