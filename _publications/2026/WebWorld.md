@@ -21,4 +21,6 @@ links:
   Preprint: https://arxiv.org/abs/2608.30530
   Paper: https://aclanthology.org/2026.emnlp-main.612/
   alphaXiv: https://www.alphaxiv.org/abs/2608.30530
+  Data: https://huggingface.co/datasets/Multilingual-Multimodal-NLP/WebWorld-SFT-10k
+  HF Daily Paper: https://huggingface.co/papers/2608.30530
 ---

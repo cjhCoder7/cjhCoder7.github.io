@@ -23,4 +23,5 @@ links:
   Paper: https://dl.acm.org/doi/10.1145/3817056
   alphaXiv: https://www.alphaxiv.org/abs/2511.03404
   Code: https://github.com/whisperzqh/ProjectGen
+  HF Paper: https://huggingface.co/papers/2511.03404
 ---

@@ -20,7 +20,9 @@ authors:
     - Wenjun Wu
 links:
   Preprint: https://arxiv.org/abs/2603.25074
-  Paper: https://openreview.net/forum?id=fCvS9dhzhM
+  Paper: https://proceedings.mlr.press/v306/jiang26i.html
   alphaXiv: https://www.alphaxiv.org/abs/2603.25074
   Code: https://github.com/nxjiang-jnx/Z-Erase
+  Website: https://nxjiang-jnx.github.io/Z-Erase-web/
+  HF Paper: https://huggingface.co/papers/2603.25074
 ---
